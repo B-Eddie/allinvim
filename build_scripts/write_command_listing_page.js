@@ -1,5 +1,5 @@
 #!/usr/bin/env -S deno run --allow-read --allow-write --allow-env
-// Write a static version of the command_listing.html page to dist, to be hosted on vimium.github.io
+// Write a static version of the command_listing.html page to dist, to be hosted on allinvim.github.io
 // as an online reference.
 
 import * as testHelper from "../tests/unit_tests/test_helper.js";

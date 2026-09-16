@@ -890,9 +890,9 @@ async function showUpgradeMessageIfNecessary(onInstalledDetails) {
     {
       type: "basic",
       iconUrl: chrome.runtime.getURL("icons/icon128.png"),
-      title: "Vimium Upgrade",
+      title: "AllinVim Upgrade",
       message:
-        `Vimium has been upgraded to version ${currentVersion}. Click here for more information.`,
+        `AllinVim has been upgraded to version ${currentVersion}. Click here for more information.`,
       isClickable: true,
     },
   );

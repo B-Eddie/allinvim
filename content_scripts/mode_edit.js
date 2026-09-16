@@ -1,5 +1,5 @@
 //
-// General Vim — unified vim editing for any place that requires typing.
+// AllinVim — unified vim editing for any place that requires typing.
 //
 // Embeds the Vim-For-Textarea engine (parser + direct-manipulation executor)
 // and the Vim-For-Docs engine (synthetic-key executor for Google Docs canvas)
@@ -2381,7 +2381,7 @@
     if (out && typeof out.then === "function") {
       out.catch((err) => {
         try {
-          if (window.__VIM_DEBUG__) console.error("[GeneralVim] exec error", err);
+          if (window.__VIM_DEBUG__) console.error("[AllinVim] exec error", err);
         } catch (_) {}
       });
     }
@@ -2571,11 +2571,11 @@
 
   // Key-decision tracing for site-specific diagnosis. Enable in the page
   // console with: window.__GENERALVIM_DEBUG_KEYS = 1
-  // then reproduce and read the [GeneralVim:keys] lines.
+  // then reproduce and read the [AllinVim:keys] lines.
   function dkeys(...args) {
     try {
       if (window.__GENERALVIM_DEBUG_KEYS) {
-        console.log("[GeneralVim:keys]", ...args);
+        console.log("[AllinVim:keys]", ...args);
       }
     } catch (_) {}
   }
@@ -2789,7 +2789,7 @@
       } catch (err) {
         try {
           if (window.__VIM_DEBUG__)
-            console.error("[GeneralVim] parser error", err);
+            console.error("[AllinVim] parser error", err);
         } catch (_) {}
       }
       scheduleFocusRestore(skipRestore);
@@ -3066,7 +3066,7 @@
       }
     } catch (err) {
       try {
-        if (window.__VIM_DEBUG__) console.error("[GeneralVim:Docs] error", err);
+        if (window.__VIM_DEBUG__) console.error("[AllinVim:Docs] error", err);
       } catch (_) {}
     }
   }
@@ -3172,7 +3172,7 @@
       });
       const title = document.createElement("div");
       title.className = "aiv-title";
-      title.textContent = "General Vim · " + (kind || "editor");
+      title.textContent = "AllinVim · " + (kind || "editor");
       chrome.appendChild(title);
       const discardBtn = document.createElement("button");
       discardBtn.className = "aiv-btn";
@@ -3621,7 +3621,7 @@
         // Orphaned content script after an extension reload: stay silent.
         if (/extension context invalidated/i.test(message)) return;
         if (typeof chrome !== "undefined" && chrome.runtime?.id == null) return;
-        console.error("[GeneralVim] failed to init edit mode", err);
+        console.error("[AllinVim] failed to init edit mode", err);
       } catch (_) {}
     }
   }

@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>General Vim — Vim everywhere, on every site</title>
-<meta name="description" content="General Vim unifies Vimium-style page navigation with Vim editing in every text field, Google Docs, and code editor. One extension, flawless handoff, Trigger-fast." />
+<title>AllinVim — Vim everywhere, on every site</title>
+<meta name="description" content="AllinVim unifies Vim-style page navigation with Vim editing in every text field, Google Docs, and code editor. One extension, flawless handoff, Trigger-fast." />
 <meta name="color-scheme" content="dark" />
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='4' fill='%23121317'/%3E%3Cpath d='M9 8l7 16 7-16h-4.5L16 15 13.5 8z' fill='%23a8ff53'/%3E%3C/svg%3E" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -16,9 +16,9 @@
 
 <header class="nav">
   <div class="nav-inner">
-    <a class="brand" href="#top" aria-label="General Vim home">
+    <a class="brand" href="#top" aria-label="AllinVim home">
       <span class="brand-mark" aria-hidden="true">▶</span>
-      <span class="brand-word">General&nbsp;Vim</span>
+      <span class="brand-word">AllinVim</span>
     </a>
     <nav class="nav-links" aria-label="Primary">
       <a href="#how">How it works</a>
@@ -49,9 +49,9 @@
 
   <!-- HERO -->
   <section class="hero">
-    <p class="eyebrow">Vimium navigation · Text-field editing · Google Docs</p>
+    <p class="eyebrow">Vim navigation · Text-field editing · Google Docs</p>
     <h1>VIM, ON EVERY SITE</h1>
-    <p class="sub">One extension that navigates the page like Vimium and edits every text surface like Vim — textareas, Docs, and code editors — with a handoff you never feel.</p>
+    <p class="sub">One extension that navigates the page like Vim and edits every text surface like Vim — textareas, Docs, and code editors — with a handoff you never feel.</p>
     <div class="hero-actions">
       <a class="cta-btn cta-lg" href="#install">Start building now</a>
       <a class="hero-link" href="https://github.com/philc/vimium" target="_blank" rel="noopener">Upstream Vimium →</a>
@@ -65,14 +65,14 @@
 
     <div class="code-pane" role="img" aria-label="Example: the router decides who owns each keystroke">
       <div class="code-bar"><span></span><span></span><span></span><em>mode_edit.js — the handoff</em></div>
-<pre><code><span class="c">// capture phase: edit router runs before Vimium navigation</span>
+<pre><code><span class="c">// capture phase: edit router runs before AllinVim navigation</span>
 <span class="k">window</span>.<span class="p">addEventListener</span>(<span class="s">"keydown"</span>, <span class="k">onKeyDown</span>, <span class="t">true</span>);
 
 <span class="k">if</span> (<span class="v">overlayOpen</span>) <span class="k">return</span> <span class="v">overlayTrap</span>(<span class="v">e</span>);  <span class="c">// complex editors: own surface</span>
 <span class="k">if</span> (<span class="v">vimiumOverlayVisible</span>()) <span class="k">return</span>;          <span class="c">// hints / vomnibar win</span>
 <span class="k">if</span> (<span class="v">isGoogleDocs</span>()) <span class="k">return</span> <span class="v">handleDocsKey</span>(<span class="v">e</span>);
 <span class="k">if</span> (<span class="v">inEditMode</span>()) { <span class="v">e</span>.<span class="p">stopImmediatePropagation</span>(); <span class="k">return</span> <span class="v">feedToken</span>(<span class="v">e</span>); }
-<span class="c">// otherwise: do nothing — Vimium navigates the page</span></code></pre>
+<span class="c">// otherwise: do nothing — AllinVim navigates the page</span></code></pre>
     </div>
   </section>
 
@@ -81,7 +81,7 @@
     <div class="code-pane">
       <div class="code-bar"><span></span><span></span><span></span><em>handoff matrix</em></div>
 <pre><code><span class="c">// who owns the keystroke?</span>
-<span class="v">pageFocus</span>      <span class="p">→</span> <span class="k">Vimium</span>   <span class="c">hjkl scroll · f hints · o vomnibar</span>
+<span class="v">pageFocus</span>      <span class="p">→</span> <span class="k">AllinVim</span>   <span class="c">hjkl scroll · f hints · o vomnibar</span>
 <span class="v">textarea</span>       <span class="p">→</span> <span class="k">direct</span>   <span class="c">Esc = normal · i = insert</span>
 <span class="v">docsCanvas</span>     <span class="p">→</span> <span class="k">synthetic</span><span class="c"> boots normal · tracks insert for .</span>
 <span class="v">monaco / cm</span>    <span class="p">→</span> <span class="k">overlay</span>  <span class="c">Esc opens · Esc saves · ^C drops</span></code></pre>
@@ -89,7 +89,7 @@
     <div class="split-copy">
       <p class="eyebrow">How it works</p>
       <h2>Three Vims. One router. Zero fights.</h2>
-      <p>General Vim layers the Vim-For-Textarea direct executor and the Vim-For-Docs synthetic executor inside Vimium navigation. A single capture-phase listener decides the owner per keystroke — editor keys never leak into page scroll, and page keys never type into your buffer.</p>
+      <p>AllinVim layers the Vim-For-Textarea direct executor and the Vim-For-Docs synthetic executor inside AllinVim navigation. A single capture-phase listener decides the owner per keystroke — editor keys never leak into page scroll, and page keys never type into your buffer.</p>
       <a class="ghost-btn" href="#bindings">See the bindings</a>
     </div>
   </section>
@@ -106,7 +106,7 @@
     <div class="cards">
       <article class="card">
         <p class="eyebrow">Navigate</p>
-        <h3>Vimium page control</h3>
+        <h3>AllinVim page control</h3>
         <p>Hinted links, Vomnibar, tabs, marks, find, and history — the full upstream binding set, retriggered per frame.</p>
       </article>
       <article class="card">
@@ -132,7 +132,7 @@
       <article class="card">
         <p class="eyebrow">Yours</p>
         <h3>Remappable everything</h3>
-        <p>Vimium custom key mappings plus the shared motions JSON. Exclusion rules per URL pattern included.</p>
+        <p>AllinVim custom key mappings plus the shared motions JSON. Exclusion rules per URL pattern included.</p>
       </article>
     </div>
   </section>
@@ -185,7 +185,7 @@
     <h2>Esc is the whole tutorial</h2>
     <div class="demo">
       <div class="demo-bar"><span id="demoMode" class="pill"><i class="dot lime"></i>Insert</span><span class="demo-hint">click, then press Esc</span></div>
-      <textarea id="demoArea" rows="8" spellcheck="false">General Vim edits this box the way it edits the web.
+      <textarea id="demoArea" rows="8" spellcheck="false">AllinVim edits this box the way it edits the web.
 
 Click here and press Esc.
 Move with h j k l and w b e.
@@ -242,7 +242,7 @@ Press i to type again.</textarea>
       </details>
       <details>
         <summary>How does the handoff avoid conflicts?</summary>
-        <p>One capture-phase router runs before Vimium. Editing keys are consumed with stopImmediatePropagation so navigation never sees them; otherwise the router stays silent and Vimium navigates. Visible Vimium overlays always win, except the commit/discard overlay which owns the keyboard.</p>
+        <p>One capture-phase router runs before AllinVim navigation. Editing keys are consumed with stopImmediatePropagation so navigation never sees them; otherwise the router stays silent and AllinVim navigates. Visible AllinVim overlays always win, except the commit/discard overlay which owns the keyboard.</p>
       </details>
       <details>
         <summary>Why an overlay for code editors?</summary>
@@ -254,7 +254,7 @@ Press i to type again.</textarea>
       </details>
       <details>
         <summary>Can I remap keys or exclude sites?</summary>
-        <p>Yes. Vimium custom key mappings, the shared motions JSON, and per-pattern exclusion rules in Options.</p>
+        <p>Yes. AllinVim custom key mappings, the shared motions JSON, and per-pattern exclusion rules in Options.</p>
       </details>
     </div>
   </section>
@@ -264,7 +264,7 @@ Press i to type again.</textarea>
     <h2>STOP REACHING FOR THE MOUSE</h2>
     <p>Every page is navigable. Every text surface is a Vim buffer. Install once and stay on home row.</p>
     <div class="hero-actions">
-      <a class="cta-btn cta-lg" href="#install">Get General Vim</a>
+      <a class="cta-btn cta-lg" href="#install">Get AllinVim</a>
       <a class="hero-link" href="https://github.com/philc/vimium" target="_blank" rel="noopener">Browse upstream →</a>
     </div>
     <div class="hero-pills">
@@ -278,13 +278,14 @@ Press i to type again.</textarea>
 
 <footer>
   <div class="foot-inner">
-    <a class="brand" href="#top"><span class="brand-mark" aria-hidden="true">▶</span><span class="brand-word">General Vim</span></a>
+    <a class="brand" href="#top"><span class="brand-mark" aria-hidden="true">▶</span><span class="brand-word">AllinVim</span></a>
     <div class="foot-links">
       <a href="https://github.com/philc/vimium" target="_blank" rel="noopener">Upstream Vimium</a>
       <a href="#bindings">Bindings</a>
       <a href="#faq">FAQ</a>
+      <a href="/privacy">Privacy</a>
     </div>
-    <p class="foot-note">General Vim — navigation by Vimium, editing everywhere. Trigger.dev styled, shadowless by design.</p>
+    <p class="foot-note">AllinVim — navigation by Vim, editing everywhere. Trigger.dev styled, shadowless by design.</p>
   </div>
 </footer>
 

@@ -1,6 +1,6 @@
-# General Vim — Vim everywhere, on every site
+# AllinVim — Vim everywhere, on every site
 
-General Vim unifies three proven extensions on top of
+AllinVim unifies three proven extensions on top of
 [philc/vimium](https://github.com/philc/vimium) (26k+ stars, MIT):
 
 | Layer | Origin | What it does |
@@ -20,9 +20,9 @@ by all editing surfaces.
 `vimium_frontend.js` (manifest order matters). Routing per keystroke:
 
 1. **Overlay editor open?** It owns the keyboard outright. `Esc` commits,
-   `Ctrl-C` discards. Nothing reaches the page or Vimium.
-2. **Vimium overlay visible?** (link hints, Vomnibar, help, HUD) → yield, let
-   Vimium win — except case 1.
+   `Ctrl-C` discards. Nothing reaches the page or AllinVim.
+2. **AllinVim overlay visible?** (link hints, Vomnibar, help, HUD) → yield, let
+   AllinVim win — except case 1.
 3. **Google Docs?** (memoized `isGoogleDocs()`) → Docs executor. Boots
    **NORMAL** always; `Esc` leaves insert, insert ops tracked for `.` repeat.
    The Docs caret (`.kix-cursor-caret`) is widened into a lime block in
@@ -32,13 +32,13 @@ by all editing surfaces.
 4. **Plain editor focused?** (`textarea` / text-like `input` /
    `contenteditable` / `role=textbox`, Shadow-DOM aware) → direct executor.
    Boots **INSERT**; `Esc` → NORMAL and suppresses the key via
-   `stopImmediatePropagation()` so Vimium's `j/k/f` never fires. Second `Esc`
+   `stopImmediatePropagation()` so AllinVim's `j/k/f` never fires. Second `Esc`
    in NORMAL blurs back to page navigation.
 5. **Complex framework?** (CodeMirror 5/6, Monaco, ProseMirror, Lexical,
    Slate, Quill, Ace, Draft, CKEditor, TinyMCE) → `Esc` escalates to our own
    overlay textarea (Surfingkeys/wasavi pattern), commits once on `Esc`.
    Framework models are never touched mid-keystroke, so they can't desync.
-6. **Otherwise** → do nothing; Vimium page navigation handles the key.
+6. **Otherwise** → do nothing; AllinVim page navigation handles the key.
 
 Guards: IME composition (`keyCode 229`) always passes through; privileged
 `Ctrl/Meta` chords pass through unless bound; `Tab` passes unless remapped;
@@ -47,10 +47,10 @@ logging `Extension context invalidated`. Per-editor mode memory via `WeakMap`;
 block caret redraws coalesced on `requestAnimationFrame`; font measurement
 cached per element; Docs detection memoized per URL.
 
-## Exclusions ("No Vimium keys are enabled on this page")
+## Exclusions ("No AllinVim keys are enabled on this page")
 
 The toolbar popup's exclusion button (and the Options exclusion table) gates
-both layers. The edit router enforces the same rule as Vimium navigation —
+both layers. The edit router enforces the same rule as AllinVim navigation —
 an excluded page passes every key through, hides the indicator and block
 caret, and never strands an open overlay. Partial `passKeys` rules leave
 text editing alone; only absolute exclusions disable it. Saving new rules
@@ -87,7 +87,7 @@ and Nord. Each one defines the same 26 CSS custom properties (`--surface-*`,
 Custom properties inherit, so applying them once reaches every surface:
 extension pages, shadow DOMs (hint markers, the Vomnibar wrapper) and iframes.
 
-Pick one under **Options → General Vim → Theme** (the `theme` setting). The
+Pick one under **Options → AllinVim → Theme** (the `theme` setting). The
 palette values themselves are only in `lib/theme.js` — the stylesheets carry
 just the Trigger palette as a pre-script fallback, and rules should reference
 tokens rather than literal colors.
@@ -111,7 +111,7 @@ they can be injected.
 ## Mode indicator (single source of truth)
 
 The edit-mode indicator rendered by `mode_edit.js` is the only mode signal —
-no Vimium HUD popup. Labels never use `--` decoration (`NORMAL`, `INSERT`,
+no AllinVim HUD popup. Labels never use `--` decoration (`NORMAL`, `INSERT`,
 `VISUAL`, `VISUAL LINE`, `REPLACE`, `TEMP` plus pending keys).
 
 The compact layouts show one letter per mode instead of the full name — `N`,
@@ -119,7 +119,7 @@ The compact layouts show one letter per mode instead of the full name — `N`,
 chip stays small in the corner of the page or next to the active textbox. The
 Docs `bar` has the screen width available and keeps the full name.
 
-Options page → General Vim section:
+Options page → AllinVim section:
 
 - `generalVimIndicatorPosition`: `corner` (bottom-right chip, default) |
   `field` (small label pinned to the active textbox) | `hidden`.
@@ -176,7 +176,7 @@ Vercel: `vercel.json` + `cleanUrls`. Deploy: `cd website && vercel --prod`
   Upstream README bindings below still apply for page navigation.
 - Editing engines: `Vim-For-Docs` / `Vim-For-Textarea` authors
   (see `../Vim-For-Docs`, `../Vim-For-Textarea`).
-- Perf + unification + Trigger.dev reskin: this folder (`General Vim 1.0.0`).
+- Perf + unification + Trigger.dev reskin: this folder (`AllinVim 1.0.0`).
 
 ---
 

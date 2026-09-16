@@ -1,6 +1,6 @@
 #!/usr/bin/env -S deno run --allow-read --allow-write --allow-env --allow-net --allow-run --allow-sys
 // Usage: ./make.js command. Use -l to list commands.
-// This is a set of tasks for building and testing Vimium in development.
+// This is a set of tasks for building and testing AllinVim in development.
 import * as fs from "@std/fs";
 import * as path from "@std/path";
 import { abort, desc, run, task } from "drake";
@@ -18,7 +18,7 @@ async function shell(procName, argsArray = []) {
   // NOTE(philc): Does drake's `sh` function work on Windows? If so, that can replace this function.
   if (Deno.build.os == "windows") {
     // if win32, prefix arguments with "/c {original command}"
-    // e.g. "mkdir c:\git\vimium" becomes "cmd.exe /c mkdir c:\git\vimium"
+    // e.g. "mkdir c:\git\allinvim" becomes "cmd.exe /c mkdir c:\git\allinvim"
     argsArray.unshift("/c", procName);
     procName = "cmd.exe";
   }
@@ -119,7 +119,7 @@ async function checkFilesFromManifestArePresent(manifest) {
   const missing = [];
 
   for (const file of getPathsFromManifest(manifest)) {
-    const exists = await fs.exists(path.join("dist/vimium", file));
+    const exists = await fs.exists(path.join("dist/allinvim", file));
     if (!exists) {
       missing.push(file);
     }
@@ -194,6 +194,7 @@ async function buildStorePackage() {
     "MIT-LICENSE.txt",
     "build_scripts",
     "dist",
+    "store",
     "make.js",
     "deno.json",
     "deno.lock",
@@ -205,23 +206,23 @@ async function buildStorePackage() {
   ];
 
   const chromeManifest = await parseManifestFile();
-  const rsyncOptions = ["-r", ".", "dist/vimium"].concat(
+  const rsyncOptions = ["-r", ".", "dist/allinvim"].concat(
     ...excludeList.map((item) => ["--exclude", item]),
   );
   const version = chromeManifest["version"];
   const writeDistManifest = async (manifest) => {
-    await Deno.writeTextFile("dist/vimium/manifest.json", JSON.stringify(manifest, null, 2));
+    await Deno.writeTextFile("dist/allinvim/manifest.json", JSON.stringify(manifest, null, 2));
   };
-  // cd into "dist/vimium" before building the zip, so that the files in the zip don't each have the
-  // path prefix "dist/vimium".
+  // cd into "dist/allinvim" before building the zip, so that the files in the zip don't each have the
+  // path prefix "dist/allinvim".
   // --filesync ensures that files in the archive which are no longer on disk are deleted. It's
   // equivalent to removing the zip file before the build.
-  const zipCommand = "cd dist/vimium && zip -r --filesync ";
+  const zipCommand = "cd dist/allinvim && zip -r --filesync ";
 
-  await shell("rm", ["-rf", "dist/vimium"]);
+  await shell("rm", ["-rf", "dist/allinvim"]);
   await shell("mkdir", [
     "-p",
-    "dist/vimium",
+    "dist/allinvim",
     "dist/chrome-canary",
     "dist/chrome-store",
     "dist/firefox",
@@ -236,7 +237,7 @@ async function buildStorePackage() {
   // Exclude PNG icons from the Firefox build, because we use the SVG directly.
   await shell("bash", [
     "-c",
-    `${zipCommand} ../firefox/vimium-firefox-${version}.zip . -x icons/*.png`,
+    `${zipCommand} ../firefox/allinvim-firefox-${version}.zip . -x icons/*.png`,
   ]);
 
   await checkFilesFromManifestArePresent(firefoxManifest);
@@ -245,17 +246,17 @@ async function buildStorePackage() {
   await writeDistManifest(chromeManifest);
   await shell("bash", [
     "-c",
-    `${zipCommand} ../chrome-store/vimium-chrome-store-${version}.zip .`,
+    `${zipCommand} ../chrome-store/allinvim-chrome-store-${version}.zip .`,
   ]);
 
   // Build the Chrome Store dev package.
   await writeDistManifest(Object.assign({}, chromeManifest, {
-    name: "Vimium Canary",
-    description: "This is the development branch of Vimium (it is beta software).",
+    name: "AllinVim Canary",
+    description: "This is the development branch of AllinVim (it is beta software).",
   }));
   await shell("bash", [
     "-c",
-    `${zipCommand} ../chrome-canary/vimium-canary-${version}.zip .`,
+    `${zipCommand} ../chrome-canary/allinvim-canary-${version}.zip .`,
   ]);
 }
 
@@ -443,7 +444,7 @@ task("package", ["write-command-listing"], async () => {
   await buildStorePackage();
 });
 
-desc("Build a static version of command_listing.html, to be hosted on vimium.gihub.io");
+desc("Build a static version of command_listing.html, to be hosted on allinvim.github.io");
 task("write-command-listing", [], async () => {
   // Run this script in a separate shell so it doesn't pollute our JS environment.
   await shell("./build_scripts/write_command_listing_page.js", []);

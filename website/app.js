@@ -1,4 +1,4 @@
-// General Vim site interactions: mobile nav, scroll reveal, demo mode chip.
+// AllinVim site interactions: mobile nav, scroll reveal, demo mode chip.
 (() => {
   "use strict";
 
