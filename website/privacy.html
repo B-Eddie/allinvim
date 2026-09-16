@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Privacy Policy — AllinVim</title>
+<meta name="description" content="Privacy policy for the AllinVim browser extension." />
+<meta name="color-scheme" content="dark" />
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='4' fill='%23121317'/%3E%3Cpath d='M9 8l7 16 7-16h-4.5L16 15 13.5 8z' fill='%23a8ff53'/%3E%3C/svg%3E" />
+<style>
+  :root {
+    --canvas: #1c1e21; --inset: #121317; --border: #272a2e; --hairline: #3b3e45;
+    --bone: #e5e7eb; --ash: #b5b8c0; --fog: #878c99; --lime: #a8ff53; --violet: #9c9af2;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--inset); color: var(--bone);
+    font-family: Inter, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    line-height: 1.7; }
+  main { max-width: 760px; margin: 0 auto; padding: 56px 28px 80px; }
+  a { color: var(--violet); }
+  .back { display: inline-block; margin-bottom: 28px; color: var(--fog); text-decoration: none;
+    font-size: 14px; }
+  .back:hover { color: var(--bone); }
+  h1 { font-size: 32px; margin: 0 0 6px; letter-spacing: -0.5px; }
+  .eff { color: var(--fog); font-size: 14px; margin-bottom: 32px; }
+  h2 { font-size: 20px; margin: 36px 0 10px; color: var(--lime); }
+  p, li { color: var(--ash); font-size: 16px; }
+  ul { padding-left: 22px; }
+  li { margin-bottom: 8px; }
+  li strong { color: var(--bone); }
+  footer { margin-top: 48px; padding-top: 20px; border-top: 1px solid var(--border);
+    color: var(--fog); font-size: 14px; }
+  code { font-family: ui-monospace, Menlo, monospace; font-size: 0.9em; color: var(--bone); }
+</style>
+</head>
+<body>
+<main>
+  <a class="back" href="/">← AllinVim home</a>
+  <h1>Privacy Policy</h1>
+  <p class="eff">Effective: September 16, 2026 · Applies to the AllinVim browser extension.</p>
+
+  <p>AllinVim works fully offline. We operate no servers, include no analytics or tracking SDKs,
+  and collect nothing about you. This policy describes what the extension accesses on your device
+  and why.</p>
+
+  <h2>Data stored on your device</h2>
+  <ul>
+    <li><strong>Settings, key mappings, exclusion rules, and marks</strong> are kept in
+    <code>chrome.storage</code>. Settings and marks use synced storage, so Chrome carries them
+    across your own signed-in devices via your Google account — we never see them.</li>
+    <li><strong>Session data</strong> (recently viewed tabs, in-memory UI state) lives only in
+    <code>chrome.storage.session</code> and disappears when the browser session ends.</li>
+    <li><strong>Backups you export</strong> are JSON files you save yourself, wherever you choose.</li>
+  </ul>
+
+  <h2>Data read locally, never transmitted</h2>
+  <ul>
+    <li><strong>History, bookmarks, and open tabs</strong> are read on-device to power Vomnibar
+    suggestions, tab commands, and recently-closed-tab restore. Matching happens locally; this
+    data is never sent anywhere.</li>
+    <li><strong>Page content</strong> is processed in memory by content scripts to provide
+    navigation and Vim editing. Text you edit stays in the page. Nothing is exfiltrated.</li>
+    <li><strong>Clipboard</strong> is written only when you explicitly invoke a copy command
+    (e.g. copy current URL); the extension never reads your clipboard.</li>
+    <li><strong>Notifications</strong> are used solely for the one-time “extension upgraded”
+    notice, which you can disable in Options.</li>
+  </ul>
+
+  <h2>Network connections</h2>
+  <ul>
+    <li>The extension makes <strong>no connections to developer-operated servers</strong> — there
+    are none.</li>
+    <li>If you use Vomnibar search completion, your keystrokes are sent to the
+    <strong>search engine you configured</strong> (e.g. Google, Wikipedia) to fetch suggestions —
+    exactly as typing in that engine’s own site would. This only happens for engines you set up,
+    and only while you use completion.</li>
+    <li>All other requests target the extension’s own internal (<code>chrome-extension://</code>)
+    resources, such as its stylesheet and key-motion configuration.</li>
+  </ul>
+
+  <h2>Sharing and sale</h2>
+  <p>We do not sell, rent, share, or otherwise disclose any data — there is no data pipeline to
+  disclose from. The extension requests broad host access (<code>&lt;all_urls&gt;</code>) solely
+  so keyboard navigation and editing work on every site you visit.</p>
+
+  <h2>Children’s privacy</h2>
+  <p>AllinVim collects no personal information from anyone, including children under 13.</p>
+
+  <h2>Changes</h2>
+  <p>If this policy changes, the updated version will be posted here with a new effective date.
+  Material changes will also be noted in the extension’s release notes.</p>
+
+  <h2>Contact</h2>
+  <p>Questions? Open an issue at
+  <a href="https://github.com/B-Eddie/allinvim/issues">github.com/B-Eddie/allinvim/issues</a>.</p>
+
+  <footer>AllinVim — Vim navigation, editing everywhere.</footer>
+</main>
+</body>
+</html>

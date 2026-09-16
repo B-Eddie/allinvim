@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<!-- STORE SCREENSHOT SOURCE (not shipped in the extension zip). Mock editor + real
+     AllinVim theme tokens to show Vim editing with the mode indicator. 1280x800. -->
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>AllinVim — Vim editing (screenshot mock)</title>
+<link rel="stylesheet" type="text/css" href="../../../content_scripts/vimium.css" />
+<style>
+  * { box-sizing: border-box; }
+  body { margin: 0; background: #121317; color: #e5e7eb;
+    font-family: Inter, -apple-system, "Segoe UI", Roboto, sans-serif; }
+  .tabbar { display: flex; gap: 8px; padding: 12px 24px 0; }
+  .tab { background: #1c1e21; border: 1px solid #272a2e; border-bottom: none; border-radius: 6px 6px 0 0;
+    padding: 8px 18px; font-size: 14px; color: #b5b8c0;
+    font-family: ui-monospace, Menlo, monospace; }
+  .tab.active { color: #e5e7eb; border-top: 2px solid #a8ff53; }
+  .editor { display: flex; background: #1c1e21; border-top: 1px solid #272a2e;
+    margin: 0; padding: 24px 0 60px; min-height: 640px; }
+  .gutter { width: 70px; text-align: right; padding-right: 18px; color: #6c6c6c;
+    font-family: ui-monospace, Menlo, monospace; font-size: 15px; line-height: 1.75;
+    user-select: none; }
+  .code { font-family: ui-monospace, Menlo, monospace; font-size: 15px; line-height: 1.75; }
+  .code .k { color: #e888f8; } .code .s { color: #d9f07c; }
+  .code .f { color: #9c9af2; } .code .c { color: #6c6c6c; } .code .n { color: #fe8019; }
+  .caret { display: inline-block; width: 9px; height: 19px; background: #a8ff53;
+    vertical-align: -3px; margin-right: 1px; }
+  .indicator {
+    position: fixed; right: 24px; bottom: 24px; background: #121317;
+    border: 1px solid #a8ff53; border-radius: 4px; color: #a8ff53;
+    font-family: ui-monospace, Menlo, monospace; font-weight: 700; font-size: 14px;
+    letter-spacing: 2px; padding: 6px 14px;
+  }
+  .key-hint {
+    position: fixed; left: 24px; bottom: 24px; color: #b5b8c0;
+    font-family: ui-monospace, Menlo, monospace; font-size: 14px;
+  }
+  .key-hint b { color: #a8ff53; }
+</style>
+</head>
+<body>
+  <div class="tabbar">
+    <div class="tab active">keymap.js</div>
+    <div class="tab">README.md</div>
+  </div>
+  <div class="editor">
+    <div class="gutter">1<br/>2<br/>3<br/>4<br/>5<br/>6<br/>7<br/>8<br/>9<br/>10<br/>11<br/>12<br/>13<br/>14<br/>15<br/>16<br/>17<br/>18</div>
+    <div class="code">
+      <span class="c">// Esc leaves insert — now every key is a Vim command.</span><br/>
+      <span class="k">const</span> <span class="f">renameSymbol</span> = () =&gt; {<br/>
+      &nbsp;&nbsp;<span class="k">const</span> word = <span class="f">readWordUnderCursor</span>();<br/>
+      &nbsp;&nbsp;<span class="c">// ciw — change inner word, stay in flow.</span><br/>
+      &nbsp;&nbsp;<span class="f">applyEdit</span>(word, <span class="s">'newName'</span>);<br/>
+      &nbsp;&nbsp;<span class="k">return</span> <span class="n">true</span>;<br/>
+      };<br/>
+      <br/>
+      <span class="c">// Motions: w b e 0 ^ $ gg G f F t T — everywhere you type:</span><br/>
+      <span class="c">// textareas, inputs, Google Docs, code editors.</span><br/>
+      <span class="k">function</span> <span class="f">repeatLastChange</span>() {<br/>
+      &nbsp;&nbsp;<span class="caret"></span><span class="f">dotRepeat</span>(); <span class="c">// the . command, on the web</span><br/>
+      }<br/>
+      <br/>
+      <span class="c">// Operators compose with motions: daw — delete a word,</span><br/>
+      <span class="c">// ci" — change inside quotes, yap — yank a paragraph.</span><br/>
+      <span class="k">const</span> motions = [<span class="s">'w'</span>, <span class="s">'b'</span>, <span class="s">'e'</span>, <span class="s">'0'</span>, <span class="s">'^'</span>, <span class="s">'$'</span>];<br/>
+      <span class="k">const</span> operators = [<span class="s">'d'</span>, <span class="s">'c'</span>, <span class="s">'y'</span>, <span class="s">'v'</span>, <span class="s">'V'</span>];<br/>
+      <span class="f">applyEdit</span>(motions, operators); <span class="c">// fluent everywhere</span><br/>
+    </div>
+  </div>
+  <div class="key-hint">pressed <b>Esc</b> … <b>NORMAL</b> mode · <b>ciw</b> · <b>.</b> to repeat</div>
+  <div class="indicator">NORMAL</div>
+</body>
+</html>

@@ -1,0 +1,22 @@
+# AllinVim — Host & permission justifications (for the store dashboard)
+
+Single purpose: keyboard-driven browsing and Vim-style editing on every website.
+
+- <all_urls> (host): navigation (scroll, hints, Vomnibar) and editing must work on any
+  site the user visits. No data is collected or transmitted (see PRIVACY.md).
+- tabs / sessions: list, switch, close, reopen, and mute tabs; restore recently closed
+  tabs; per-tab enablement state.
+- scripting: inject the UI (hints, Vomnibar, HUD, editor overlay) and user link-hint CSS
+  into open tabs on install/upgrade; favicon: show site icons in Vomnibar results.
+- storage: persist settings/keymaps/exclusions/marks (synced via the user's own Google
+  account) plus ephemeral session state.
+- history / bookmarks / search: Vomnibar suggestions and URL completion, matched
+  on-device only.
+- clipboardWrite: explicit user-invoked copy commands (e.g. copy URL/markdown link).
+- webNavigation: detect in-page URL changes (history.pushState / hash) to update
+  per-page enablement without reloads.
+- notifications: one-time "extension upgraded" notice (dimmable in Options).
+
+Remote code: none. All logic ships in the package; the only network use is the user's
+own configured search engines for Vomnibar completion plus internal
+chrome-extension:// resource loads.
