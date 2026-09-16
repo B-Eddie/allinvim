@@ -22,6 +22,13 @@
         toggle.setAttribute("aria-expanded", "false");
       })
     );
+    // Safety: never leave the mobile menu open when resizing up to desktop.
+    window.addEventListener("resize", () => {
+      if (window.matchMedia("(min-width: 901px)").matches) {
+        mobile.setAttribute("hidden", "");
+        toggle.setAttribute("aria-expanded", "false");
+      }
+    });
   }
 
   // Gentle reveal-on-scroll (respects reduced motion via CSS fallback).

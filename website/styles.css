@@ -122,6 +122,18 @@ body {
   font-size: 14px;
 }
 
+.brand-tag {
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.6px;
+  text-transform: uppercase;
+  color: var(--color-signal-lime);
+  border: 1px solid var(--color-steel-border);
+  border-radius: var(--radius-full);
+  padding: 3px 9px;
+  white-space: nowrap;
+}
+
 .nav-links {
   display: flex;
   gap: 20px;
@@ -140,7 +152,6 @@ body {
   display: flex;
   align-items: center;
   gap: 12px;
-  margin-left: auto;
 }
 
 .github-badge {
@@ -188,8 +199,19 @@ body {
 
 .nav-toggle { display: none; background: none; border: none; cursor: pointer; }
 .nav-toggle span { display: block; width: 20px; height: 2px; background: var(--color-cloud-text); margin: 4px 0; }
-.nav-mobile { display: flex; flex-direction: column; gap: 4px; padding: 8px 24px 16px; }
+/* Hidden by default so it never leaks into desktop layout.
+   The [hidden] attribute is respected; JS toggles it on mobile only. */
+.nav-mobile { display: none; }
+.nav-mobile:not([hidden]) {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 8px 24px 16px;
+  background: rgba(28, 30, 33, 0.98);
+  border-top: 1px solid var(--color-steel-border);
+}
 .nav-mobile a { color: var(--color-cloud-text); text-decoration: none; padding: 8px 0; border-top: 1px solid var(--color-steel-border); }
+.nav-mobile a:first-child { border-top: none; }
 
 /* ---------- layout ---------- */
 
@@ -514,6 +536,12 @@ footer { border-top: 1px solid var(--color-steel-border); }
 .foot-note { width: 100%; color: var(--color-fog-text); font-size: 14px; margin: 8px 0 0; }
 
 /* ---------- responsive ---------- */
+
+@media (min-width: 901px) {
+  /* Desktop: mobile menu + hamburger never render, even if JS toggled state. */
+  .nav-mobile { display: none !important; }
+  .nav-toggle { display: none !important; }
+}
 
 @media (max-width: 900px) {
   .hero h1 { font-size: 48px; letter-spacing: 2.4px; }
