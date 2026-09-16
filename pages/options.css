@@ -1,0 +1,452 @@
+/* General Vim: options as a dimmed control room, colored by the theme tokens from
+ * lib/theme.js (the Trigger palette shown here is the pre-script fallback).
+ * This stylesheet is included in both options.html and action.html, so changes affect both. */
+:root {
+  --closeButtonWidth: 25px;
+  --validationErrorColor: var(--color-warning);
+}
+
+body {
+  font-family: "Geist", Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    "Helvetica Neue", "DejaVu Sans", Arial, sans-serif;
+  font-size: 14px;
+  line-height: 1.38;
+  letter-spacing: 0.14px;
+  color: var(--color-bone-text);
+  background-color: var(--surface-inset);
+  margin: 0;
+}
+
+a,
+a:visited {
+  color: var(--color-syntax-violet);
+  text-decoration: none;
+}
+
+a:hover {
+  color: var(--color-cloud-text);
+  text-decoration: underline;
+}
+
+a:active {
+  color: var(--color-cloud-text);
+}
+
+div#wrapper,
+#footer-content {
+  max-width: 1050px;
+  margin: 0 25px;
+}
+
+header {
+  font-size: 24px;
+  font-weight: 500;
+  letter-spacing: -0.48px;
+  color: var(--color-bone-text);
+  border-bottom: 1px solid var(--color-steel-border);
+  padding: 20px 0 15px 0;
+  width: 100%;
+}
+
+button {
+  -webkit-user-select: none;
+  -webkit-appearance: none;
+  appearance: none;
+  font: inherit;
+  background: transparent;
+  color: var(--color-bone-text);
+  border: 1px solid var(--color-steel-border);
+  border-radius: 4px;
+  padding: 6px 12px;
+  cursor: pointer;
+  box-shadow: none;
+  text-shadow: none;
+}
+
+button:hover {
+  color: var(--color-cloud-text);
+  border-color: var(--color-graphite-hairline);
+}
+
+button:active {
+  background-color: var(--surface-canvas);
+}
+
+button[disabled],
+button[disabled]:hover,
+button[disabled]:active {
+  color: var(--color-fog-text);
+  border-color: var(--color-steel-border);
+  background: transparent;
+  cursor: default;
+}
+
+/* Primary save action: the single luminous element. */
+#save {
+  background-color: var(--color-bone-text);
+  color: var(--surface-inset);
+  border: none;
+  font-weight: 500;
+  padding: 10px 16px;
+  white-space: nowrap;
+}
+
+#save:hover {
+  color: var(--surface-inset);
+  background-color: var(--color-ash-text);
+}
+
+input[type="checkbox"] {
+  -webkit-user-select: none;
+  margin: 0;
+  margin-right: 8px;
+  accent-color: var(--color-signal-lime);
+}
+
+input[type="radio"] {
+  margin: 0;
+  margin-left: 0;
+  margin-right: 8px;
+  accent-color: var(--color-signal-lime);
+}
+
+.boolean-label {
+  display: flex;
+  align-items: center;
+  gap: 0;
+}
+
+pre,
+code,
+.code {
+  font-family: "Geist Mono", "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Monaco,
+    Consolas, "Liberation Mono", Courier, monospace;
+  font-size: 13px;
+}
+
+pre {
+  margin: 5px;
+  padding: 10px 12px;
+  background-color: var(--surface-canvas);
+  border: 1px solid var(--color-steel-border);
+  border-left: 2px solid var(--color-signal-lime);
+  border-radius: 4px;
+  color: var(--color-bone-text);
+  overflow-x: auto;
+}
+
+pre .match,
+code .match {
+  color: var(--color-signal-lime);
+}
+
+input,
+textarea {
+  box-sizing: border-box;
+}
+
+textarea {
+  /* Horizontal resizing breaks the page's layout, so we just allow vertical. */
+  resize: vertical;
+}
+
+h2 {
+  margin: 24px 0 12px 0;
+  font-size: 20px;
+  line-height: 1.3;
+  letter-spacing: -0.2px;
+  font-weight: 500;
+  color: var(--color-bone-text);
+}
+
+#settings-grid-container {
+  display: grid;
+  font-size: 14px;
+  grid-template-columns: auto 320px;
+  /* This is required so the "save changes" panel at the bottom of the options page doesn't cover
+   * any settings content. */
+  margin-bottom: 100px;
+}
+
+/* Adds a blank line in the grid. */
+#settings-grid-container .spacer {
+  grid-column-start: 1;
+  grid-column-end: 3;
+  height: 10px;
+}
+
+/* These should span the full width of the grid. */
+#settings-grid-container h2,
+#settings-grid-container header {
+  grid-column-start: 1;
+  grid-column-end: 3;
+}
+
+.example {
+  font-size: 12px;
+  line-height: 16px;
+  color: var(--color-fog-text);
+  margin-left: 20px;
+}
+
+.example a {
+  color: var(--color-syntax-violet);
+}
+
+.reset-link {
+  margin-left: 0px;
+  text-align: right;
+}
+
+.reset-link a {
+  text-decoration: none;
+}
+
+.validation-message {
+  color: var(--validationErrorColor);
+  /* Render newlines in validation messages. When there are multiple errors, they are separated by a
+     newline. */
+  white-space: pre-line;
+}
+
+/* This longer selector is required to take precedence over our dark scheme textarea colors which
+ * are defined in vimium.css. */
+body.vimium-body textarea.validation-error,
+body.vimium-body input.validation-error {
+  border: 2px solid var(--validationErrorColor);
+}
+
+div#exampleKeyMapping {
+  margin-left: 10px;
+  margin-top: 5px;
+}
+
+#new-tab-url-container {
+  display: grid;
+  grid-template-columns: auto 100%;
+  grid-auto-rows: 1.5em;
+  row-gap: 10px;
+  align-items: center;
+}
+
+input[name="newTabCustomUrl"] {
+  grid-column-start: 2;
+}
+
+#openVomnibarContainer {
+  display: flex;
+  align-items: center;
+  grid-column-start: 2;
+}
+
+input[name="newTabCustomUrl"] {
+  width: 400px;
+}
+
+#link-hint-characters-container,
+#link-hint-numbers-container,
+#wait-for-enter {
+  display: contents;
+}
+
+.link-hint-characters-field {
+  width: 100%;
+  /* These text fields look strange when they're excessively long. */
+  max-width: 400px;
+}
+
+.link-hint-characters-field input {
+  width: 100%;
+}
+
+input[name="scrollStepSize"] {
+  width: 80px;
+  margin-right: 3px;
+  padding-left: 3px;
+}
+
+textarea[name="userDefinedLinkHintCss"],
+textarea[name="keyMappings"],
+textarea[name="searchEngines"] {
+  width: 100%;
+  min-height: 140px;
+  white-space: pre;
+}
+
+input[name="previousPatterns"],
+input[name="nextPatterns"] {
+  width: 100%;
+}
+
+input#searchUrl {
+  width: 100%;
+}
+
+#status {
+  margin-left: 10px;
+  font-size: 80%;
+  color: var(--color-fog-text);
+}
+
+input[type="text"]:read-only,
+input[type="number"]:read-only,
+textarea:read-only {
+  background-color: var(--color-steel-border);
+  color: var(--color-fog-text);
+  border-color: var(--color-steel-border);
+  pointer-events: none;
+  -webkit-user-select: none;
+}
+
+input[type="text"],
+input[type="number"],
+textarea,
+select {
+  border: 1px solid var(--color-steel-border);
+  border-radius: 4px;
+  color: var(--color-bone-text);
+  background-color: var(--surface-canvas);
+  font: inherit;
+  padding: 6px 8px;
+  box-shadow: none;
+}
+
+button:focus,
+input[type="text"]:focus,
+input[type="number"]:focus,
+textarea:focus,
+select:focus {
+  -webkit-transition: border-color 200ms;
+  border-color: var(--color-cloud-text);
+  outline: none;
+}
+
+/*
+ * CSS for exclusion rules.
+ */
+
+#exclusion-scroll-box {
+  overflow: scroll;
+  overflow-x: hidden;
+  overflow-y: auto;
+  /* Each exclusion rule is about 30px tall, so this allows 7 rules before scrolling. */
+  max-height: 215px;
+  border-radius: 4px;
+  background-color: var(--surface-canvas);
+  border: 1px solid var(--color-steel-border);
+  color: var(--color-bone-text);
+  width: 100%;
+  padding: 8px;
+}
+
+#exclusion-rules {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+#exclusion-rules td {
+  vertical-align: top;
+  border: 2px solid transparent;
+  padding: 0px;
+}
+
+#exclusion-rules td:nth-of-type(2) {
+  width: 33%;
+}
+
+#exclusion-rules td:nth-of-type(3) {
+  /* Make the close button td use only the minimum width needed. */
+  width: var(--closeButtonWidth);
+  padding-top: 3px;
+}
+
+#exclusion-rules tr.validationError .validationMessage {
+  display: block;
+}
+
+#exclusion-rules tr.validationError td:nth-of-type(1) input {
+  border-color: orange;
+}
+
+#exclusion-rules .validationMessage {
+  display: block;
+  color: orange;
+  margin-top: 2px;
+  margin-left: 2px;
+}
+
+#exclusion-rules .remove {
+  border: none;
+  background: transparent;
+  color: var(--color-fog-text);
+  padding: 2px 6px;
+}
+
+#exclusion-rules .remove:hover {
+  color: var(--color-bone-text);
+}
+
+input[name="pattern"],
+input[name="passKeys"],
+.exclusion-header-text {
+  width: 100%;
+  font-family: "Geist Mono", "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Monaco,
+    Consolas, "Liberation Mono", Courier, monospace;
+  font-size: 13px;
+}
+
+.exclusion-header-text {
+  padding-left: 3px;
+  font-size: 11px;
+  letter-spacing: 2.2px;
+  text-transform: uppercase;
+  color: var(--color-fog-text);
+  font-family: "Geist", Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    sans-serif;
+}
+
+#exclusion-add-button {
+  float: right;
+  /* Add the spacing between the table's cells to the right margin of this button. */
+  margin-right: calc(var(--closeButtonWidth) + 4px);
+  margin-top: 10px;
+}
+
+footer {
+  background: var(--surface-canvas);
+  border-top: 1px solid var(--color-steel-border);
+  position: fixed;
+  bottom: 0px;
+  left: 0;
+  padding: 15px 0;
+  z-index: 10;
+  width: 100%;
+}
+
+#footer-content {
+  width: 100%;
+  display: flex;
+  align-items: center;
+}
+
+#footer-help-text {
+  flex-grow: 1;
+  font-size: 12px;
+  color: var(--color-fog-text);
+}
+
+#footer-save-options {
+  flex-grow: 0;
+}
+
+#exclusion-add-button {
+  white-space: nowrap;
+}
+
+#backupLink {
+  cursor: pointer;
+}
+
+input#upload-backup {
+  max-width: 400px;
+}

@@ -1,0 +1,45 @@
+/*
+ * Styles for showing key bindings. Shared by help_dialog_page.html and command_listing.html.
+ * Colored by the theme tokens in lib/theme.js (the Trigger palette is the pre-script
+ * fallback): flat chips, mono, no shadows.
+ */
+
+.key-bindings {
+  max-width: 110px;
+  font-size: 14px;
+  text-align: right;
+  margin-right: 8px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: flex-end;
+}
+
+/* A "key block" includes a key and a comma separator. */
+.key-block {
+  margin-bottom: 4px;
+}
+
+.key {
+  background-color: var(--color-steel-border);
+  color: var(--color-bone-text);
+  margin-left: 2px;
+  padding: 2px 6px;
+  border-radius: 4px;
+  border: solid 1px var(--surface-inset);
+  box-shadow: none;
+  font-family: "Geist Mono", "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Monaco,
+    Consolas, monospace;
+  font-size: 11px;
+  white-space: nowrap;
+}
+
+.comma {
+  margin-right: 3px;
+  color: var(--color-fog-text);
+}
+
+/* Hide the trailing comma after the last key binding. */
+.key-block:last-of-type .comma {
+  display: none;
+}

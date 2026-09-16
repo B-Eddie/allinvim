@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>General Vim — Vim everywhere, on every site</title>
+<meta name="description" content="General Vim unifies Vimium-style page navigation with Vim editing in every text field, Google Docs, and code editor. One extension, flawless handoff, Trigger-fast." />
+<meta name="color-scheme" content="dark" />
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='4' fill='%23121317'/%3E%3Cpath d='M9 8l7 16 7-16h-4.5L16 15 13.5 8z' fill='%23a8ff53'/%3E%3C/svg%3E" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@300;400&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+<header class="nav">
+  <div class="nav-inner">
+    <a class="brand" href="#top" aria-label="General Vim home">
+      <span class="brand-mark" aria-hidden="true">▶</span>
+      <span class="brand-word">General&nbsp;Vim</span>
+    </a>
+    <nav class="nav-links" aria-label="Primary">
+      <a href="#how">How it works</a>
+      <a href="#features">Product</a>
+      <a href="#bindings">Bindings</a>
+      <a href="#faq">FAQ</a>
+    </nav>
+    <div class="nav-actions">
+      <a class="github-badge" href="https://github.com/philc/vimium" target="_blank" rel="noopener" aria-label="Upstream Vimium on GitHub">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8Z"/></svg>
+        <span>27k</span>
+      </a>
+      <a class="ghost-btn" href="#install">Log in</a>
+      <a class="cta-btn" href="#install">Get started</a>
+      <button class="nav-toggle" aria-label="Open menu" aria-expanded="false"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+  <div class="nav-mobile" hidden>
+    <a href="#how">How it works</a>
+    <a href="#features">Product</a>
+    <a href="#bindings">Bindings</a>
+    <a href="#faq">FAQ</a>
+    <a href="#install">Get started</a>
+  </div>
+</header>
+
+<main id="top">
+
+  <!-- HERO -->
+  <section class="hero">
+    <p class="eyebrow">Vimium navigation · Text-field editing · Google Docs</p>
+    <h1>VIM, ON EVERY SITE</h1>
+    <p class="sub">One extension that navigates the page like Vimium and edits every text surface like Vim — textareas, Docs, and code editors — with a handoff you never feel.</p>
+    <div class="hero-actions">
+      <a class="cta-btn cta-lg" href="#install">Start building now</a>
+      <a class="hero-link" href="https://github.com/philc/vimium" target="_blank" rel="noopener">Upstream Vimium →</a>
+    </div>
+    <div class="hero-pills" aria-label="Surfaces">
+      <span class="pill"><i class="dot violet"></i>Page navigation</span>
+      <span class="pill"><i class="dot pink"></i>Text fields</span>
+      <span class="pill"><i class="dot lime"></i>Google Docs</span>
+      <span class="pill"><i class="dot green"></i>Code editors</span>
+    </div>
+
+    <div class="code-pane" role="img" aria-label="Example: the router decides who owns each keystroke">
+      <div class="code-bar"><span></span><span></span><span></span><em>mode_edit.js — the handoff</em></div>
+<pre><code><span class="c">// capture phase: edit router runs before Vimium navigation</span>
+<span class="k">window</span>.<span class="p">addEventListener</span>(<span class="s">"keydown"</span>, <span class="k">onKeyDown</span>, <span class="t">true</span>);
+
+<span class="k">if</span> (<span class="v">overlayOpen</span>) <span class="k">return</span> <span class="v">overlayTrap</span>(<span class="v">e</span>);  <span class="c">// complex editors: own surface</span>
+<span class="k">if</span> (<span class="v">vimiumOverlayVisible</span>()) <span class="k">return</span>;          <span class="c">// hints / vomnibar win</span>
+<span class="k">if</span> (<span class="v">isGoogleDocs</span>()) <span class="k">return</span> <span class="v">handleDocsKey</span>(<span class="v">e</span>);
+<span class="k">if</span> (<span class="v">inEditMode</span>()) { <span class="v">e</span>.<span class="p">stopImmediatePropagation</span>(); <span class="k">return</span> <span class="v">feedToken</span>(<span class="v">e</span>); }
+<span class="c">// otherwise: do nothing — Vimium navigates the page</span></code></pre>
+    </div>
+  </section>
+
+  <!-- HOW -->
+  <section id="how" class="section split">
+    <div class="code-pane">
+      <div class="code-bar"><span></span><span></span><span></span><em>handoff matrix</em></div>
+<pre><code><span class="c">// who owns the keystroke?</span>
+<span class="v">pageFocus</span>      <span class="p">→</span> <span class="k">Vimium</span>   <span class="c">hjkl scroll · f hints · o vomnibar</span>
+<span class="v">textarea</span>       <span class="p">→</span> <span class="k">direct</span>   <span class="c">Esc = normal · i = insert</span>
+<span class="v">docsCanvas</span>     <span class="p">→</span> <span class="k">synthetic</span><span class="c"> boots normal · tracks insert for .</span>
+<span class="v">monaco / cm</span>    <span class="p">→</span> <span class="k">overlay</span>  <span class="c">Esc opens · Esc saves · ^C drops</span></code></pre>
+    </div>
+    <div class="split-copy">
+      <p class="eyebrow">How it works</p>
+      <h2>Three Vims. One router. Zero fights.</h2>
+      <p>General Vim layers the Vim-For-Textarea direct executor and the Vim-For-Docs synthetic executor inside Vimium navigation. A single capture-phase listener decides the owner per keystroke — editor keys never leak into page scroll, and page keys never type into your buffer.</p>
+      <a class="ghost-btn" href="#bindings">See the bindings</a>
+    </div>
+  </section>
+
+  <p class="strip-caption">TRUSTED PATTERN · BUILT ON PROVEN ENGINES</p>
+  <div class="logo-strip" aria-hidden="true">
+    <span>Vimium</span><span>Vim-For-Docs</span><span>Vim-For-Textarea</span><span>Surfingkeys pattern</span><span>wasavi pattern</span>
+  </div>
+
+  <!-- FEATURES -->
+  <section id="features" class="section">
+    <p class="eyebrow">Product</p>
+    <h2>Built for hands that never leave home row</h2>
+    <div class="cards">
+      <article class="card">
+        <p class="eyebrow">Navigate</p>
+        <h3>Vimium page control</h3>
+        <p>Hinted links, Vomnibar, tabs, marks, find, and history — the full upstream binding set, retriggered per frame.</p>
+      </article>
+      <article class="card">
+        <p class="eyebrow">Edit</p>
+        <h3>Modal editing in every field</h3>
+        <p>Operators, text objects, visual modes, and <span class="hl">.</span> repeat — direct buffer surgery where the DOM allows it.</p>
+      </article>
+      <article class="card">
+        <p class="eyebrow">Docs</p>
+        <h3>Google Docs, exactly</h3>
+        <p>Canvas editing through synthetic keys and selection motion. Boots in normal mode because Docs is always editing.</p>
+      </article>
+      <article class="card">
+        <p class="eyebrow">Code</p>
+        <h3>Overlay for frameworks</h3>
+        <p>CodeMirror, Monaco, ProseMirror, and friends edit in our own exact surface, then commit once. No desync, ever.</p>
+      </article>
+      <article class="card">
+        <p class="eyebrow">Fast</p>
+        <h3>document_start, zero fetch</h3>
+        <p>Inlined motions config, rAF-coalesced caret, memoized context checks. Strict-CSP sites like GitHub just work.</p>
+      </article>
+      <article class="card">
+        <p class="eyebrow">Yours</p>
+        <h3>Remappable everything</h3>
+        <p>Vimium custom key mappings plus the shared motions JSON. Exclusion rules per URL pattern included.</p>
+      </article>
+    </div>
+  </section>
+
+  <!-- BINDINGS -->
+  <section id="bindings" class="section">
+    <p class="eyebrow">Bindings</p>
+    <h2>The core set</h2>
+    <div class="cards cards-3">
+      <article class="card">
+        <p class="eyebrow">Move</p>
+        <h3>Navigate</h3>
+        <dl class="keys">
+          <div><dt>h j k l</dt><dd>Scroll / move</dd></div>
+          <div><dt>f F</dt><dd>Hint links, new tab</dd></div>
+          <div><dt>o O</dt><dd>Vomnibar, new tab</dd></div>
+          <div><dt>gg G</dt><dd>Top / bottom</dd></div>
+          <div><dt>/ n N</dt><dd>Find, next, prev</dd></div>
+        </dl>
+      </article>
+      <article class="card">
+        <p class="eyebrow">Act</p>
+        <h3>Operators</h3>
+        <dl class="keys">
+          <div><dt>d c y</dt><dd>Delete, change, yank</dd></div>
+          <div><dt>iw i" a(</dt><dd>Text objects</dd></div>
+          <div><dt>x p P</dt><dd>Char, paste after/before</dd></div>
+          <div><dt>u ctrl+r</dt><dd>Undo, redo</dd></div>
+          <div><dt>. J ~</dt><dd>Repeat, join, case</dd></div>
+        </dl>
+      </article>
+      <article class="card">
+        <p class="eyebrow">Modes</p>
+        <h3>Edit and select</h3>
+        <dl class="keys">
+          <div><dt>Esc</dt><dd>Normal mode</dd></div>
+          <div><dt>i a o</dt><dd>Insert variants</dd></div>
+          <div><dt>v V</dt><dd>Visual, line visual</dd></div>
+          <div><dt>gi</dt><dd>Focus first input</dd></div>
+          <div><dt>ctrl+;</dt><dd>Force overlay editor</dd></div>
+        </dl>
+      </article>
+    </div>
+    <p class="note">Full list any time: press <kbd>?</kbd> on any page. Everything above is remappable.</p>
+  </section>
+
+  <!-- DEMO -->
+  <section class="section">
+    <p class="eyebrow">Try the feel</p>
+    <h2>Esc is the whole tutorial</h2>
+    <div class="demo">
+      <div class="demo-bar"><span id="demoMode" class="pill"><i class="dot lime"></i>Insert</span><span class="demo-hint">click, then press Esc</span></div>
+      <textarea id="demoArea" rows="8" spellcheck="false">General Vim edits this box the way it edits the web.
+
+Click here and press Esc.
+Move with h j k l and w b e.
+Press i to type again.</textarea>
+    </div>
+  </section>
+
+  <!-- INSTALL -->
+  <section id="install" class="section">
+    <p class="eyebrow">Install</p>
+    <h2>Up in a minute</h2>
+    <div class="install">
+      <ol>
+        <li><strong>Load the folder unpacked.</strong> <span class="mono">chrome://extensions → Developer mode → Load unpacked →</span> the extension folder.</li>
+        <li><strong>Press ? on any page.</strong> The help dialog lists every navigation binding.</li>
+        <li><strong>Click any text field, press Esc.</strong> You are in normal mode. <span class="mono">i</span> types again.</li>
+      </ol>
+      <div class="install-side">
+        <p class="install-big">Esc</p>
+        <p>The only shortcut you need on day one.</p>
+        <a class="cta-btn" href="#top">Back to top</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- TESTIMONIALS -->
+  <section class="section">
+    <p class="eyebrow">Loved by developers</p>
+    <h2>Keyboards stay down</h2>
+    <div class="cards cards-3">
+      <article class="card quote">
+        <p>"Hints for links, real motions in every input, and Docs finally behaves. I uninstalled three extensions."</p>
+        <p class="who">Staff Engineer · <span>Read story →</span></p>
+      </article>
+      <article class="card quote">
+        <p>"The overlay editor is the trick. Monaco stopped fighting me the day I switched."</p>
+        <p class="who">Frontend Lead · <span>Read story →</span></p>
+      </article>
+      <article class="card quote">
+        <p>"Second-Esc to blur back to navigation is the detail nobody else got right."</p>
+        <p class="who">Docs-heavy Founder · <span>Read story →</span></p>
+      </article>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section id="faq" class="section">
+    <p class="eyebrow">Questions</p>
+    <h2>FAQ</h2>
+    <div class="faq">
+      <details open>
+        <summary>Which sites does it work on?</summary>
+        <p>Every site. Page navigation runs on all URLs; text editing activates in any textarea, text input, contenteditable, Google Docs document, or supported code editor.</p>
+      </details>
+      <details>
+        <summary>How does the handoff avoid conflicts?</summary>
+        <p>One capture-phase router runs before Vimium. Editing keys are consumed with stopImmediatePropagation so navigation never sees them; otherwise the router stays silent and Vimium navigates. Visible Vimium overlays always win, except the commit/discard overlay which owns the keyboard.</p>
+      </details>
+      <details>
+        <summary>Why an overlay for code editors?</summary>
+        <p>Framework editors own their document model — in-place key surgery desyncs it. Editing in our own exact textarea and committing once (the Surfingkeys/wasavi pattern) is the only correct approach.</p>
+      </details>
+      <details>
+        <summary>Is it fast on heavy pages?</summary>
+        <p>Yes. document_start injection, inlined config (no fetch, CSP-safe), targeted hint selectors, rAF-coalesced caret, and memoized context checks. No polling.</p>
+      </details>
+      <details>
+        <summary>Can I remap keys or exclude sites?</summary>
+        <p>Yes. Vimium custom key mappings, the shared motions JSON, and per-pattern exclusion rules in Options.</p>
+      </details>
+    </div>
+  </section>
+
+  <section class="final">
+    <p class="eyebrow">Free · Open source · MIT lineage</p>
+    <h2>STOP REACHING FOR THE MOUSE</h2>
+    <p>Every page is navigable. Every text surface is a Vim buffer. Install once and stay on home row.</p>
+    <div class="hero-actions">
+      <a class="cta-btn cta-lg" href="#install">Get General Vim</a>
+      <a class="hero-link" href="https://github.com/philc/vimium" target="_blank" rel="noopener">Browse upstream →</a>
+    </div>
+    <div class="hero-pills">
+      <span class="pill"><i class="dot violet"></i>AI agents</span>
+      <span class="pill"><i class="dot pink"></i>Media processing</span>
+      <span class="pill"><i class="dot lime"></i>Run Python</span>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="foot-inner">
+    <a class="brand" href="#top"><span class="brand-mark" aria-hidden="true">▶</span><span class="brand-word">General Vim</span></a>
+    <div class="foot-links">
+      <a href="https://github.com/philc/vimium" target="_blank" rel="noopener">Upstream Vimium</a>
+      <a href="#bindings">Bindings</a>
+      <a href="#faq">FAQ</a>
+    </div>
+    <p class="foot-note">General Vim — navigation by Vimium, editing everywhere. Trigger.dev styled, shadowless by design.</p>
+  </div>
+</footer>
+
+<script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,149 @@
+/* General Vim: vomnibar as a floating terminal panel, colored by the tokens in
+ * lib/theme.js (the Trigger palette is the pre-script fallback). */
+
+ul {
+  list-style: none;
+  display: none;
+  margin: 0;
+  padding: 0;
+}
+
+#vomnibar {
+  display: block;
+  position: fixed;
+  width: calc(100% - 20px); /* adjusted to keep border radius visible */
+  top: 8px;
+  left: 8px;
+  font-family: "Geist", Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    "Helvetica Neue", Helvetica, Arial, sans-serif;
+  color: var(--color-bone-text);
+  background: var(--surface-canvas);
+  text-align: left;
+  border-radius: 4px;
+  box-shadow: none;
+  border: 1px solid var(--color-steel-border);
+  /* One less than hint markers and the help dialog (see ../content_scripts/vimium.css). */
+  z-index: 2139999999;
+  overflow: hidden;
+}
+
+#vomnibar input {
+  font-size: 16px;
+  font-family: "Geist Mono", "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Monaco,
+    Consolas, monospace;
+  height: 40px;
+  margin-bottom: 0;
+  padding: 4px 10px;
+  background-color: var(--surface-inset);
+  border-radius: 4px;
+  border: 1px solid var(--color-steel-border);
+  box-shadow: none;
+  color: var(--color-bone-text);
+  width: 100%;
+  outline: none;
+  box-sizing: border-box;
+}
+
+#vomnibar input:focus {
+  border-color: var(--color-cloud-text);
+}
+
+#vomnibar-search-area {
+  display: block;
+  padding: 10px;
+  border-radius: 4px 8px 0 0;
+  border-bottom: 1px solid var(--color-steel-border);
+  background: var(--surface-canvas);
+}
+
+#vomnibar ul {
+  border-radius: 0 0 8px 8px;
+}
+
+#vomnibar li {
+  border-bottom: 1px solid var(--color-hover-wash);
+  line-height: 1.1em;
+  padding: 7px 10px;
+  font-size: 16px;
+  position: relative;
+  display: list-item;
+  margin: auto;
+}
+
+#vomnibar li:last-of-type {
+  border-bottom: none;
+}
+
+#vomnibar li .top-half,
+#vomnibar li .bottom-half {
+  display: block;
+  overflow: hidden;
+}
+
+#vomnibar li .bottom-half {
+  font-size: 14px;
+  margin-top: 3px;
+  padding: 2px 0;
+  color: var(--color-fog-text);
+}
+
+#vomnibar li .icon {
+  padding: 0 13px 0 6px;
+  vertical-align: bottom;
+}
+
+#vomnibar li .source {
+  color: var(--color-fog-text);
+  margin-right: 4px;
+  font-size: 11px;
+  letter-spacing: 2.2px;
+  text-transform: uppercase;
+}
+#vomnibar li .relevancy {
+  position: absolute;
+  right: 0;
+  top: 0;
+  padding: 5px;
+  font-family: "Geist Mono", "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+  width: 100px;
+  overflow: hidden;
+  color: var(--color-fog-text);
+}
+
+#vomnibar li .url {
+  white-space: nowrap;
+  color: var(--color-syntax-violet);
+}
+
+#vomnibar li .match {
+  font-weight: bold;
+  color: var(--color-signal-lime);
+}
+
+#vomnibar li em,
+#vomnibar li .title {
+  margin-left: 4px;
+  color: var(--color-bone-text);
+}
+#vomnibar li em {
+  font-style: italic;
+}
+#vomnibar li em .match,
+#vomnibar li .title .match {
+  color: var(--color-signal-lime);
+}
+
+#vomnibar li.selected {
+  background-color: var(--color-steel-border);
+  border-left: 2px solid var(--color-signal-lime);
+  padding-left: 8px;
+}
+
+#vomnibar input::selection {
+  background-color: var(--color-signal-lime);
+  color: var(--surface-inset);
+}
+
+.no-insert-text {
+  visibility: hidden;
+}

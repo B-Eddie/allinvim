@@ -1,0 +1,55 @@
+/* General Vim: documentation on the theme's canvas, colored by the tokens in
+ * lib/theme.js (the Trigger palette is the pre-script fallback). */
+
+body.documentation {
+  max-width: 730px;
+  margin: 0 25px;
+  background-color: var(--surface-inset);
+  color: var(--color-bone-text);
+  font-family: "Geist", Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 14px;
+  line-height: 1.38;
+}
+
+body.documentation a,
+body.documentation a:visited {
+  color: var(--color-syntax-violet);
+  text-decoration: none;
+}
+
+body.documentation a:hover {
+  color: var(--color-cloud-text);
+  text-decoration: underline;
+}
+
+body.documentation code,
+body.documentation pre {
+  font-family: "Geist Mono", "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Monaco,
+    Consolas, monospace;
+  font-size: 13px;
+  background: var(--surface-canvas);
+  border-radius: 4px;
+  color: var(--color-signal-lime);
+}
+
+body.documentation pre {
+  padding: 10px 12px;
+}
+
+body.documentation code {
+  padding: 2px 4px;
+}
+
+ul {
+  padding-left: 20px;
+}
+
+li {
+  margin: 10px;
+}
+
+p {
+  line-height: 1.5em;
+  color: var(--color-cloud-text);
+}

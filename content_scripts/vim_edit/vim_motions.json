@@ -1,0 +1,1580 @@
+{
+  "schemaVersion": 4,
+  "settings": {
+    "allowRegisterPrefix": true
+  },
+  "operators": [
+    {
+      "id": "delete",
+      "keys": [
+        "d"
+      ],
+      "appliesTo": [
+        "motion",
+        "textobj"
+      ],
+      "supportsCount": true
+    },
+    {
+      "id": "change",
+      "keys": [
+        "c"
+      ],
+      "appliesTo": [
+        "motion",
+        "textobj"
+      ],
+      "supportsCount": true
+    },
+    {
+      "id": "yank",
+      "keys": [
+        "y"
+      ],
+      "appliesTo": [
+        "motion",
+        "textobj"
+      ],
+      "supportsCount": true
+    },
+    {
+      "id": "indent",
+      "keys": [
+        ">"
+      ],
+      "appliesTo": [
+        "motion",
+        "textobj"
+      ],
+      "supportsCount": true
+    },
+    {
+      "id": "dedent",
+      "keys": [
+        "<"
+      ],
+      "appliesTo": [
+        "motion",
+        "textobj"
+      ],
+      "supportsCount": true
+    },
+    {
+      "id": "reindent",
+      "keys": [
+        "="
+      ],
+      "appliesTo": [
+        "motion",
+        "textobj"
+      ],
+      "supportsCount": true
+    },
+    {
+      "id": "toggle_case",
+      "keys": [
+        "g",
+        "~"
+      ],
+      "appliesTo": [
+        "motion",
+        "textobj"
+      ],
+      "supportsCount": true
+    },
+    {
+      "id": "lowercase",
+      "keys": [
+        "g",
+        "u"
+      ],
+      "appliesTo": [
+        "motion",
+        "textobj"
+      ],
+      "supportsCount": true
+    },
+    {
+      "id": "uppercase",
+      "keys": [
+        "g",
+        "U"
+      ],
+      "appliesTo": [
+        "motion",
+        "textobj"
+      ],
+      "supportsCount": true
+    },
+    {
+      "id": "reflow",
+      "keys": [
+        "g",
+        "w"
+      ],
+      "appliesTo": [
+        "motion",
+        "textobj"
+      ],
+      "supportsCount": true
+    }
+  ],
+  "operatorSelf": [
+    {
+      "keys": [
+        "d",
+        "d"
+      ],
+      "operator": "delete",
+      "target": {
+        "type": "line"
+      }
+    },
+    {
+      "keys": [
+        "y",
+        "y"
+      ],
+      "operator": "yank",
+      "target": {
+        "type": "line"
+      }
+    },
+    {
+      "keys": [
+        "c",
+        "c"
+      ],
+      "operator": "change",
+      "target": {
+        "type": "line"
+      }
+    },
+    {
+      "keys": [
+        ">",
+        ">"
+      ],
+      "operator": "indent",
+      "target": {
+        "type": "line"
+      }
+    },
+    {
+      "keys": [
+        "<",
+        "<"
+      ],
+      "operator": "dedent",
+      "target": {
+        "type": "line"
+      }
+    },
+    {
+      "keys": [
+        "=",
+        "="
+      ],
+      "operator": "reindent",
+      "target": {
+        "type": "line"
+      }
+    },
+    {
+      "keys": [
+        "g",
+        "u",
+        "u"
+      ],
+      "operator": "lowercase",
+      "target": {
+        "type": "line"
+      }
+    },
+    {
+      "keys": [
+        "g",
+        "U",
+        "U"
+      ],
+      "operator": "uppercase",
+      "target": {
+        "type": "line"
+      }
+    },
+    {
+      "keys": [
+        "g",
+        "~",
+        "~"
+      ],
+      "operator": "toggle_case",
+      "target": {
+        "type": "line"
+      }
+    },
+    {
+      "keys": [
+        "g",
+        "w",
+        "w"
+      ],
+      "operator": "reflow",
+      "target": {
+        "type": "line"
+      }
+    }
+  ],
+  "motions": [
+    {
+      "id": "left",
+      "keys": [
+        "h"
+      ],
+      "acceptsCount": true
+    },
+    {
+      "id": "down",
+      "keys": [
+        "j"
+      ],
+      "acceptsCount": true
+    },
+    {
+      "id": "up",
+      "keys": [
+        "k"
+      ],
+      "acceptsCount": true
+    },
+    {
+      "id": "right",
+      "keys": [
+        "l"
+      ],
+      "acceptsCount": true
+    },
+    {
+      "id": "display_down",
+      "keys": [
+        "g",
+        "j"
+      ],
+      "acceptsCount": true
+    },
+    {
+      "id": "display_up",
+      "keys": [
+        "g",
+        "k"
+      ],
+      "acceptsCount": true
+    },
+    {
+      "id": "screen_top",
+      "keys": [
+        "H"
+      ]
+    },
+    {
+      "id": "screen_middle",
+      "keys": [
+        "M"
+      ]
+    },
+    {
+      "id": "screen_bottom",
+      "keys": [
+        "L"
+      ]
+    },
+    {
+      "id": "word_start_fwd",
+      "keys": [
+        "w"
+      ],
+      "acceptsCount": true
+    },
+    {
+      "id": "WORD_start_fwd",
+      "keys": [
+        "W"
+      ],
+      "acceptsCount": true
+    },
+    {
+      "id": "word_end_fwd",
+      "keys": [
+        "e"
+      ],
+      "acceptsCount": true
+    },
+    {
+      "id": "WORD_end_fwd",
+      "keys": [
+        "E"
+      ],
+      "acceptsCount": true
+    },
+    {
+      "id": "word_start_back",
+      "keys": [
+        "b"
+      ],
+      "acceptsCount": true
+    },
+    {
+      "id": "WORD_start_back",
+      "keys": [
+        "B"
+      ],
+      "acceptsCount": true
+    },
+    {
+      "id": "word_end_back",
+      "keys": [
+        "g",
+        "e"
+      ],
+      "acceptsCount": true
+    },
+    {
+      "id": "WORD_end_back",
+      "keys": [
+        "g",
+        "E"
+      ],
+      "acceptsCount": true
+    },
+    {
+      "id": "match_pair",
+      "keys": [
+        "%"
+      ]
+    },
+    {
+      "id": "line_start",
+      "keys": [
+        "0"
+      ]
+    },
+    {
+      "id": "first_non_blank",
+      "keys": [
+        "^"
+      ]
+    },
+    {
+      "id": "first_non_blank_down",
+      "keys": [
+        "_"
+      ],
+      "acceptsCount": true
+    },
+    {
+      "id": "line_end",
+      "keys": [
+        "$"
+      ],
+      "acceptsCount": true
+    },
+    {
+      "id": "last_non_blank",
+      "keys": [
+        "g",
+        "_"
+      ]
+    },
+    {
+      "id": "first_line",
+      "keys": [
+        "g",
+        "g"
+      ],
+      "countSemantic": "goto_line"
+    },
+    {
+      "id": "last_line",
+      "keys": [
+        "G"
+      ],
+      "countSemantic": "goto_line_or_last"
+    },
+    {
+      "id": "find_next",
+      "keys": [
+        "f",
+        "<char>"
+      ],
+      "args": [
+        {
+          "name": "char",
+          "type": "char"
+        }
+      ],
+      "acceptsCount": true
+    },
+    {
+      "id": "till_next",
+      "keys": [
+        "t",
+        "<char>"
+      ],
+      "args": [
+        {
+          "name": "char",
+          "type": "char"
+        }
+      ],
+      "acceptsCount": true
+    },
+    {
+      "id": "find_prev",
+      "keys": [
+        "F",
+        "<char>"
+      ],
+      "args": [
+        {
+          "name": "char",
+          "type": "char"
+        }
+      ],
+      "acceptsCount": true
+    },
+    {
+      "id": "till_prev",
+      "keys": [
+        "T",
+        "<char>"
+      ],
+      "args": [
+        {
+          "name": "char",
+          "type": "char"
+        }
+      ],
+      "acceptsCount": true
+    },
+    {
+      "id": "repeat_ft",
+      "keys": [
+        ";"
+      ]
+    },
+    {
+      "id": "repeat_ft_back",
+      "keys": [
+        ","
+      ]
+    },
+    {
+      "id": "paragraph_fwd",
+      "keys": [
+        "}"
+      ],
+      "acceptsCount": true
+    },
+    {
+      "id": "paragraph_back",
+      "keys": [
+        "{"
+      ],
+      "acceptsCount": true
+    },
+    {
+      "id": "scroll_center",
+      "keys": [
+        "z",
+        "z"
+      ]
+    },
+    {
+      "id": "scroll_top",
+      "keys": [
+        "z",
+        "t"
+      ]
+    },
+    {
+      "id": "scroll_bottom",
+      "keys": [
+        "z",
+        "b"
+      ]
+    },
+    {
+      "id": "scroll_down",
+      "keys": [
+        "<C-E>"
+      ],
+      "acceptsCount": true
+    },
+    {
+      "id": "scroll_up",
+      "keys": [
+        "<C-Y>"
+      ],
+      "acceptsCount": true
+    },
+    {
+      "id": "page_up",
+      "keys": [
+        "<C-B>"
+      ]
+    },
+    {
+      "id": "page_down",
+      "keys": [
+        "<C-F>"
+      ]
+    },
+    {
+      "id": "half_page_down",
+      "keys": [
+        "<C-D>"
+      ]
+    },
+    {
+      "id": "half_page_up",
+      "keys": [
+        "<C-U>"
+      ]
+    }
+  ],
+  "textObjects": [
+    {
+      "id": "iw",
+      "keys": [
+        "i",
+        "w"
+      ],
+      "type": "word"
+    },
+    {
+      "id": "aw",
+      "keys": [
+        "a",
+        "w"
+      ],
+      "type": "word_around"
+    },
+    {
+      "id": "iW",
+      "keys": [
+        "i",
+        "W"
+      ],
+      "type": "WORD"
+    },
+    {
+      "id": "aW",
+      "keys": [
+        "a",
+        "W"
+      ],
+      "type": "WORD_around"
+    },
+    {
+      "id": "i(",
+      "keys": [
+        "i",
+        "("
+      ],
+      "type": "paren_inner",
+      "delims": [
+        "(",
+        ")"
+      ]
+    },
+    {
+      "id": "a(",
+      "keys": [
+        "a",
+        "("
+      ],
+      "type": "paren_around",
+      "delims": [
+        "(",
+        ")"
+      ]
+    },
+    {
+      "id": "ib",
+      "keys": [
+        "i",
+        "b"
+      ],
+      "type": "paren_inner",
+      "delims": [
+        "(",
+        ")"
+      ]
+    },
+    {
+      "id": "ab",
+      "keys": [
+        "a",
+        "b"
+      ],
+      "type": "paren_around",
+      "delims": [
+        "(",
+        ")"
+      ]
+    },
+    {
+      "id": "iB",
+      "keys": [
+        "i",
+        "B"
+      ],
+      "type": "paren_inner",
+      "delims": [
+        "{",
+        "}"
+      ]
+    },
+    {
+      "id": "aB",
+      "keys": [
+        "a",
+        "B"
+      ],
+      "type": "paren_around",
+      "delims": [
+        "{",
+        "}"
+      ]
+    },
+    {
+      "id": "it",
+      "keys": [
+        "i",
+        "t"
+      ],
+      "type": "tag_inner"
+    },
+    {
+      "id": "at",
+      "keys": [
+        "a",
+        "t"
+      ],
+      "type": "tag_around"
+    },
+    {
+      "id": "i\"",
+      "keys": [
+        "i",
+        "\""
+      ],
+      "type": "quote_inner",
+      "delims": [
+        "\"",
+        "\""
+      ]
+    },
+    {
+      "id": "a\"",
+      "keys": [
+        "a",
+        "\""
+      ],
+      "type": "quote_around",
+      "delims": [
+        "\"",
+        "\""
+      ]
+    },
+    {
+      "id": "i'",
+      "keys": [
+        "i",
+        "'"
+      ],
+      "type": "quote_inner",
+      "delims": [
+        "'",
+        "'"
+      ]
+    },
+    {
+      "id": "a'",
+      "keys": [
+        "a",
+        "'"
+      ],
+      "type": "quote_around",
+      "delims": [
+        "'",
+        "'"
+      ]
+    },
+    {
+      "id": "i`",
+      "keys": [
+        "i",
+        "`"
+      ],
+      "type": "quote_inner",
+      "delims": [
+        "`",
+        "`"
+      ]
+    },
+    {
+      "id": "a`",
+      "keys": [
+        "a",
+        "`"
+      ],
+      "type": "quote_around",
+      "delims": [
+        "`",
+        "`"
+      ]
+    },
+    {
+      "id": "ip",
+      "keys": [
+        "i",
+        "p"
+      ],
+      "type": "paragraph_inner"
+    },
+    {
+      "id": "ap",
+      "keys": [
+        "a",
+        "p"
+      ],
+      "type": "paragraph_around"
+    },
+    {
+      "id": "is",
+      "keys": [
+        "i",
+        "s"
+      ],
+      "type": "sentence_inner"
+    },
+    {
+      "id": "as",
+      "keys": [
+        "a",
+        "s"
+      ],
+      "type": "sentence_around"
+    }
+  ],
+  "commands": [
+    {
+      "id": "insert_before",
+      "keys": [
+        "i"
+      ],
+      "modes": [
+        "normal"
+      ]
+    },
+    {
+      "id": "insert_start_line",
+      "keys": [
+        "I"
+      ],
+      "modes": [
+        "normal"
+      ]
+    },
+    {
+      "id": "append_after",
+      "keys": [
+        "a"
+      ],
+      "modes": [
+        "normal"
+      ]
+    },
+    {
+      "id": "append_end_line",
+      "keys": [
+        "A"
+      ],
+      "modes": [
+        "normal"
+      ]
+    },
+    {
+      "id": "open_below",
+      "keys": [
+        "o"
+      ],
+      "modes": [
+        "normal"
+      ],
+      "acceptsCount": true
+    },
+    {
+      "id": "open_above",
+      "keys": [
+        "O"
+      ],
+      "modes": [
+        "normal"
+      ],
+      "acceptsCount": true
+    },
+    {
+      "id": "replace_char",
+      "keys": [
+        "r",
+        "<char>"
+      ],
+      "modes": [
+        "normal"
+      ],
+      "args": [
+        {
+          "name": "char",
+          "type": "char"
+        }
+      ],
+      "acceptsCount": true
+    },
+    {
+      "id": "replace_mode",
+      "keys": [
+        "R"
+      ],
+      "modes": [
+        "normal"
+      ]
+    },
+    {
+      "id": "join_lines",
+      "keys": [
+        "J"
+      ],
+      "modes": [
+        "normal"
+      ],
+      "acceptsCount": true
+    },
+    {
+      "id": "join_lines_no_space",
+      "keys": [
+        "g",
+        "J"
+      ],
+      "modes": [
+        "normal"
+      ],
+      "acceptsCount": true
+    },
+    {
+      "id": "substitute_char",
+      "keys": [
+        "s"
+      ],
+      "modes": [
+        "normal"
+      ],
+      "acceptsCount": true
+    },
+    {
+      "id": "substitute_line",
+      "keys": [
+        "S"
+      ],
+      "modes": [
+        "normal"
+      ],
+      "acceptsCount": true
+    },
+    {
+      "id": "change_to_eol",
+      "keys": [
+        "C"
+      ],
+      "modes": [
+        "normal"
+      ],
+      "acceptsCount": true
+    },
+    {
+      "id": "delete_to_eol",
+      "keys": [
+        "D"
+      ],
+      "modes": [
+        "normal"
+      ],
+      "acceptsCount": true
+    },
+    {
+      "id": "yank_to_eol",
+      "keys": [
+        "Y"
+      ],
+      "modes": [
+        "normal"
+      ],
+      "acceptsCount": true
+    },
+    {
+      "id": "delete_char",
+      "keys": [
+        "x"
+      ],
+      "modes": [
+        "normal"
+      ],
+      "acceptsCount": true
+    },
+    {
+      "id": "delete_char_back",
+      "keys": [
+        "X"
+      ],
+      "modes": [
+        "normal"
+      ],
+      "acceptsCount": true
+    },
+    {
+      "id": "toggle_case_char",
+      "keys": [
+        "~"
+      ],
+      "modes": [
+        "normal"
+      ],
+      "acceptsCount": true
+    },
+    {
+      "id": "paste_after",
+      "keys": [
+        "p"
+      ],
+      "modes": [
+        "normal"
+      ],
+      "acceptsCount": true
+    },
+    {
+      "id": "paste_before",
+      "keys": [
+        "P"
+      ],
+      "modes": [
+        "normal"
+      ],
+      "acceptsCount": true
+    },
+    {
+      "id": "paste_after_cursor_stay",
+      "keys": [
+        "g",
+        "p"
+      ],
+      "modes": [
+        "normal"
+      ],
+      "acceptsCount": true
+    },
+    {
+      "id": "paste_before_cursor_stay",
+      "keys": [
+        "g",
+        "P"
+      ],
+      "modes": [
+        "normal"
+      ],
+      "acceptsCount": true
+    },
+    {
+      "id": "paste_adjust_indent",
+      "keys": [
+        "]",
+        "p"
+      ],
+      "modes": [
+        "normal"
+      ],
+      "acceptsCount": true
+    },
+    {
+      "id": "undo",
+      "keys": [
+        "u"
+      ],
+      "modes": [
+        "normal"
+      ],
+      "acceptsCount": true
+    },
+    {
+      "id": "undo_line",
+      "keys": [
+        "U"
+      ],
+      "modes": [
+        "normal"
+      ]
+    },
+    {
+      "id": "redo",
+      "keys": [
+        "<C-R>"
+      ],
+      "modes": [
+        "normal"
+      ],
+      "acceptsCount": true
+    },
+    {
+      "id": "repeat",
+      "keys": [
+        "."
+      ],
+      "modes": [
+        "normal"
+      ],
+      "acceptsCount": true
+    },
+    {
+      "id": "visual_mode",
+      "keys": [
+        "v"
+      ],
+      "modes": [
+        "normal"
+      ]
+    },
+    {
+      "id": "visual_line_mode",
+      "keys": [
+        "V"
+      ],
+      "modes": [
+        "normal"
+      ]
+    },
+    {
+      "id": "visual_other_end",
+      "keys": [
+        "o"
+      ],
+      "modes": [
+        "visual",
+        "visualLine"
+      ]
+    },
+    {
+      "id": "visual_yank",
+      "keys": [
+        "y"
+      ],
+      "modes": [
+        "visual",
+        "visualLine"
+      ]
+    },
+    {
+      "id": "visual_delete",
+      "keys": [
+        "d"
+      ],
+      "modes": [
+        "visual",
+        "visualLine"
+      ]
+    },
+    {
+      "id": "visual_change",
+      "keys": [
+        "c"
+      ],
+      "modes": [
+        "visual",
+        "visualLine"
+      ]
+    },
+    {
+      "id": "visual_indent",
+      "keys": [
+        ">"
+      ],
+      "modes": [
+        "visual",
+        "visualLine"
+      ]
+    },
+    {
+      "id": "visual_dedent",
+      "keys": [
+        "<"
+      ],
+      "modes": [
+        "visual",
+        "visualLine"
+      ]
+    },
+    {
+      "id": "visual_toggle_case",
+      "keys": [
+        "~"
+      ],
+      "modes": [
+        "visual",
+        "visualLine"
+      ]
+    },
+    {
+      "id": "visual_paste",
+      "keys": [
+        "p"
+      ],
+      "modes": [
+        "visual",
+        "visualLine"
+      ]
+    },
+    {
+      "id": "visual_paste_before",
+      "keys": [
+        "P"
+      ],
+      "modes": [
+        "visual",
+        "visualLine"
+      ]
+    },
+    {
+      "id": "visual_delete_char",
+      "keys": [
+        "x"
+      ],
+      "modes": [
+        "visual",
+        "visualLine"
+      ]
+    },
+    {
+      "id": "visual_substitute",
+      "keys": [
+        "s"
+      ],
+      "modes": [
+        "visual",
+        "visualLine"
+      ]
+    },
+    {
+      "id": "visual_lowercase",
+      "keys": [
+        "u"
+      ],
+      "modes": [
+        "visual",
+        "visualLine"
+      ]
+    },
+    {
+      "id": "visual_uppercase",
+      "keys": [
+        "U"
+      ],
+      "modes": [
+        "visual",
+        "visualLine"
+      ]
+    },
+    {
+      "id": "exit_visual",
+      "keys": [
+        "<ESC>"
+      ],
+      "modes": [
+        "visual",
+        "visualLine"
+      ]
+    },
+    {
+      "id": "exit_visual_ctrl_c",
+      "keys": [
+        "<C-C>"
+      ],
+      "modes": [
+        "visual",
+        "visualLine"
+      ]
+    },
+    {
+      "id": "exit_insert",
+      "keys": [
+        "<ESC>"
+      ],
+      "modes": [
+        "insert"
+      ]
+    },
+    {
+      "id": "exit_insert_ctrl_c",
+      "keys": [
+        "<C-C>"
+      ],
+      "modes": [
+        "insert"
+      ]
+    },
+    {
+      "id": "insert_delete_char_back",
+      "keys": [
+        "<C-H>"
+      ],
+      "modes": [
+        "insert"
+      ]
+    },
+    {
+      "id": "insert_delete_word",
+      "keys": [
+        "<C-W>"
+      ],
+      "modes": [
+        "insert"
+      ]
+    },
+    {
+      "id": "insert_line_break",
+      "keys": [
+        "<C-J>"
+      ],
+      "modes": [
+        "insert"
+      ]
+    },
+    {
+      "id": "insert_indent",
+      "keys": [
+        "<C-T>"
+      ],
+      "modes": [
+        "insert"
+      ]
+    },
+    {
+      "id": "insert_dedent",
+      "keys": [
+        "<C-D>"
+      ],
+      "modes": [
+        "insert"
+      ]
+    },
+    {
+      "id": "insert_autocomplete_next",
+      "keys": [
+        "<C-N>"
+      ],
+      "modes": [
+        "insert"
+      ]
+    },
+    {
+      "id": "insert_autocomplete_prev",
+      "keys": [
+        "<C-P>"
+      ],
+      "modes": [
+        "insert"
+      ]
+    },
+    {
+      "id": "insert_register",
+      "keys": [
+        "<C-R>",
+        "<char>"
+      ],
+      "modes": [
+        "insert"
+      ],
+      "args": [
+        {
+          "name": "char",
+          "type": "char"
+        }
+      ]
+    },
+    {
+      "id": "insert_temp_normal",
+      "keys": [
+        "<C-O>"
+      ],
+      "modes": [
+        "insert"
+      ]
+    },
+    {
+      "id": "search_forward",
+      "keys": [
+        "/"
+      ],
+      "modes": [
+        "normal"
+      ]
+    },
+    {
+      "id": "search_backward",
+      "keys": [
+        "?"
+      ],
+      "modes": [
+        "normal"
+      ]
+    },
+    {
+      "id": "search_next",
+      "keys": [
+        "n"
+      ],
+      "modes": [
+        "normal"
+      ],
+      "acceptsCount": true
+    },
+    {
+      "id": "search_prev",
+      "keys": [
+        "N"
+      ],
+      "modes": [
+        "normal"
+      ],
+      "acceptsCount": true
+    },
+    {
+      "id": "search_word_forward",
+      "keys": [
+        "*"
+      ],
+      "modes": [
+        "normal"
+      ]
+    },
+    {
+      "id": "search_word_backward",
+      "keys": [
+        "#"
+      ],
+      "modes": [
+        "normal"
+      ]
+    },
+    {
+      "id": "set_mark",
+      "keys": [
+        "m",
+        "<char>"
+      ],
+      "modes": [
+        "normal"
+      ],
+      "args": [
+        {
+          "name": "char",
+          "type": "char"
+        }
+      ]
+    },
+    {
+      "id": "jump_mark",
+      "keys": [
+        "`",
+        "<char>"
+      ],
+      "modes": [
+        "normal"
+      ],
+      "args": [
+        {
+          "name": "char",
+          "type": "char"
+        }
+      ]
+    },
+    {
+      "id": "jump_prev_pos",
+      "keys": [
+        "`",
+        "`"
+      ],
+      "modes": [
+        "normal"
+      ]
+    },
+    {
+      "id": "jump_last_exit",
+      "keys": [
+        "`",
+        "0"
+      ],
+      "modes": [
+        "normal"
+      ]
+    },
+    {
+      "id": "jump_last_edit_pos",
+      "keys": [
+        "`",
+        "\""
+      ],
+      "modes": [
+        "normal"
+      ]
+    },
+    {
+      "id": "jump_last_change",
+      "keys": [
+        "`",
+        "."
+      ],
+      "modes": [
+        "normal"
+      ]
+    },
+    {
+      "id": "jump_newer",
+      "keys": [
+        "<C-I>"
+      ],
+      "modes": [
+        "normal"
+      ]
+    },
+    {
+      "id": "jump_older",
+      "keys": [
+        "<C-O>"
+      ],
+      "modes": [
+        "normal"
+      ]
+    },
+    {
+      "id": "change_next",
+      "keys": [
+        "g",
+        ","
+      ],
+      "modes": [
+        "normal"
+      ]
+    },
+    {
+      "id": "change_prev",
+      "keys": [
+        "g",
+        ";"
+      ],
+      "modes": [
+        "normal"
+      ]
+    },
+    {
+      "id": "increment",
+      "keys": [
+        "<C-A>"
+      ],
+      "modes": [
+        "normal"
+      ],
+      "acceptsCount": true
+    },
+    {
+      "id": "decrement",
+      "keys": [
+        "<C-X>"
+      ],
+      "modes": [
+        "normal"
+      ],
+      "acceptsCount": true
+    },
+    {
+      "id": "exit_mode_normal",
+      "keys": [
+        "<ESC>"
+      ],
+      "modes": [
+        "normal"
+      ]
+    },
+    {
+      "id": "exit_mode_normal_ctrl_c",
+      "keys": [
+        "<C-C>"
+      ],
+      "modes": [
+        "normal"
+      ]
+    },
+    {
+      "id": "exit_mode_ctrl_bracket",
+      "keys": [
+        "<C-[>"
+      ],
+      "modes": [
+        "normal",
+        "visual",
+        "visualLine",
+        "insert"
+      ]
+    },
+    {
+      "id": "open_overlay",
+      "keys": [
+        "<C-;>"
+      ],
+      "modes": [
+        "insert"
+      ]
+    },
+    {
+      "id": "open_overlay",
+      "keys": [
+        "<C-;>"
+      ],
+      "modes": [
+        "normal"
+      ]
+    },
+    {
+      "id": "insert_replace_char",
+      "keys": [
+        "<char>"
+      ],
+      "modes": [
+        "insert"
+      ],
+      "args": [
+        {
+          "name": "char",
+          "type": "char"
+        }
+      ]
+    },
+    {
+      "id": "focus_next",
+      "keys": [
+        "<TAB>"
+      ],
+      "modes": [
+        "normal"
+      ]
+    }
+  ]
+}

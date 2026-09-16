@@ -1,0 +1,320 @@
+/*
+ * Many CSS class names in this file use the verbose "vimium-" as the class name. This is so we
+ * don't use the same CSS class names that the page is using, so the page's CSS doesn't mess with
+ * the style of our Vimium dialogs.
+ *
+ * We use the maximum z-index value for all Vimium elements to guarantee that they always appear on
+ * top. Chrome supports z-index values up to 2,147,483,647 (= 2^31 - 1). We utilize the maximum
+ * z-index value allowable to ensure Vimium elements have precedence over all other page elements.
+ */
+
+/*
+ * This vimium-reset class can be added to any of our UI elements to give it a clean slate. This is
+ * useful in case the page has declared a broad rule like "a { padding: 50px; }" which will mess up
+ * our UI. These declarations contain more specifiers than necessary to increase their specificity
+ * (precedence).
+ */
+
+/*
+ * Theme tokens. The palette itself lives in lib/theme.js, which writes these properties onto
+ * <html> as inline styles whenever the user's theme changes, so every surface -- including the
+ * shadow DOMs and iframes this stylesheet styles -- follows the same palette. The values below
+ * are the *fallback* (the Trigger theme) used before lib/theme.js runs; they must stay in sync
+ * with the "trigger-dark" entry in lib/theme.js. pages/warp_theme.css carries the same fallback
+ * for extension pages.
+ */
+:root {
+  --surface-canvas: #1c1e21;
+  --surface-inset: #121317;
+  --surface-card: #1c1e21;
+  --surface-accent: #a8ff53;
+  --color-slate-canvas: #1c1e21;
+  --color-ink-well: #121317;
+  --color-steel-border: #272a2e;
+  --color-graphite-hairline: #3b3e45;
+  --color-ash-text: #b5b8c0;
+  --color-fog-text: #878c99;
+  --color-cloud-text: #d7d9dd;
+  --color-bone-text: #e5e7eb;
+  --color-signal-lime: #a8ff53;
+  --color-accent-ink: #121317;
+  --color-syntax-violet: #9c9af2;
+  --color-syntax-pink: #fa3abf;
+  --color-syntax-orange: #fe8019;
+  --color-event-violet: #7655fd;
+  --color-loop-green: #afec73;
+  --color-key-lime: #d9f07c;
+  --color-tag-magenta: #e888f8;
+  --color-mute-red: #f43f5e;
+  --color-warning: #ff5300;
+  --color-input-hint-bg: rgba(168, 255, 83, 0.16);
+  --color-input-hint-selected-bg: rgba(156, 154, 242, 0.28);
+  --color-hover-wash: rgba(229, 231, 235, 0.08);
+}
+
+/* Bridge onto Vimium's older var names so unmigrated rules follow the theme. */
+:root {
+  --vimium-background-color: var(--surface-inset);
+  --vimium-background-text-color: var(--color-bone-text);
+  --vimium-foreground-color: var(--surface-canvas);
+  --vimium-foreground-text-color: var(--color-bone-text);
+  --vimium-link-color: var(--color-syntax-violet);
+}
+
+.vimium-reset,
+div.vimium-reset,
+span.vimium-reset,
+table.vimium-reset,
+a.vimium-reset,
+a:visited.vimium-reset,
+a:link.vimium-reset,
+a:hover.vimium-reset,
+td.vimium-reset,
+tr.vimium-reset {
+  background: none;
+  border: none;
+  bottom: auto;
+  box-shadow: none;
+  color: black;
+  cursor: auto;
+  display: inline;
+  float: none;
+  font-family: "Geist", Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    "Helvetica Neue", "Helvetica", "Arial", sans-serif;
+  font-size: inherit;
+  font-style: normal;
+  font-variant: normal;
+  font-weight: normal;
+  height: auto;
+  left: auto;
+  letter-spacing: 0;
+  line-height: 100%;
+  margin: 0;
+  max-height: none;
+  max-width: none;
+  min-height: 0;
+  min-width: 0;
+  opacity: 1;
+  padding: 0;
+  position: static;
+  right: auto;
+  text-align: left;
+  text-decoration: none;
+  text-indent: 0;
+  text-shadow: none;
+  text-transform: none;
+  top: auto;
+  vertical-align: baseline;
+  white-space: normal;
+  width: auto;
+  z-index: 2147483647;
+}
+
+thead.vimium-reset,
+tbody.vimium-reset {
+  display: table-header-group;
+}
+
+tbody.vimium-reset {
+  display: table-row-group;
+}
+
+/*
+ * Linkhints CSS
+ */
+
+/* Prior to 2025, we used camel case for all CSS selectors. We're preserving some camel case class
+ * names here in link hints for backwards compatibility, because they're user-customizable via the
+ * userDefinedLinkHintCss setting.
+ *
+ * Our default example value for userDefinedLinkHintCss refers to the "vimiumHintMarker" and
+ * "matchingCharacter" classes. We'll assume these are user-facing and should not be changed:
+ *   - vimiumHintMarker
+ *   - matchingCharacter
+ *   - vimiumActiveHintMarker
+ *
+ * Note that link hint elements have both internal-vimium-hint-marker and vimiumHintMarker classes.
+ * Presumably the "internal-" classes were meant to contain non-user-facing styles, and
+ * vimiumHintMarker was meant to be an empty vessel for users to attach their own styles to.
+ */
+
+div#vimium-hint-marker-container {
+  pointer-events: none;
+}
+
+div.internal-vimium-hint-marker {
+  position: absolute;
+  display: block;
+  top: -1px;
+  left: -1px;
+  white-space: nowrap;
+  overflow: hidden;
+  font-size: 11px;
+  padding: 1px 3px 0px 3px;
+  /* Trigger: flat moonlit-terminal chip. No gradients, no shadows. */
+  background: var(--surface-inset);
+  border: solid 1px var(--color-signal-lime);
+  border-radius: 4px;
+  box-shadow: none;
+  z-index: 2147483647;
+}
+
+div.internal-vimium-hint-marker span {
+  color: var(--color-bone-text);
+  font-family: "Geist Mono", "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Monaco,
+    Consolas, monospace;
+  font-weight: bold;
+  font-size: 11px;
+  text-shadow: none;
+}
+
+div.internal-vimium-hint-marker > .matchingCharacter {
+  color: var(--color-signal-lime);
+}
+
+div > .vimiumActiveHintMarker span {
+  color: var(--color-syntax-violet) !important;
+}
+
+/* Input hints CSS */
+
+div.internal-vimium-input-hint {
+  position: absolute;
+  display: block;
+  background-color: var(--color-input-hint-bg);
+  border: solid 1px var(--color-signal-lime);
+  pointer-events: none;
+}
+
+div.internal-vimium-selected-input-hint {
+  background-color: var(--color-input-hint-selected-bg);
+  border: solid 1px var(--color-syntax-violet) !important;
+}
+
+div.internal-vimium-selected-input-hint span {
+  color: var(--color-bone-text) !important;
+}
+
+div.vimium-highlighted-frame {
+  position: fixed;
+  top: 0px;
+  left: 0px;
+  width: 100%;
+  height: 100%;
+  padding: 0px;
+  margin: 0px;
+  border: 5px solid var(--color-signal-lime);
+  box-sizing: border-box;
+  pointer-events: none;
+}
+
+iframe.vimium-help-dialog-frame {
+  background-color: rgba(10, 10, 10, 0.6);
+  padding: 0px;
+  top: 0px;
+  left: 0px;
+  width: 100%;
+  height: 100%;
+  display: block;
+  position: fixed;
+  border: none;
+  z-index: 2147483647;
+}
+
+iframe.vimium-hud-frame {
+  background-color: transparent;
+  padding: 0px;
+  overflow: hidden;
+  display: block;
+  position: fixed;
+  width: 20%;
+  min-width: 350px;
+  height: 58px;
+  bottom: -14px;
+  right: 20px;
+  margin: 0 0 0 -40%;
+  border: none;
+  z-index: 2147483647;
+  opacity: 0;
+}
+
+body.vimium-find-mode ::selection {
+  background: var(--color-signal-lime);
+  color: var(--surface-inset);
+}
+
+iframe.vomnibar-frame {
+  background-color: transparent;
+  padding: 0px;
+  overflow: hidden;
+
+  display: block;
+  position: fixed;
+  width: calc(80% + 20px); /* same adjustment as in pages/vomnibar_page.js */
+  min-width: 400px;
+  height: calc(100% - 70px);
+  top: 70px;
+  left: 50%;
+  /* TODO(philc): Why are we doing this negative margin, rather than just using right: 20% ? */
+  margin: 0 0 0 -40%;
+  border: none;
+  font-family: "Geist", Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    sans-serif;
+  z-index: 2147483647;
+}
+
+div.vimium-flash {
+  border: 1px solid var(--color-syntax-violet);
+  box-shadow: none;
+  padding: 1px;
+  background-color: transparent;
+  position: absolute;
+  z-index: 2147483647;
+}
+
+/* UIComponent CSS */
+iframe.vimium-ui-component-hidden {
+  display: none;
+}
+
+iframe.vimium-ui-component-visible {
+  display: block;
+  color-scheme: light dark;
+}
+
+iframe.vimium-non-clickable {
+  pointer-events: none;
+}
+
+@media (prefers-color-scheme: dark) {
+  /* DarkReader is a popular dark mode browser extension. It can apply an invert filter to the whole
+   * page to make the page dark, when used in Filter and Filter+ modes. We want to reverse/invert
+   * that filter again for Vimium's UI elements, because Vimium is already dark mode aware. */
+  iframe.vimium-reverse-dark-reader-filter {
+    -webkit-filter: invert(100%) hue-rotate(180deg) !important;
+    filter: invert(100%) hue-rotate(180deg) !important;
+  }
+
+  /* Dark mode CSS for options page and exclusions */
+
+  body.vimium-body {
+    background-color: var(--vimium-background-color);
+    color: var(--vimium-background-text-color);
+  }
+
+  body.vimium-body a,
+  body.vimium-body a:visited {
+    color: var(--vimium-link-color);
+  }
+
+  body.vimium-body textarea,
+  body.vimium-body input {
+    background-color: var(--vimium-foreground-color);
+    border-color: var(--vimium-foreground-color);
+    color: var(--vimium-foreground-text-color);
+  }
+
+  body.vimium-body div.example {
+    color: var(--color-fog-text);
+  }
+}

@@ -1,0 +1,91 @@
+/* General Vim: toolbar popup on the theme's canvas. Colors come from the tokens in
+ * lib/theme.js (the Trigger palette is the pre-script fallback). */
+
+:root {
+  --padding: 15px;
+}
+
+body {
+  /* This will be the size of the toolbar action popup. */
+  width: 600px;
+  height: 300px;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--surface-inset);
+  color: var(--color-bone-text);
+  font-family: "Geist", Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    "Helvetica Neue", Arial, sans-serif;
+}
+
+h1 {
+  font-size: 20px;
+  font-weight: 500;
+  letter-spacing: -0.2px;
+  color: var(--color-bone-text);
+  margin: 0;
+}
+
+#dialog-body {
+  padding: var(--padding);
+  padding-right: 0;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+
+#dialog-body p,
+#dialog-body div {
+  color: var(--color-cloud-text);
+  font-size: 14px;
+}
+
+#not-enabled-error,
+#firefox-missing-permissions-error {
+  padding: var(--padding);
+}
+
+#dialog-body > * {
+  margin: 10px 0;
+}
+
+#dialog-body > *:first-child {
+  margin-top: 0;
+}
+
+#dialog-body > *:last-child {
+  margin-bottom: 0;
+}
+
+#how-many-enabled {
+  font-weight: 500;
+  color: var(--color-bone-text);
+}
+
+#exclusion-scroll-box {
+  max-height: 140px;
+}
+
+footer {
+  background-color: var(--surface-canvas);
+  border-top: 1px solid var(--color-steel-border);
+  padding: var(--padding);
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  position: inherit;
+}
+
+footer .options-message {
+  flex-grow: 1;
+  color: var(--color-fog-text);
+  font-size: 12px;
+}
+
+footer a {
+  color: var(--color-syntax-violet);
+  text-decoration: none;
+}
+
+footer a:hover {
+  color: var(--color-cloud-text);
+}

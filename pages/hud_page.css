@@ -1,0 +1,74 @@
+/* General Vim: HUD as a flat terminal status chip, colored by the tokens in
+ * lib/theme.js (the Trigger palette is the pre-script fallback). */
+
+#hud-container {
+  display: block;
+  position: fixed;
+  width: calc(100% - 20px);
+  bottom: 8px;
+  left: 8px;
+  background-color: var(--surface-canvas);
+  color: var(--color-bone-text);
+  text-align: left;
+  border-radius: 4px;
+  box-shadow: none;
+  border: 1px solid var(--color-steel-border);
+  z-index: 2147483647;
+  font-family: "Geist Mono", "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Monaco,
+    Consolas, monospace;
+}
+
+#search-area {
+  display: block;
+  padding: 3px;
+  color: var(--color-bone-text);
+  border-radius: 4px 4px 0 0;
+}
+
+#hud {
+  font-size: 14px;
+  height: 30px;
+  margin-bottom: 0;
+  padding: 2px 4px;
+  border-radius: 4px;
+  width: 100%;
+  outline: none;
+  box-sizing: border-box;
+  line-height: 20px;
+}
+
+span#hud-find-input,
+span#hud-match-count {
+  display: inline;
+  outline: none;
+  white-space: nowrap;
+  overflow-y: hidden;
+}
+
+span#hud-find-input:before {
+  content: "/";
+  color: var(--color-signal-lime);
+}
+
+span#hud-match-count {
+  color: var(--color-fog-text);
+  font-size: 12px;
+}
+
+span#hud-find-input br {
+  display: none;
+}
+
+span#hud-find-input * {
+  display: inline;
+  white-space: nowrap;
+}
+
+#hud-body {
+  background-color: transparent;
+}
+
+#hud.hud-find {
+  background-color: var(--surface-inset);
+  border: 1px solid var(--color-steel-border);
+}

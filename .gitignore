@@ -1,0 +1,43 @@
+# Build output (Chrome/Firefox store zips + unpacked build)
+dist/
+*.zip
+
+# Dependencies
+node_modules/
+.deno/
+
+# Local debug / repro artifacts (not part of the extension)
+.playwright-mcp/
+gate_repro.html
+
+# OS junk (macOS Finder, Windows)
+.DS_Store
+**/.DS_Store
+Thumbs.db
+ehthumbs.db
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Env / secrets (never commit)
+.env
+.env.*
+!.env.example
+
+# Editor / IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Test / coverage output
+coverage/
+.nyc_output/
+
+# gstack
+.gstack/

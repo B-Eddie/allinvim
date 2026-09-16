@@ -1,0 +1,20 @@
+{
+  "name": "vimium",
+  "version": "1.0.0",
+  "description": "Vimium is a browser extension that provides keyboard-based navigation and control of the web in the spirit of the Vim editor.",
+  "main": "make.js",
+  "directories": {
+    "lib": "lib",
+    "test": "tests"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "jsdom": "^30.0.1"
+  }
+}
