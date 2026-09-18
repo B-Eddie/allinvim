@@ -1,6 +1,6 @@
-# AllinVim - The Hacker's Browser
+# Everything Vim - The Hacker's Browser
 
-AllinVim is a browser extension that provides keyboard-based navigation and control of the web in the
+Everything Vim is a browser extension that provides keyboard-based navigation and control of the web in the
 spirit of the Vim editor.
 
 [Watch the demo video](https://www.youtube.com/watch?v=t67Sn0RGK54).
@@ -15,8 +15,8 @@ spirit of the Vim editor.
 
 To install from source, see [here](CONTRIBUTING.md#installing-from-source).
 
-AllinVim's Options page can be reached via a link on the help dialog (type `?`) or via the button next
-to AllinVim on the extension pages of Chrome and Edge (`chrome://extensions`), or Firefox
+Everything Vim's Options page can be reached via a link on the help dialog (type `?`) or via the button next
+to Everything Vim on the extension pages of Chrome and Edge (`chrome://extensions`), or Firefox
 (`about:addons`).
 
 ## Keyboard Bindings
@@ -25,7 +25,7 @@ Modifier keys are specified as `<c-x>`, `<m-x>`, and `<a-x>` for ctrl+x, meta+x,
 respectively. For shift+x and ctrl-shift-x, just type `X` and `<c-X>`. See the next section for how
 to customize these bindings.
 
-Once you have AllinVim installed, you can see this list of key bindings at any time by typing `?`.
+Once you have Everything Vim installed, you can see this list of key bindings at any time by typing `?`.
 
 Navigating the current page:
 
@@ -108,7 +108,7 @@ Additional advanced browsing commands:
     V       enter visual line mode
     R       Hard reload the page (skip the cache)
 
-AllinVim supports command repetition so, for example, hitting `5t` will open 5 tabs in rapid
+Everything Vim supports command repetition so, for example, hitting `5t` will open 5 tabs in rapid
 succession. `<Esc>` (or `<c-[>`) will clear any partial commands in the queue and will also exit
 insert and find modes.
 
@@ -122,10 +122,10 @@ page.
 
 Enter one of the following key mapping statements per line:
 
-- `map key command`: Maps a key to a AllinVim command. Overrides Chrome's default behavior for that
+- `map key command`: Maps a key to an Everything Vim command. Overrides Chrome's default behavior for that
   key, if any.
 - `unmap key`: Unmaps a key and restores Chrome's default behavior (if any).
-- `unmapAll`: Unmaps all bindings. This is useful if you want to completely wipe AllinVim's defaults
+- `unmapAll`: Unmaps all bindings. This is useful if you want to completely wipe Everything Vim's defaults
   and start from scratch with your own setup.
 
 Examples:
@@ -137,7 +137,7 @@ Examples:
 - `unmap <c-d>` removes any mapping for ctrl+d and restores Chrome's default behavior.
 - `unmap r` removes any mapping for the r key.
 
-See the [docs](https://vimium.github.io/commands/) for every AllinVim command and its options.
+See the [docs](https://vimium.github.io/commands/) for every Everything Vim command and its options.
 
 You can add comments to key mappings by starting a line with `"` or `#`.
 
@@ -154,11 +154,11 @@ The following special keys are available for mapping:
 Shifts are automatically detected so, for example, `<c-&>` corresponds to ctrl+shift+7 on an English
 keyboard.
 
-## How to allow AllinVim to work on new tab pages
+## How to allow Everything Vim to work on new tab pages
 
-- AllinVim will work on new tab pages which are opened with AllinVim's `createTab` command (mapped to
+- Everything Vim will work on new tab pages which are opened with Everything Vim's `createTab` command (mapped to
   `t` by default).
-- To have AllinVim work on <em>all</em> new tab pages opened by the browser (e.g. via `cmd-t` or
+- To have Everything Vim work on <em>all</em> new tab pages opened by the browser (e.g. via `cmd-t` or
   `ctrl-t` shortcuts), a companion
   [Vimium New Tab Page extension](https://github.com/philc/vimium-new-tab/) is required.
 - Once that is installed, all new tabs will open a blank Vimium new tab page.
@@ -167,7 +167,7 @@ keyboard.
 
 - [FAQ](https://github.com/philc/vimium/wiki/FAQ)
 - [Command listing](https://vimium.github.io/commands/)
-- [AllinVim's GitHub wiki](https://github.com/philc/vimium/wiki): documentation for the more advanced
+- [Everything Vim's GitHub wiki](https://github.com/philc/vimium/wiki): documentation for the more advanced
   features.
 
 ## Contributing

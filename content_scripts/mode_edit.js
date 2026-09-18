@@ -1,5 +1,5 @@
 //
-// AllinVim — unified vim editing for any place that requires typing.
+// Everything Vim — unified vim editing for any place that requires typing.
 //
 // Embeds the Vim-For-Textarea engine (parser + direct-manipulation executor)
 // and the Vim-For-Docs engine (synthetic-key executor for Google Docs canvas)
@@ -30,10 +30,8 @@
 //
 
 (() => {
-  if (globalThis.__GENERALVIM_EDIT_MODE_LOADED__) return;
-  globalThis.__GENERALVIM_EDIT_MODE_LOADED__ = true;
-  // Back-compat for pages that probed the old flag name.
-  globalThis.__ALLINVIM_EDIT_MODE_LOADED__ = true;
+  if (globalThis.__EVERYTHINGVIM_EDIT_MODE_LOADED__) return;
+  globalThis.__EVERYTHINGVIM_EDIT_MODE_LOADED__ = true;
 
   let parser = null;
   let executor = null;
@@ -589,11 +587,11 @@
     try {
       if (!obj || typeof obj !== "object") return false;
       let changed = false;
-      const pos = obj.generalVimIndicatorPosition;
+      const pos = obj.everythingVimIndicatorPosition;
       if (pos === "corner" || pos === "field" || pos === "hidden") {
         if (prefs.position !== pos) { prefs.position = pos; changed = true; }
       }
-      const style = obj.generalVimDocsIndicator;
+      const style = obj.everythingVimDocsIndicator;
       if (style === "bar" || style === "chip") {
         if (prefs.docsStyle !== style) { prefs.docsStyle = style; changed = true; }
       }
@@ -612,7 +610,7 @@
         const data = await new Promise((resolve) => {
           try {
             chrome.storage.sync.get(
-              ["generalVimIndicatorPosition", "generalVimDocsIndicator"],
+              ["everythingVimIndicatorPosition", "everythingVimDocsIndicator"],
               (d) => resolve(d || {})
             );
           } catch (_) {
@@ -634,12 +632,12 @@
         try {
           if (area !== "sync" || !changes) return;
           const obj = {};
-          if (changes.generalVimIndicatorPosition) {
-            obj.generalVimIndicatorPosition =
-              changes.generalVimIndicatorPosition.newValue;
+          if (changes.everythingVimIndicatorPosition) {
+            obj.everythingVimIndicatorPosition =
+              changes.everythingVimIndicatorPosition.newValue;
           }
-          if (changes.generalVimDocsIndicator) {
-            obj.generalVimDocsIndicator = changes.generalVimDocsIndicator.newValue;
+          if (changes.everythingVimDocsIndicator) {
+            obj.everythingVimDocsIndicator = changes.everythingVimDocsIndicator.newValue;
           }
           if (loadPrefsFromObject(obj)) renderIndicator();
           // Exclusion rules just saved (popup "exclude keys on this page"):
@@ -668,13 +666,13 @@
       // Top frame only: the engine (and therefore the page script's message
       // target) lives there, so a child Docs frame must not inject its own.
       if (window.top !== window) return;
-      if (document.getElementById("__generalvim_page_script__")) return;
+      if (document.getElementById("__everythingvim_page_script__")) return;
       const url = (typeof chrome !== "undefined" && chrome.runtime && chrome.runtime.getURL)
         ? chrome.runtime.getURL("content_scripts/vim_edit/vim_docs_page_script.js")
         : null;
       if (!url) return;
       const s = document.createElement("script");
-      s.id = "__generalvim_page_script__";
+      s.id = "__everythingvim_page_script__";
       s.src = url;
       s.async = false;
       (document.documentElement || document.head || document.body).appendChild(s);
@@ -1251,7 +1249,7 @@
   }
 
   // Google Docs counterpart: Docs draws its own `.kix-cursor-caret`, blinked
-  // via CSS. While moving we set `data-generalvim-moving="1"` on <html>;
+  // via CSS. While moving we set `data-everythingvim-moving="1"` on <html>;
   // the Docs cursor stylesheet (see ensureDocsCursorStyle) turns the blink
   // off while that attribute is present, so the block stays solid. Newly
   // recreated caret nodes pick it up automatically via CSS.
@@ -1264,7 +1262,7 @@
       const root = document.documentElement;
       if (!root) return;
       try {
-        root.setAttribute("data-generalvim-moving", "1");
+        root.setAttribute("data-everythingvim-moving", "1");
       } catch (_) {}
       if (docsMovementTimeout) {
         try { clearTimeout(docsMovementTimeout); } catch (_) {}
@@ -1273,7 +1271,7 @@
         docsMovementTimeout = 0;
         try {
           if (document.documentElement) {
-            document.documentElement.removeAttribute("data-generalvim-moving");
+            document.documentElement.removeAttribute("data-everythingvim-moving");
           }
         } catch (_) {}
       }, 250);
@@ -1292,17 +1290,17 @@
   }
 
   // Vim-style hard blink: solid, then gone (step-end, ~1s period).
-  const BLINK_ANIM = "generalvim-block-blink 1.06s step-end infinite";
+  const BLINK_ANIM = "everythingvim-block-blink 1.06s step-end infinite";
 
   function ensureCaretBlinkStyle() {
     try {
-      if (document.getElementById("generalvim-caret-blink")) return;
+      if (document.getElementById("everythingvim-caret-blink")) return;
       const st = document.createElement("style");
-      st.id = "generalvim-caret-blink";
+      st.id = "everythingvim-caret-blink";
       st.textContent =
-        "@keyframes generalvim-block-blink{0%,49%{opacity:1;}50%,100%{opacity:0;}}" +
+        "@keyframes everythingvim-block-blink{0%,49%{opacity:1;}50%,100%{opacity:0;}}" +
         "@media (prefers-reduced-motion:reduce){" +
-        "[data-generalvim-block-caret]{animation:none !important;}}";
+        "[data-everythingvim-block-caret]{animation:none !important;}}";
       (document.head || document.documentElement).appendChild(st);
     } catch (_) {}
   }
@@ -1311,8 +1309,20 @@
     if (blockCaretEl || !document.documentElement) return;
     try {
       ensureCaretBlinkStyle();
+      // Takeover: a previous content-script instance (e.g. before an
+      // extension reload) may have left its own block div behind. Any such
+      // div is foreign to this instance (ours doesn't exist yet) — drop it
+      // so exactly one blinking block is ever on screen.
+      try {
+        const orphans = document.querySelectorAll("[data-everythingvim-block-caret]");
+        for (const n of orphans) {
+          try {
+            if (n.parentNode) n.parentNode.removeChild(n);
+          } catch (_) {}
+        }
+      } catch (_) {}
       blockCaretEl = document.createElement("div");
-      blockCaretEl.setAttribute("data-generalvim-block-caret", "1");
+      blockCaretEl.setAttribute("data-everythingvim-block-caret", "1");
       blockCaretEl.style.cssText =
         "position:fixed;z-index:2147483645;pointer-events:none;display:none;" +
         "background:var(--color-signal-lime);opacity:0.85;border-radius:1px;" +
@@ -1336,7 +1346,7 @@
     if (mirrorEl || !document.documentElement) return;
     try {
       mirrorEl = document.createElement("div");
-      mirrorEl.setAttribute("data-generalvim-mirror", "1");
+      mirrorEl.setAttribute("data-everythingvim-mirror", "1");
       mirrorEl.style.cssText =
         "position:fixed;visibility:hidden;pointer-events:none;" +
         "top:0;left:0;overflow:hidden;white-space:pre-wrap;" +
@@ -1523,10 +1533,23 @@
     restoreNativeCaret();
   }
 
+  // The overlay modal paints at z-index 2147483646. The block caret lives
+  // in the page (outside the overlay's shadow root), so while the overlay
+  // is open the caret must sit above the modal — otherwise it is positioned
+  // over the overlay textarea but occluded behind the opaque panel, and
+  // normal mode in ProseMirror et al. shows no block.
+  function syncBlockCaretLayer() {
+    try {
+      if (!blockCaretEl) return;
+      blockCaretEl.style.zIndex = overlayIsOpen() ? "2147483647" : "2147483645";
+    } catch (_) {}
+  }
+
   function updateBlockCaret() {
     try {
       ensureBlockCaret();
       if (!blockCaretEl) return;
+      syncBlockCaretLayer();
       if (!editEnabledForUrl) {
         hideBlockCaret();
         return;
@@ -1544,7 +1567,7 @@
       let el = null;
       try {
         el = currentEditor;
-        if (!el || !document.contains(el)) el = findEditor();
+        if (!el || !editorAttached(el)) el = findEditor();
       } catch (_) {
         el = null;
       }
@@ -1645,11 +1668,11 @@
       if (!isGoogleDocs()) return;
       const m = stateMode || mode;
       if (document.documentElement) {
-        document.documentElement.setAttribute("data-generalvim-mode", m);
+        document.documentElement.setAttribute("data-everythingvim-mode", m);
       }
       if (document.body) {
         try {
-          document.body.setAttribute("data-generalvim-mode", m);
+          document.body.setAttribute("data-everythingvim-mode", m);
         } catch (_) {}
       }
     } catch (_) {}
@@ -1658,18 +1681,15 @@
   function ensureDocsCursorStyle() {
     try {
       if (!docsTopFrame()) return;
-      if (document.getElementById("generalvim-docs-cursor")) return;
       const blockSel =
-        'html[data-generalvim-mode="normal"] .kix-cursor-caret,' +
-        'html[data-generalvim-mode="visual"] .kix-cursor-caret,' +
-        'html[data-generalvim-mode="visualLine"] .kix-cursor-caret';
-      const st = document.createElement("style");
-      st.id = "generalvim-docs-cursor";
-      st.textContent =
-        '@keyframes generalvim-docs-block-blink{0%,49%{opacity:1}50%,100%{opacity:0}}' +
-        'html[data-generalvim-mode="normal"] .kix-cursor,' +
-        'html[data-generalvim-mode="visual"] .kix-cursor,' +
-        'html[data-generalvim-mode="visualLine"] .kix-cursor,' +
+        'html[data-everythingvim-mode="normal"] .kix-cursor-caret,' +
+        'html[data-everythingvim-mode="visual"] .kix-cursor-caret,' +
+        'html[data-everythingvim-mode="visualLine"] .kix-cursor-caret';
+      const cssText =
+        '@keyframes everythingvim-docs-block-blink{0%,49%{opacity:1}50%,100%{opacity:0}}' +
+        'html[data-everythingvim-mode="normal"] .kix-cursor,' +
+        'html[data-everythingvim-mode="visual"] .kix-cursor,' +
+        'html[data-everythingvim-mode="visualLine"] .kix-cursor,' +
         blockSel +
         '{visibility:visible !important;}' +
         // Blink the block ourselves. NOTE: deliberately NO `opacity:1
@@ -1679,14 +1699,27 @@
         // matches none of these rules, so Docs' own thin blinking caret
         // returns untouched.
         blockSel +
-        '{animation:generalvim-docs-block-blink 1.06s step-end infinite !important;}' +
+        '{animation:everythingvim-docs-block-blink 1.06s step-end infinite !important;}' +
         // Solid while moving: idle blinks, caret-moving actions hold solid.
         // Higher-specificity + later in the stylesheet, so it wins over the
-        // blink above while `data-generalvim-moving="1"` is set. Reduced-
+        // blink above while `data-everythingvim-moving="1"` is set. Reduced-
         // motion users already get a solid caret; this keeps them solid.
-        'html[data-generalvim-moving="1"] .kix-cursor-caret{' +
+        'html[data-everythingvim-moving="1"] .kix-cursor-caret{' +
         'animation:none !important;opacity:1 !important;visibility:visible !important;}' +
         '@media (prefers-reduced-motion:reduce){' + blockSel + '{animation:none !important;}}';
+      // Self-heal: an older build injected a solid (non-blinking) variant of
+      // this stylesheet. Refresh it in place so live Docs tabs go back to
+      // blinking without needing a reload.
+      const existing = document.getElementById("everythingvim-docs-cursor");
+      if (existing) {
+        try {
+          if (existing.textContent !== cssText) existing.textContent = cssText;
+        } catch (_) {}
+        return;
+      }
+      const st = document.createElement("style");
+      st.id = "everythingvim-docs-cursor";
+      st.textContent = cssText;
       (document.head || document.documentElement).appendChild(st);
     } catch (_) {}
   }
@@ -1791,7 +1824,7 @@
     // mode — "the caret is not changing between block and bar".
     const flagged = (() => {
       try {
-        return !!(caret.dataset && caret.dataset.generalvimBlock === "1");
+        return !!(caret.dataset && caret.dataset.everythingvimBlock === "1");
       } catch (_) {
         return false;
       }
@@ -1819,13 +1852,13 @@
         caret.style.borderLeftStyle = "";
         caret.style.width = "";
         caret.style.backgroundColor = "";
-        if (caret.dataset && caret.dataset.generalvimBlockHeight === "1") {
+        if (caret.dataset && caret.dataset.everythingvimBlockHeight === "1") {
           try {
             caret.style.height = "";
           } catch (_) {}
-          delete caret.dataset.generalvimBlockHeight;
+          delete caret.dataset.everythingvimBlockHeight;
         }
-        if (caret.dataset) delete caret.dataset.generalvimBlock;
+        if (caret.dataset) delete caret.dataset.everythingvimBlock;
       } catch (_) {}
       return;
     }
@@ -1849,7 +1882,7 @@
       }
       caret.style.visibility = "visible";
       caret.style.opacity = "1";
-      if (caret.dataset) caret.dataset.generalvimBlock = "1";
+      if (caret.dataset) caret.dataset.everythingvimBlock = "1";
       if (wrapper) {
         try {
           wrapper.style.visibility = "visible";
@@ -1863,7 +1896,7 @@
         caret.style.borderLeftStyle = "solid";
         caret.style.visibility = "visible";
         caret.style.opacity = "1";
-        if (caret.dataset) caret.dataset.generalvimBlock = "1";
+        if (caret.dataset) caret.dataset.everythingvimBlock = "1";
       } catch (_) {}
       scheduleDocsCursorRetry();
     }
@@ -1927,7 +1960,7 @@
     if (indicatorEl || !document.documentElement) return;
     try {
       indicatorEl = document.createElement("div");
-      indicatorEl.setAttribute("data-generalvim-indicator", "1");
+      indicatorEl.setAttribute("data-everythingvim-indicator", "1");
       // Trigger: flat terminal status chip. Mono tracked uppercase, no shadow.
       // Deliberately compact (10px / tight tracking / 3px padding): the chip
       // parks in the bottom-right corner of every page, so a chunky badge
@@ -1981,11 +2014,11 @@
   // Make sure the html->body document chrome for the bottom bar exists.
   function ensureDocsBarChrome() {
     try {
-      if (document.getElementById("generalvim-docs-bar-style")) return;
+      if (document.getElementById("everythingvim-docs-bar-style")) return;
       const st = document.createElement("style");
-      st.id = "generalvim-docs-bar-style";
+      st.id = "everythingvim-docs-bar-style";
       st.textContent =
-        "#generalvim-indicator-caret{display:inline-block;min-width:7px;background:var(--color-bone-text);color:var(--surface-canvas);}" ;
+        "#everythingvim-indicator-caret{display:inline-block;min-width:7px;background:var(--color-bone-text);color:var(--surface-canvas);}" ;
       (document.head || document.documentElement).appendChild(st);
     } catch (_) {}
   }
@@ -2137,7 +2170,7 @@
       bSpan.style.color = "var(--color-bone-text)";
       wrap.appendChild(bSpan);
       const cur = document.createElement("span");
-      cur.id = "generalvim-indicator-caret";
+      cur.id = "everythingvim-indicator-caret";
       if (at) cur.textContent = at;
       else { cur.textContent = " "; cur.style.opacity = "0.95"; }
       wrap.appendChild(cur);
@@ -2188,7 +2221,7 @@
     let ed = null;
     try {
       ed =
-        currentEditor && document.contains(currentEditor)
+        currentEditor && editorAttached(currentEditor)
           ? currentEditor
           : findEditor();
     } catch (_) {
@@ -2381,7 +2414,7 @@
     if (out && typeof out.then === "function") {
       out.catch((err) => {
         try {
-          if (window.__VIM_DEBUG__) console.error("[AllinVim] exec error", err);
+          if (window.__VIM_DEBUG__) console.error("[Everything Vim] exec error", err);
         } catch (_) {}
       });
     }
@@ -2393,7 +2426,7 @@
     try {
       if (isGoogleDocs()) return;
       const el = currentEditor;
-      if (!el || !document.contains(el)) return;
+      if (!el || !editorAttached(el)) return;
       let focused = null;
       try {
         focused = findEditor();
@@ -2570,12 +2603,12 @@
   }
 
   // Key-decision tracing for site-specific diagnosis. Enable in the page
-  // console with: window.__GENERALVIM_DEBUG_KEYS = 1
-  // then reproduce and read the [AllinVim:keys] lines.
+  // console with: window.__EVERYTHINGVIM_DEBUG_KEYS = 1
+  // then reproduce and read the [Everything Vim:keys] lines.
   function dkeys(...args) {
     try {
-      if (window.__GENERALVIM_DEBUG_KEYS) {
-        console.log("[AllinVim:keys]", ...args);
+      if (window.__EVERYTHINGVIM_DEBUG_KEYS) {
+        console.log("[Everything Vim:keys]", ...args);
       }
     } catch (_) {}
   }
@@ -2673,7 +2706,7 @@
           if (!editEnabledForUrl) return; // excluded page: pass everything through
           let consumed = false;
           try {
-            const topHandler = window.top && window.top.__GENERALVIM_HANDLE_DOCS_KEY__;
+            const topHandler = window.top && window.top.__EVERYTHINGVIM_HANDLE_DOCS_KEY__;
             if (typeof topHandler === "function") consumed = !!topHandler(docsKeyPayload(e));
           } catch (_) {
             consumed = false; // top frame unavailable/cross-origin: never trap keys
@@ -2789,7 +2822,7 @@
       } catch (err) {
         try {
           if (window.__VIM_DEBUG__)
-            console.error("[AllinVim] parser error", err);
+            console.error("[Everything Vim] parser error", err);
         } catch (_) {}
       }
       scheduleFocusRestore(skipRestore);
@@ -3066,7 +3099,7 @@
       }
     } catch (err) {
       try {
-        if (window.__VIM_DEBUG__) console.error("[AllinVim:Docs] error", err);
+        if (window.__VIM_DEBUG__) console.error("[Everything Vim:Docs] error", err);
       } catch (_) {}
     }
   }
@@ -3089,11 +3122,222 @@
     return !!overlayHost && !!overlayArea;
   }
 
+  // Live-ness check that works for the shadow-DOM overlay textarea:
+  // document.contains(textareaInsideShadow) is false by spec even while
+  // visible, so fall back to isConnected + host-connected for it.
+  function editorAttached(el) {
+    try {
+      if (!el) return false;
+      if (document.contains(el)) return true;
+      if (el === overlayArea && overlayHost && overlayHost.isConnected) return true;
+      if (el === overlayArea && typeof el.isConnected === "boolean" && el.isConnected) return true;
+    } catch (_) {}
+    return false;
+  }
+
+  // Events from inside the overlay's shadow root are retargeted to the
+  // host for outside listeners (spec): e.target === overlayHost, not the
+  // inner textarea/button. composedPath()[0] / eventTrueTarget() is the
+  // real inner node. Checking e.target directly therefore classifies every
+  // overlay keystroke as "outside", swallows it, and refocuses — a dead
+  // overlay where only mouse Save/Discard works.
+  function overlayEventInside(e) {
+    try {
+      if (!overlayArea || !overlayHost) return false;
+      try {
+        if (typeof e.composedPath === "function") {
+          const p = e.composedPath();
+          if (p) {
+            for (const n of p) {
+              if (n === overlayArea) return true;
+              // Any node inside the same shadow tree (Save/Discard buttons,
+              // panel): don't yank focus away, let the click/key work.
+              if (n === overlayHost.shadowRoot) return true;
+            }
+          }
+        }
+      } catch (_) {}
+      try {
+        const t = eventTrueTarget(e);
+        if (t === overlayArea) return true;
+        try {
+          if (t && t.getRootNode && t.getRootNode() === overlayHost.shadowRoot) return true;
+        } catch (_) {}
+      } catch (_) {}
+      try {
+        const t = e && e.target;
+        if (t === overlayArea) return true;
+        try {
+          if (t && t.getRootNode && t.getRootNode() === overlayHost.shadowRoot) return true;
+        } catch (_) {}
+      } catch (_) {}
+    } catch (_) {}
+    return false;
+  }
+
   function overlayInput() {
     try {
-      return (window.__allinVimInput) || null;
+      return (window.__everythingVimInput) || null;
     } catch (_) {
       return null;
+    }
+  }
+
+  // Block-level tags that start a new line in rendered rich text.
+  // Used by extractContentEditableText so each paragraph/div/list-item maps
+  // to exactly one "\n" (Chrome's innerText maps <p> to "\n\n", which is
+  // what showed phantom blank lines in the overlay).
+  const EDITABLE_BLOCK_TAGS = new Set([
+    "P", "DIV", "LI", "H1", "H2", "H3", "H4", "H5", "H6",
+    "BLOCKQUOTE", "PRE", "UL", "OL", "SECTION", "ARTICLE",
+    "HEADER", "FOOTER", "TABLE", "TR", "FIGURE", "FIGCAPTION", "HR",
+  ]);
+
+  function extractContentEditableText(root) {
+    try {
+      if (!root) return "";
+      const childText = (node) => {
+        if (!node) return "";
+        if (node.nodeType === 3) return node.nodeValue || "";
+        if (node.nodeType !== 1) return "";
+        let tag = "";
+        try {
+          tag = (node.tagName || "").toUpperCase();
+        } catch (_) {
+          tag = "";
+        }
+        if (tag === "SCRIPT" || tag === "STYLE" || tag === "TEMPLATE") return "";
+        try {
+          const cls = node.classList;
+          if (cls) {
+            if (cls.contains("ProseMirror-separator")) return "";
+            if (cls.contains("ProseMirror-widget")) return "";
+          }
+        } catch (_) {}
+        if (tag === "BR") {
+          try {
+            if (node.classList && node.classList.contains("ProseMirror-trailingBreak")) {
+              // Forces an empty <p> to keep height; the block break below
+              // already accounts for the line.
+              return "";
+            }
+          } catch (_) {}
+          return "\n";
+        }
+        let s = "";
+        try {
+          const kids = node.childNodes || [];
+          for (let i = 0; i < kids.length; i++) s += childText(kids[i]);
+        } catch (_) {}
+        if (EDITABLE_BLOCK_TAGS.has(tag)) {
+          if (s === "") return "\n";
+          if (s.charAt(s.length - 1) === "\n") return s;
+          return s + "\n";
+        }
+        return s;
+      };
+      let raw = "";
+      try {
+        const kids = root.childNodes || [];
+        for (let i = 0; i < kids.length; i++) raw += childText(kids[i]);
+      } catch (_) {
+        return root.textContent || "";
+      }
+      // Each top-level block contributes one trailing "\n"; strip exactly
+      // one so "A\nB\n" -> "A\nB" and an empty doc "\n" -> "". Intentional
+      // trailing blank lines ("A\n\n") survive as "A\n".
+      if (raw.charAt(raw.length - 1) === "\n") raw = raw.slice(0, -1);
+      try {
+        raw = raw.replace(/\r\n/g, "\n").replace(/\r/g, "\n").replace(/\u00a0/g, " ");
+      } catch (_) {}
+      return raw;
+    } catch (_) {
+      try {
+        return (root && root.textContent) || "";
+      } catch (_) {
+        return "";
+      }
+    }
+  }
+
+  // Resolve the element whose text the overlay should show: the outermost
+  // complex-editor root (e.g. the .ProseMirror div) or, for plain
+  // contenteditables, the outermost contenteditable ancestor. Reading from
+  // an inner <p> would show only one paragraph; reading via innerText from
+  // the root doubles <p> breaks.
+  function resolveEditableRoot(el, kind) {
+    try {
+      if (!el) return el;
+      let node = el;
+      let best = null;
+      let depth = 0;
+      const matchesKind = (n) => {
+        try {
+          if (!n || n.nodeType !== 1) return false;
+          const cls = n.classList;
+          const has = (c) => { try { return !!(cls && cls.contains(c)); } catch (_) { return false; } };
+          const attr = (a) => { try { return n.hasAttribute(a); } catch (_) { return false; } };
+          if (!kind) {
+            return has("CodeMirror") || has("cm-editor") || has("cm-content") ||
+              has("monaco-editor") || has("ProseMirror") || has("ql-editor") ||
+              has("ace_editor") || has("DraftEditor-root") ||
+              attr("data-lexical-editor") || attr("data-slate-editor") ||
+              has("slate-editor") || has("ck-editor__editable") ||
+              has("ck-content") || has("mce-content-body");
+          }
+          if (kind === "codemirror5") return has("CodeMirror");
+          if (kind === "codemirror6") return has("cm-editor") || has("cm-content");
+          if (kind === "monaco") return has("monaco-editor") || has("monaco-mouse-cursor-text");
+          if (kind === "prosemirror") return has("ProseMirror");
+          if (kind === "quill") return has("ql-editor");
+          if (kind === "ace") return has("ace_editor") || has("ace_text-input");
+          if (kind === "draftjs") return has("DraftEditor-root");
+          if (kind === "lexical") return attr("data-lexical-editor");
+          if (kind === "slate") return attr("data-slate-editor") || has("slate-editor");
+          if (kind === "ckeditor") return has("ck-editor__editable") || has("ck-content");
+          if (kind === "tinymce") return has("mce-content-body");
+          return false;
+        } catch (_) {
+          return false;
+        }
+      };
+      while (node && depth < 8) {
+        if (matchesKind(node)) best = node;
+        node = node.parentNode;
+        depth++;
+      }
+      if (best) return best;
+      // Plain contenteditable (or kind root beyond 8 levels): climb to the
+      // outermost contenteditable so we read the whole field, not one line.
+      // Checks both isContentEditable and the contenteditable attribute
+      // (jsdom and some harnesses lack isContentEditable).
+      try {
+        let top = null;
+        let cur = el;
+        let d = 0;
+        while (cur && d < 12) {
+          try {
+            if (cur.nodeType === 1) {
+              let editable = false;
+              try { editable = !!cur.isContentEditable; } catch (_) {}
+              if (!editable) {
+                try {
+                  const v = cur.getAttribute && cur.getAttribute("contenteditable");
+                  editable = v === "" || v === "true" || v === "plaintext-only";
+                } catch (_) {}
+              }
+              if (editable) top = cur;
+            }
+          } catch (_) {}
+          if (cur === document.body || cur === document.documentElement) break;
+          cur = cur.parentNode;
+          d++;
+        }
+        if (top) return top;
+      } catch (_) {}
+      return el;
+    } catch (_) {
+      return el;
     }
   }
 
@@ -3103,8 +3347,11 @@
       if (el.tagName === "TEXTAREA" || el.tagName === "INPUT") {
         return el.value || "";
       }
-      // Rendered text with block line breaks; full-replace on commit.
-      return el.innerText != null ? el.innerText : (el.textContent || "");
+      // Block-aware extraction: one "\n" per paragraph/div/list-item.
+      // innerText renders <p> as "\n\n" (phantom blank lines) and
+      // textContent drops breaks entirely ("HelloWorld").
+      const root = resolveEditableRoot(el, kind) || el;
+      return extractContentEditableText(root);
     } catch (_) {
       return "";
     }
@@ -3114,17 +3361,27 @@
     if (overlayIsOpen() || !parser) return false;
     try {
       if (!document.documentElement || !document.body) return false;
-      overlayTarget = target;
+      // Normalize to the full editable root so read + commit cover the whole
+      // document even when focus started in an inner <p>.
+      let resolved = target;
+      try {
+        if (target && target.tagName !== "TEXTAREA" && target.tagName !== "INPUT") {
+          resolved = resolveEditableRoot(target, kind) || target;
+        }
+      } catch (_) {
+        resolved = target;
+      }
+      overlayTarget = resolved;
       overlayTargetKind = kind;
       try {
-        overlayTargetCaret = target.selectionStart || 0;
+        overlayTargetCaret = resolved.selectionStart || 0;
       } catch (_) {
         overlayTargetCaret = 0;
       }
-      const initial = readOriginalText(target, kind);
+      const initial = readOriginalText(resolved, kind);
 
       overlayHost = document.createElement("div");
-      overlayHost.setAttribute("data-generalvim-overlay", "1");
+      overlayHost.setAttribute("data-everythingvim-overlay", "1");
       let shadow = null;
       try {
         shadow = overlayHost.attachShadow({ mode: "open" });
@@ -3172,7 +3429,7 @@
       });
       const title = document.createElement("div");
       title.className = "aiv-title";
-      title.textContent = "AllinVim · " + (kind || "editor");
+      title.textContent = "Everything Vim · " + (kind || "editor");
       chrome.appendChild(title);
       const discardBtn = document.createElement("button");
       discardBtn.className = "aiv-btn";
@@ -3209,6 +3466,9 @@
 
       // Drive the proven plain-textarea path with our own surface.
       currentEditor = overlayArea;
+      // The overlay owns focus now: mark it before painting, since
+      // updateBlockCaret/renderIndicator both gate on editorHasFocus.
+      try { editorHasFocus = true; } catch (_) {}
       try { parser.reset(); } catch (_) {}
       tempNormal = false;
       replaceMode = false;
@@ -3218,6 +3478,9 @@
         overlayArea.setSelectionRange(0, 0);
       } catch (_) {}
       renderIndicator("");
+      // setMode painted before the textarea was focused/laid out (so the
+      // caret hid); repaint on the next frame now that it can be measured.
+      try { scheduleBlockCaret(); } catch (_) {}
       return true;
     } catch (_) {
       try {
@@ -3344,8 +3607,7 @@
     // While open, no key may reach the page or Vimium: the overlay owns
     // the keyboard. Typing itself is never preventDefaulted.
     try {
-      const t = e.target;
-      const inside = !!overlayArea && (t === overlayArea || (t && t.getRootNode && t.getRootNode() === overlayHost.shadowRoot));
+      const inside = overlayEventInside(e);
       if (!inside) {
         e.preventDefault();
         e.stopPropagation();
@@ -3389,9 +3651,31 @@
       (e) => {
         try {
           if (overlayIsOpen()) {
-            if (e.target === overlayArea) {
+            // Shadow-aware: for document listeners e.target is retargeted
+            // to overlayHost, never the inner textarea. Use the composed
+            // path / eventTrueTarget instead.
+            let inner = null;
+            try {
+              inner = eventTrueTarget(e);
+            } catch (_) {
+              inner = null;
+            }
+            if (inner === overlayArea) {
               currentEditor = overlayArea;
+              // The overlay owns the keyboard: keep focus state true and
+              // repaint the block caret/indicator (e.g. after the panel
+              // refocuses the textarea). No mode change here.
+              try { editorHasFocus = true; } catch (_) {}
+              try { renderIndicator(""); } catch (_) {}
+              try { scheduleBlockCaret(); } catch (_) {}
             } else {
+              try {
+                const root = inner && inner.getRootNode ? inner.getRootNode() : null;
+                // Save/Discard buttons live in the same shadow tree: leave
+                // focus alone so mouse + keyboard activation keeps working.
+                if (root && overlayHost && root === overlayHost.shadowRoot) return;
+              } catch (_) {}
+              // Focus escaped to the page behind the modal: pull it back.
               try { overlayArea.focus(); } catch (_) {}
             }
             return;
@@ -3522,7 +3806,7 @@
       // strict sites (GitHub et al.), so it is only a fallback.
       let cfg = null;
       try {
-        cfg = window.__GENERALVIM_MOTIONS || window.__ALLINVIM_MOTIONS || null;
+        cfg = window.__EVERYTHINGVIM_MOTIONS || null;
       } catch (_) {
         cfg = null;
       }
@@ -3540,7 +3824,7 @@
         // Expose the Docs key handler for the hidden editing iframe. Only the
         // top frame runs the Docs engine (toolbar + text mirror live here).
         if (isGoogleDocs() && window.top === window) {
-          window.__GENERALVIM_HANDLE_DOCS_KEY__ = handleForwardedDocsKey;
+          window.__EVERYTHINGVIM_HANDLE_DOCS_KEY__ = handleForwardedDocsKey;
         }
       } catch (_) {}
       try {
@@ -3569,7 +3853,7 @@
         openOverlay: () => {
           try {
             const ed =
-              currentEditor && document.contains(currentEditor)
+              currentEditor && editorAttached(currentEditor)
                 ? currentEditor
                 : findEditor();
             if (!ed) return;
@@ -3621,7 +3905,7 @@
         // Orphaned content script after an extension reload: stay silent.
         if (/extension context invalidated/i.test(message)) return;
         if (typeof chrome !== "undefined" && chrome.runtime?.id == null) return;
-        console.error("[AllinVim] failed to init edit mode", err);
+        console.error("[Everything Vim] failed to init edit mode", err);
       } catch (_) {}
     }
   }

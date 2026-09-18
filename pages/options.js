@@ -6,8 +6,8 @@ import * as userSearchEngines from "../background_scripts/user_search_engines.js
 
 const options = {
   filterLinkHints: "boolean",
-  generalVimDocsIndicator: "string",
-  generalVimIndicatorPosition: "string",
+  everythingVimDocsIndicator: "string",
+  everythingVimIndicatorPosition: "string",
   grabBackFocus: "boolean",
   hideHud: "boolean",
   hideUpdateNotifications: "boolean",
@@ -63,7 +63,7 @@ export async function init() {
   // Show theme changes straight away, so the dropdown is a live preview. The choice is only
   // committed (and cached for the next page load) when the options are saved.
   getOptionEl("theme").addEventListener("change", (event) => {
-    GeneralVimTheme.apply(event.target.value, { cache: false });
+    EverythingVimTheme.apply(event.target.value, { cache: false });
   });
 
   getOptionEl("filterLinkHints").addEventListener(
@@ -122,7 +122,7 @@ export function getOptionEl(optionName) {
 function populateThemeOptions() {
   const select = getOptionEl("theme");
   select.textContent = "";
-  for (const [name, theme] of Object.entries(GeneralVimTheme.themes)) {
+  for (const [name, theme] of Object.entries(EverythingVimTheme.themes)) {
     const option = document.createElement("option");
     option.value = name;
     option.textContent = theme.label;
@@ -312,7 +312,7 @@ export async function saveOptions() {
   await Settings.setSettings(settings);
   // Update the synchronous paint cache right away, rather than waiting for the settings-change
   // event to make its way back from chrome.storage.
-  GeneralVimTheme.apply(settings.theme);
+  EverythingVimTheme.apply(settings.theme);
   const el = document.querySelector("#save");
   el.disabled = true;
   el.textContent = "Saved";
@@ -387,7 +387,7 @@ function onUploadBackupClicked() {
         backup = JSON.parse(reader.result);
       } catch (error) {
         console.log("parsing error:", error);
-        alert("Failed to parse AllinVim backup: " + error);
+        alert("Failed to parse Everything Vim backup: " + error);
         return;
       }
 

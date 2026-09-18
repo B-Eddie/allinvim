@@ -1,6 +1,6 @@
 #!/usr/bin/env -S deno run --allow-read --allow-write --allow-env --allow-net --allow-run --allow-sys
 // Usage: ./make.js command. Use -l to list commands.
-// This is a set of tasks for building and testing AllinVim in development.
+// This is a set of tasks for building and testing Everything Vim in development.
 import * as fs from "@std/fs";
 import * as path from "@std/path";
 import { abort, desc, run, task } from "drake";
@@ -18,7 +18,7 @@ async function shell(procName, argsArray = []) {
   // NOTE(philc): Does drake's `sh` function work on Windows? If so, that can replace this function.
   if (Deno.build.os == "windows") {
     // if win32, prefix arguments with "/c {original command}"
-    // e.g. "mkdir c:\git\allinvim" becomes "cmd.exe /c mkdir c:\git\allinvim"
+    // e.g. "mkdir c:\git\everything-vim" becomes "cmd.exe /c mkdir c:\git\everything-vim"
     argsArray.unshift("/c", procName);
     procName = "cmd.exe";
   }
@@ -119,7 +119,7 @@ async function checkFilesFromManifestArePresent(manifest) {
   const missing = [];
 
   for (const file of getPathsFromManifest(manifest)) {
-    const exists = await fs.exists(path.join("dist/allinvim", file));
+    const exists = await fs.exists(path.join("dist/everything-vim", file));
     if (!exists) {
       missing.push(file);
     }
@@ -206,23 +206,23 @@ async function buildStorePackage() {
   ];
 
   const chromeManifest = await parseManifestFile();
-  const rsyncOptions = ["-r", ".", "dist/allinvim"].concat(
+  const rsyncOptions = ["-r", ".", "dist/everything-vim"].concat(
     ...excludeList.map((item) => ["--exclude", item]),
   );
   const version = chromeManifest["version"];
   const writeDistManifest = async (manifest) => {
-    await Deno.writeTextFile("dist/allinvim/manifest.json", JSON.stringify(manifest, null, 2));
+    await Deno.writeTextFile("dist/everything-vim/manifest.json", JSON.stringify(manifest, null, 2));
   };
-  // cd into "dist/allinvim" before building the zip, so that the files in the zip don't each have the
-  // path prefix "dist/allinvim".
+  // cd into "dist/everything-vim" before building the zip, so that the files in the zip don't each have the
+  // path prefix "dist/everything-vim".
   // --filesync ensures that files in the archive which are no longer on disk are deleted. It's
   // equivalent to removing the zip file before the build.
-  const zipCommand = "cd dist/allinvim && zip -r --filesync ";
+  const zipCommand = "cd dist/everything-vim && zip -r --filesync ";
 
-  await shell("rm", ["-rf", "dist/allinvim"]);
+  await shell("rm", ["-rf", "dist/everything-vim"]);
   await shell("mkdir", [
     "-p",
-    "dist/allinvim",
+    "dist/everything-vim",
     "dist/chrome-canary",
     "dist/chrome-store",
     "dist/firefox",
@@ -237,7 +237,7 @@ async function buildStorePackage() {
   // Exclude PNG icons from the Firefox build, because we use the SVG directly.
   await shell("bash", [
     "-c",
-    `${zipCommand} ../firefox/allinvim-firefox-${version}.zip . -x icons/*.png`,
+    `${zipCommand} ../firefox/everything-vim-firefox-${version}.zip . -x icons/*.png`,
   ]);
 
   await checkFilesFromManifestArePresent(firefoxManifest);
@@ -246,17 +246,17 @@ async function buildStorePackage() {
   await writeDistManifest(chromeManifest);
   await shell("bash", [
     "-c",
-    `${zipCommand} ../chrome-store/allinvim-chrome-store-${version}.zip .`,
+    `${zipCommand} ../chrome-store/everything-vim-chrome-store-${version}.zip .`,
   ]);
 
   // Build the Chrome Store dev package.
   await writeDistManifest(Object.assign({}, chromeManifest, {
-    name: "AllinVim Canary",
-    description: "This is the development branch of AllinVim (it is beta software).",
+    name: "Everything Vim Canary",
+    description: "This is the development branch of Everything Vim (it is beta software).",
   }));
   await shell("bash", [
     "-c",
-    `${zipCommand} ../chrome-canary/allinvim-canary-${version}.zip .`,
+    `${zipCommand} ../chrome-canary/everything-vim-canary-${version}.zip .`,
   ]);
 }
 

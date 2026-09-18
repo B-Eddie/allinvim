@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
-  "name": "AllinVim",
-  "version": "1.0.0",
-  "description": "AllinVim: Vim-style page navigation plus Vim editing in every text field, Google Docs, and code editors — on every site.",
+  "name": "Everything Vim",
+  "version": "1.0.1",
+  "description": "Everything Vim: Vim-style page navigation plus Vim editing in every text field, Google Docs, and code editors — on every site.",
   "icons": {
     "16": "icons/icon16.png",
     "48": "icons/icon48.png",
@@ -30,7 +30,7 @@
     "storage",
     "sessions",
     "clipboardWrite",
-    // Notifications are used to show a message when AllinVim's major version has been upgraded.
+    // Notifications are used to show a message when Everything Vim's major version has been upgraded.
     "notifications",
     // We're using the scripting permission to 1) inject our content scripts and CSS into existing
     // tabs when Vimium is first installed, and 2) inject the user's link hints CSS when a page
@@ -125,7 +125,7 @@
         "pages/doc_search_completion.html",
         "pages/command_listing.html",
         "resources/tlds.txt",
-        // This allows one to script the reloading of AllinVim.
+        // This allows one to script the reloading of Everything Vim.
         // This should only be enabled in development.
         // "pages/reload.html",
         "_favicon/*"

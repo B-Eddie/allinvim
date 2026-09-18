@@ -890,9 +890,9 @@ async function showUpgradeMessageIfNecessary(onInstalledDetails) {
     {
       type: "basic",
       iconUrl: chrome.runtime.getURL("icons/icon128.png"),
-      title: "AllinVim Upgrade",
+      title: "Everything Vim Upgrade",
       message:
-        `AllinVim has been upgraded to version ${currentVersion}. Click here for more information.`,
+        `Everything Vim has been upgraded to version ${currentVersion}. Click here for more information.`,
       isClickable: true,
     },
   );

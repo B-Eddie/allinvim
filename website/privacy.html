@@ -3,98 +3,158 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Privacy Policy — AllinVim</title>
-<meta name="description" content="Privacy policy for the AllinVim browser extension." />
-<meta name="color-scheme" content="dark" />
-<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='4' fill='%23121317'/%3E%3Cpath d='M9 8l7 16 7-16h-4.5L16 15 13.5 8z' fill='%23a8ff53'/%3E%3C/svg%3E" />
+<title>Privacy Policy — Everything Vim</title>
+<meta name="description" content="Privacy policy for the Everything Vim browser extension." />
+<meta name="color-scheme" content="light" />
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23020204'/%3E%3Cpath d='M10 9l6 14 6-14h-3.6L16 14.4 13.6 9z' fill='white'/%3E%3C/svg%3E" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400&family=Inter+Tight:wght@600&family=Inter:wght@300;400;500&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet" />
 <style>
   :root {
-    --canvas: #1c1e21; --inset: #121317; --border: #272a2e; --hairline: #3b3e45;
-    --bone: #e5e7eb; --ash: #b5b8c0; --fog: #878c99; --lime: #a8ff53; --violet: #9c9af2;
+    --color-void-black: #020204;
+    --color-pure-black: #000000;
+    --color-carbon: #636363;
+    --color-slate: #888888;
+    --color-paper-white: #ffffff;
+    --color-bone: #f8f8f8;
+    --color-linen: #efefef;
+    --color-lime-wash: #f2fcb3;
   }
   * { box-sizing: border-box; }
-  body { margin: 0; background: var(--inset); color: var(--bone);
-    font-family: Inter, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-    line-height: 1.7; }
-  main { max-width: 760px; margin: 0 auto; padding: 56px 28px 80px; }
-  a { color: var(--violet); }
-  .back { display: inline-block; margin-bottom: 28px; color: var(--fog); text-decoration: none;
-    font-size: 14px; }
-  .back:hover { color: var(--bone); }
-  h1 { font-size: 32px; margin: 0 0 6px; letter-spacing: -0.5px; }
-  .eff { color: var(--fog); font-size: 14px; margin-bottom: 32px; }
-  h2 { font-size: 20px; margin: 36px 0 10px; color: var(--lime); }
-  p, li { color: var(--ash); font-size: 16px; }
-  ul { padding-left: 22px; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0; background: var(--color-bone); color: var(--color-pure-black);
+    font-family: 'Inter', ui-sans-serif, system-ui, sans-serif;
+    font-size: 18px; line-height: 1.5; letter-spacing: -0.36px;
+    -webkit-font-smoothing: antialiased;
+  }
+  ::selection { background: #000; color: #fff; }
+  a { transition: color 0.2s ease, background-color 0.2s ease; }
+  main { animation: page-in 0.9s cubic-bezier(0.16, 1, 0.3, 1); }
+  @keyframes page-in { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: none; } }
+  a { transition: color 0.2s ease, background-color 0.2s ease; }
+  .nav-wrap { position: fixed; top: 12px; left: 0; right: 0; z-index: 50; max-width: 1200px; margin: 0 auto; padding: 0 16px; }
+  .nav {
+    background: rgba(248, 248, 248, 0.88);
+    -webkit-backdrop-filter: blur(16px); backdrop-filter: blur(16px);
+    border: 1px solid rgba(0, 0, 0, 0.12); border-radius: 16px;
+    box-shadow: rgba(0, 0, 0, 0.06) 0px 2px 8px 0px, rgba(0, 0, 0, 0.04) 0px 0px 2px 0px;
+    min-height: 56px; padding: 8px 8px 8px 16px;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .brand { display: flex; align-items: center; gap: 9px; text-decoration: none; color: #000; font-family: 'Inter Tight', Inter, sans-serif; font-weight: 600; font-size: 18px; letter-spacing: -0.02em; }
+  .brand-mark { width: 26px; height: 26px; border-radius: 7px; background: #000; color: #fff; display: inline-flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 700; }
+  .btn-nav { margin-left: auto; background: #000; color: #fff; text-decoration: none; font-size: 14px; font-weight: 500; border-radius: 20px; padding: 10px 18px; white-space: nowrap; transition: background-color 0.2s ease, transform 0.25s cubic-bezier(0.16, 1, 0.3, 1); }
+  .btn-nav:hover { background: #575757; }
+  .btn-nav:active { transform: scale(0.96); }
+  @media (prefers-reduced-motion: reduce) { main { animation: none; } html { scroll-behavior: auto; } }
+  main { max-width: 760px; margin: 0 auto; padding: 130px 24px 80px; }
+  .back { display: inline-block; margin-bottom: 20px; color: var(--color-carbon); text-decoration: none; font-size: 14px; letter-spacing: 0; }
+  .back:hover { color: #000; }
+  .eyebrow { font-family: 'JetBrains Mono', monospace; font-size: 13px; letter-spacing: 1.3px; text-transform: uppercase; color: var(--color-carbon); margin: 0; }
+  h1 { font-family: 'Playfair Display', Georgia, serif; font-weight: 400; font-size: clamp(48px, 7vw, 72px); line-height: 0.95; letter-spacing: -0.03em; margin: 14px 0 8px; }
+  .eff { color: var(--color-slate); font-size: 14px; letter-spacing: 0; margin: 0 0 32px; }
+  .card { background: #fff; border: 1px solid rgba(0, 0, 0, 0.12); border-radius: 12px; padding: 20px; margin: 24px 0; }
+  .card h2 { font-family: 'Inter Tight', Inter, sans-serif; font-weight: 600; font-size: 24px; letter-spacing: -0.72px; margin: 0 0 10px; }
+  p, li { color: var(--color-carbon); font-size: 16px; line-height: 1.7; letter-spacing: 0; }
+  ul { padding-left: 22px; margin: 0; }
   li { margin-bottom: 8px; }
-  li strong { color: var(--bone); }
-  footer { margin-top: 48px; padding-top: 20px; border-top: 1px solid var(--border);
-    color: var(--fog); font-size: 14px; }
-  code { font-family: ui-monospace, Menlo, monospace; font-size: 0.9em; color: var(--bone); }
+  li strong { color: #000; font-weight: 500; }
+  a.inline { color: rgba(0, 0, 0, 0.85); }
+  code { font-family: 'JetBrains Mono', monospace; font-size: 0.85em; color: #000; background: var(--color-linen); border-radius: 6px; padding: 1px 6px; }
+  footer { background: var(--color-void-black); color: #fff; margin-top: 40px; }
+  .foot-inner { max-width: 760px; margin: 0 auto; padding: 40px 24px; }
+  .foot-inner p { color: rgba(255, 255, 255, 0.45); font-size: 13px; margin: 0; }
+  .foot-inner a { color: rgba(255, 255, 255, 0.7); }
 </style>
 </head>
 <body>
+<div class="nav-wrap">
+  <div class="nav">
+    <a class="brand" href="/"><span class="brand-mark" aria-hidden="true">V</span>Everything Vim</a>
+    <a class="btn-nav" href="https://chromewebstore.google.com/detail/general-vim/mglliapjiolajkmcfaombcifockgaekc?authuser=0&hl=en" target="_blank" rel="noopener">Add to Chrome</a>
+  </div>
+</div>
 <main>
-  <a class="back" href="/">← AllinVim home</a>
-  <h1>Privacy Policy</h1>
-  <p class="eff">Effective: September 16, 2026 · Applies to the AllinVim browser extension.</p>
+  <a class="back" href="/">← Everything Vim home</a>
+  <p class="eyebrow">Privacy · No tracking</p>
+  <h1>Privacy Policy.</h1>
+  <p class="eff">Effective: September 16, 2026 · Applies to the Everything Vim browser extension.</p>
 
-  <p>AllinVim works fully offline. We operate no servers, include no analytics or tracking SDKs,
+  <p>Everything Vim works fully offline. We operate no servers, include no analytics or tracking SDKs,
   and collect nothing about you. This policy describes what the extension accesses on your device
   and why.</p>
 
-  <h2>Data stored on your device</h2>
-  <ul>
-    <li><strong>Settings, key mappings, exclusion rules, and marks</strong> are kept in
-    <code>chrome.storage</code>. Settings and marks use synced storage, so Chrome carries them
-    across your own signed-in devices via your Google account — we never see them.</li>
-    <li><strong>Session data</strong> (recently viewed tabs, in-memory UI state) lives only in
-    <code>chrome.storage.session</code> and disappears when the browser session ends.</li>
-    <li><strong>Backups you export</strong> are JSON files you save yourself, wherever you choose.</li>
-  </ul>
+  <div class="card">
+    <h2>Data stored on your device</h2>
+    <ul>
+      <li><strong>Settings, key mappings, exclusion rules, and marks</strong> are kept in
+      <code>chrome.storage</code>. Settings and marks use synced storage, so Chrome carries them
+      across your own signed-in devices via your Google account — we never see them.</li>
+      <li><strong>Session data</strong> (recently viewed tabs, in-memory UI state) lives only in
+      <code>chrome.storage.session</code> and disappears when the browser session ends.</li>
+      <li><strong>Backups you export</strong> are JSON files you save yourself, wherever you choose.</li>
+    </ul>
+  </div>
 
-  <h2>Data read locally, never transmitted</h2>
-  <ul>
-    <li><strong>History, bookmarks, and open tabs</strong> are read on-device to power Vomnibar
-    suggestions, tab commands, and recently-closed-tab restore. Matching happens locally; this
-    data is never sent anywhere.</li>
-    <li><strong>Page content</strong> is processed in memory by content scripts to provide
-    navigation and Vim editing. Text you edit stays in the page. Nothing is exfiltrated.</li>
-    <li><strong>Clipboard</strong> is written only when you explicitly invoke a copy command
-    (e.g. copy current URL); the extension never reads your clipboard.</li>
-    <li><strong>Notifications</strong> are used solely for the one-time “extension upgraded”
-    notice, which you can disable in Options.</li>
-  </ul>
+  <div class="card">
+    <h2>Data read locally, never transmitted</h2>
+    <ul>
+      <li><strong>History, bookmarks, and open tabs</strong> are read on-device to power Vomnibar
+      suggestions, tab commands, and recently-closed-tab restore. Matching happens locally; this
+      data is never sent anywhere.</li>
+      <li><strong>Page content</strong> is processed in memory by content scripts to provide
+      navigation and Vim editing. Text you edit stays in the page. Nothing is exfiltrated.</li>
+      <li><strong>Clipboard</strong> is written only when you explicitly invoke a copy command
+      (e.g. copy current URL); the extension never reads your clipboard.</li>
+      <li><strong>Notifications</strong> are used solely for the one-time “extension upgraded”
+      notice, which you can disable in Options.</li>
+    </ul>
+  </div>
 
-  <h2>Network connections</h2>
-  <ul>
-    <li>The extension makes <strong>no connections to developer-operated servers</strong> — there
-    are none.</li>
-    <li>If you use Vomnibar search completion, your keystrokes are sent to the
-    <strong>search engine you configured</strong> (e.g. Google, Wikipedia) to fetch suggestions —
-    exactly as typing in that engine’s own site would. This only happens for engines you set up,
-    and only while you use completion.</li>
-    <li>All other requests target the extension’s own internal (<code>chrome-extension://</code>)
-    resources, such as its stylesheet and key-motion configuration.</li>
-  </ul>
+  <div class="card">
+    <h2>Network connections</h2>
+    <ul>
+      <li>The extension makes <strong>no connections to developer-operated servers</strong> — there
+      are none.</li>
+      <li>If you use Vomnibar search completion, your keystrokes are sent to the
+      <strong>search engine you configured</strong> (e.g. Google, Wikipedia) to fetch suggestions —
+      exactly as typing in that engine’s own site would. This only happens for engines you set up,
+      and only while you use completion.</li>
+      <li>All other requests target the extension’s own internal (<code>chrome-extension://</code>)
+      resources, such as its stylesheet and key-motion configuration.</li>
+    </ul>
+  </div>
 
-  <h2>Sharing and sale</h2>
-  <p>We do not sell, rent, share, or otherwise disclose any data — there is no data pipeline to
-  disclose from. The extension requests broad host access (<code>&lt;all_urls&gt;</code>) solely
-  so keyboard navigation and editing work on every site you visit.</p>
+  <div class="card">
+    <h2>Sharing and sale</h2>
+    <p>We do not sell, rent, share, or otherwise disclose any data — there is no data pipeline to
+    disclose from. The extension requests broad host access (<code>&lt;all_urls&gt;</code>) solely
+    so keyboard navigation and editing work on every site you visit.</p>
+  </div>
 
-  <h2>Children’s privacy</h2>
-  <p>AllinVim collects no personal information from anyone, including children under 13.</p>
+  <div class="card">
+    <h2>Children’s privacy</h2>
+    <p>Everything Vim collects no personal information from anyone, including children under 13.</p>
+  </div>
 
-  <h2>Changes</h2>
-  <p>If this policy changes, the updated version will be posted here with a new effective date.
-  Material changes will also be noted in the extension’s release notes.</p>
+  <div class="card">
+    <h2>Changes</h2>
+    <p>If this policy changes, the updated version will be posted here with a new effective date.
+    Material changes will also be noted in the extension’s release notes.</p>
+  </div>
 
-  <h2>Contact</h2>
-  <p>Questions? Open an issue at
-  <a href="https://github.com/B-Eddie/allinvim/issues">github.com/B-Eddie/allinvim/issues</a>.</p>
-
-  <footer>AllinVim — Vim navigation, editing everywhere.</footer>
+  <div class="card">
+    <h2>Contact</h2>
+    <p>Questions? Open an issue at
+    <a class="inline" href="https://github.com/B-Eddie/allinvim/issues">github.com/B-Eddie/allinvim/issues</a>.</p>
+  </div>
 </main>
+<footer>
+  <div class="foot-inner">
+    <p>Everything Vim — Vim navigation, editing everywhere. · <a href="/">Home</a></p>
+  </div>
+</footer>
 </body>
 </html>

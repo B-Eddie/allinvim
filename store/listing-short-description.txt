@@ -1,1 +1,0 @@
-Vim navigation everywhere: hjkl scroll, link hints, Vomnibar — plus Vim editing in every text field, Docs & code.

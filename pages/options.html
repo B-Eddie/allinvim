@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>AllinVim Options</title>
+    <title>Everything Vim Options</title>
     <meta charset="UTF-8">
     <meta name="color-scheme" content="dark">
     <!-- Applies the saved theme before first paint. See lib/theme.js. -->
@@ -14,7 +14,7 @@
 
   <body class="vimium-body">
     <div id="wrapper">
-      <header>AllinVim Options</header>
+      <header>Everything Vim Options</header>
       <input type="hidden" name="settingsVersion" />
 
       <div id="settings-grid-container">
@@ -31,10 +31,10 @@
           <button id="exclusion-add-button">Add rule</button>
         </div>
         <div class="example">
-          Disable AllinVim on URLs.<br>
+          Disable Everything Vim on URLs.<br>
           "Patterns" are URL regular expressions. <code>*</code> will match zero or more characters.
           <br>
-          "Keys": AllinVim will exclude these keys and pass them through to the page.
+          "Keys": Everything Vim will exclude these keys and pass them through to the page.
         </div>
 
         <h2>Custom key mappings</h2>
@@ -74,7 +74,7 @@ b: http://b.com/?q=%s description
             name="newTabDestination"
             value="vimiumNewTabPage"
           />
-          <label for="vimiumNewTabPage">AllinVim blank new tab page</label>
+          <label for="vimiumNewTabPage">Everything Vim blank new tab page</label>
           <div id="openVomnibarContainer">
             <input id="openVomnibarOnNewTabPage" type="checkbox" name="openVomnibarOnNewTabPage">
             <label for="openVomnibarOnNewTabPage">Open the Vomnibar when the page loads</label>
@@ -91,29 +91,29 @@ b: http://b.com/?q=%s description
           <input type="text" name="newTabCustomUrl" style="display: none" />
         </div>
         <div class="example">
-          The page to open when using AllinVim's "create new tab" command. To have AllinVim commands
-          work on <em>all</em> new tab pages opened by the browser, a separate AllinVim new tab
+          The page to open when using Everything Vim's "create new tab" command. To have Everything Vim commands
+          work on <em>all</em> new tab pages opened by the browser, a separate Everything Vim new tab
           extension is required. See the full details <a
             href="https://github.com/philc/vimium/blob/master/README.md#how-to-allow-vimium-to-work-on-new-tab-pages"
             target="_blank"
           >here</a>.
         </div>
 
-        <header>AllinVim</header>
+        <header>Everything Vim</header>
 
         <h2>Theme</h2>
         <div>
           <select name="theme"></select>
         </div>
         <div class="example">
-          The color theme for every part of AllinVim: the options page, the toolbar popup, the
+          The color theme for every part of Everything Vim: the options page, the toolbar popup, the
           Vomnibar, the HUD, the help dialog, the command listing, in-page link hints and the
           edit-mode indicator. The list of themes is defined in <code>lib/theme.js</code>.
         </div>
 
         <h2>Mode indicator position</h2>
         <div>
-          <select name="generalVimIndicatorPosition">
+          <select name="everythingVimIndicatorPosition">
             <option value="corner">Bottom-right chip</option>
             <option value="field">Anchored to the active textbox</option>
             <option value="hidden">Hidden</option>
@@ -127,7 +127,7 @@ b: http://b.com/?q=%s description
 
         <h2>Google Docs indicator style</h2>
         <div>
-          <select name="generalVimDocsIndicator">
+          <select name="everythingVimDocsIndicator">
             <option value="bar">Full-width bottom bar (Vim-style)</option>
             <option value="chip">Small bottom-right card</option>
           </select>
@@ -203,7 +203,7 @@ b: http://b.com/?q=%s description
           </label>
           <div class="example">
             You activate the link with <tt>Enter</tt>, <em>always</em>; so you never accidentally
-            type AllinVim commands.
+            type Everything Vim commands.
           </div>
         </div>
 
@@ -231,7 +231,7 @@ b: http://b.com/?q=%s description
           Hide update notifications
         </label>
         <div class="example">
-          When enabled, "AllinVim has been updated" notifications will not be shown.
+          When enabled, "Everything Vim has been updated" notifications will not be shown.
         </div>
 
         <h2></h2>
@@ -271,7 +271,7 @@ b: http://b.com/?q=%s description
           The "navigate to next page" command uses these patterns to find the link to follow.
         </div>
 
-        <h2>CSS for AllinVim UI</h2>
+        <h2>CSS for Everything Vim UI</h2>
         <div>
           <textarea
             name="userDefinedLinkHintCss"
@@ -286,13 +286,13 @@ b: http://b.com/?q=%s description
           pop-up and the HUD.<br>
           By default, this CSS is used to style the characters next to each link hint.<br>
           <br>
-          These styles are used in addition to and take precedence over AllinVim's default styles.
+          These styles are used in addition to and take precedence over Everything Vim's default styles.
         </div>
 
         <header>Backup and Restore</header>
 
         <h2>Backup</h2>
-        <a id="download-backup" download="allinvim-options.json" href="#">Download backup</a>
+        <a id="download-backup" download="everything-vim-options.json" href="#">Download backup</a>
         <div class="example">Download a backup of your settings.</div>
 
         <h2>Restore</h2>

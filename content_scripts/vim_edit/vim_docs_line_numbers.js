@@ -5,7 +5,7 @@
     const config = {
         zIndex: 1000,
         fontSize: '15px',
-        // Resolves to the palette used by the rest of AllinVim's UI. See lib/theme.js.
+        // Resolves to the palette used by the rest of Everything Vim's UI. See lib/theme.js.
         lineColor: 'var(--color-fog-text, #6c6c6c)',
         fontWeight: 'normal',
         minTopPosition: 120,

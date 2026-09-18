@@ -21,9 +21,7 @@ js = (
     "Regenerate with: python3 build_scripts/gen_motions_inline.py\n"
     "// Inlined so content scripts never fetch() on web pages (page CSP "
     "connect-src blocks chrome-extension:// fetches on strict sites like GitHub).\n"
-    "window.__GENERALVIM_MOTIONS = " + json.dumps(cfg, separators=(",", ":")) + ";\n"
-    "// Legacy alias (AllInVim-era readers).\n"
-    "window.__ALLINVIM_MOTIONS = window.__GENERALVIM_MOTIONS;\n"
+    "window.__EVERYTHINGVIM_MOTIONS = " + json.dumps(cfg, separators=(",", ":")) + ";\n"
 )
 DST.write_text(js)
 print(f"wrote {DST} ({len(js)} bytes)")

@@ -3,275 +3,268 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>AllinVim — Vim everywhere, on every site</title>
-<meta name="description" content="AllinVim is a free Chrome extension that unifies Vim-style page navigation with Vim editing in every text field, Google Docs, and code editor." />
-<meta name="color-scheme" content="dark" />
-<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='4' fill='%23121317'/%3E%3Cpath d='M9 8l7 16 7-16h-4.5L16 15 13.5 8z' fill='%23a8ff53'/%3E%3C/svg%3E" />
+<title>Everything Vim — Vim everywhere, on every site</title>
+<meta name="description" content="Everything Vim is a free Chrome extension that navigates any page like Vim and edits every text surface like Vim — text fields, Google Docs, and code editors." />
+<meta name="color-scheme" content="light dark" />
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23020204'/%3E%3Cpath d='M10 9l6 14 6-14h-3.6L16 14.4 13.6 9z' fill='white'/%3E%3C/svg%3E" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@300;400&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;1,400&family=Inter+Tight:wght@600;700&family=Inter:wght@300;400;500&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet" />
 <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
 
-<header class="nav">
-  <div class="nav-inner">
-    <a class="brand" href="#top" aria-label="AllinVim home">
-      <span class="brand-mark" aria-hidden="true">▶</span>
-      <span class="brand-word">AllinVim</span>
-      <span class="brand-tag">Chrome Extension</span>
+<header class="nav-wrap">
+  <div class="nav" role="navigation" aria-label="Primary">
+    <a class="brand" href="#top" aria-label="Everything Vim home">
+      <span class="brand-mark" aria-hidden="true">V</span>
+      <span class="brand-word">Everything Vim</span>
     </a>
-    <nav class="nav-links" aria-label="Primary">
+    <nav class="nav-pills" aria-label="Sections">
+      <a href="#try">Try it</a>
       <a href="#how">How it works</a>
-      <a href="#features">Product</a>
       <a href="#bindings">Bindings</a>
       <a href="#faq">FAQ</a>
     </nav>
     <div class="nav-actions">
-      <a class="github-badge" href="https://github.com/B-Eddie/allinvim" target="_blank" rel="noopener" aria-label="AllinVim on GitHub">
-        <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8Z"/></svg>
-        <span>allinvim</span>
-      </a>
-      <a class="ghost-btn" href="https://github.com/B-Eddie/allinvim" target="_blank" rel="noopener">GitHub</a>
-      <a class="cta-btn" href="#install">Add to Chrome</a>
+      <a class="nav-github" href="https://github.com/B-Eddie/allinvim" target="_blank" rel="noopener">GitHub</a>
+      <a class="btn-nav" href="https://chromewebstore.google.com/detail/general-vim/mglliapjiolajkmcfaombcifockgaekc?authuser=0&hl=en" target="_blank" rel="noopener">Add to Chrome</a>
       <button class="nav-toggle" aria-label="Open menu" aria-expanded="false"><span></span><span></span><span></span></button>
     </div>
   </div>
   <div class="nav-mobile" hidden>
+    <a href="#try">Try it</a>
     <a href="#how">How it works</a>
-    <a href="#features">Product</a>
     <a href="#bindings">Bindings</a>
     <a href="#faq">FAQ</a>
-    <a href="#install">Add to Chrome</a>
+    <a class="mobile-cta" href="https://chromewebstore.google.com/detail/general-vim/mglliapjiolajkmcfaombcifockgaekc?authuser=0&hl=en" target="_blank" rel="noopener">Add to Chrome — it's free</a>
   </div>
 </header>
 
-<main id="top">
-
-  <!-- HERO -->
-  <section class="hero">
-    <p class="eyebrow">Vim navigation · Text-field editing · Google Docs</p>
-    <h1>VIM, ON EVERY SITE</h1>
-    <p class="sub">A free Chrome extension that navigates the page like Vim and edits every text surface like Vim — textareas, Docs, and code editors — with a handoff you never feel.</p>
-    <div class="hero-actions">
-      <a class="cta-btn cta-lg" href="#install">Add to Chrome — it's free</a>
-      <a class="hero-link" href="https://github.com/B-Eddie/allinvim" target="_blank" rel="noopener">View on GitHub →</a>
+<!-- DARK THEATER -->
+<section class="hero" id="top">
+  <div class="hero-inner">
+    <p class="eyebrow eyebrow-light hero-fade" style="--hd:0ms">Everything Vim — Chrome extension · Free · Open source</p>
+    <h1 class="display" aria-label="Stop reaching for the mouse."><span class="line" aria-hidden="true"><span style="--hd:80ms">Stop reaching</span></span><span class="line" aria-hidden="true"><span style="--hd:200ms">for the <em>mouse.</em></span></span></h1>
+    <p class="hero-sub hero-fade" style="--hd:340ms">Navigate any page like Vim. Edit every text surface like Vim — text fields, Google Docs, and code editors — with a handoff you never feel.</p>
+    <div class="hero-actions hero-fade" style="--hd:460ms">
+      <a class="btn-hero" href="https://chromewebstore.google.com/detail/general-vim/mglliapjiolajkmcfaombcifockgaekc?authuser=0&hl=en" target="_blank" rel="noopener">Add to Chrome — it's free</a>
+      <a class="btn-watch" href="#try"><span class="play" aria-hidden="true">▶</span>Try it live</a>
     </div>
-    <div class="hero-pills" aria-label="Surfaces">
-      <span class="pill"><i class="dot violet"></i>Page navigation</span>
-      <span class="pill"><i class="dot pink"></i>Text fields</span>
-      <span class="pill"><i class="dot lime"></i>Google Docs</span>
-      <span class="pill"><i class="dot green"></i>Code editors</span>
-    </div>
-
-    <div class="code-pane" role="img" aria-label="Example: the router decides who owns each keystroke">
-      <div class="code-bar"><span></span><span></span><span></span><em>mode_edit.js — the handoff</em></div>
-<pre><code><span class="c">// capture phase: edit router runs before AllinVim navigation</span>
-<span class="k">window</span>.<span class="p">addEventListener</span>(<span class="s">"keydown"</span>, <span class="k">onKeyDown</span>, <span class="t">true</span>);
-
-<span class="k">if</span> (<span class="v">overlayOpen</span>) <span class="k">return</span> <span class="v">overlayTrap</span>(<span class="v">e</span>);  <span class="c">// complex editors: own surface</span>
-<span class="k">if</span> (<span class="v">vimiumOverlayVisible</span>()) <span class="k">return</span>;          <span class="c">// hints / vomnibar win</span>
-<span class="k">if</span> (<span class="v">isGoogleDocs</span>()) <span class="k">return</span> <span class="v">handleDocsKey</span>(<span class="v">e</span>);
-<span class="k">if</span> (<span class="v">inEditMode</span>()) { <span class="v">e</span>.<span class="p">stopImmediatePropagation</span>(); <span class="k">return</span> <span class="v">feedToken</span>(<span class="v">e</span>); }
-<span class="c">// otherwise: do nothing — AllinVim navigates the page</span></code></pre>
-    </div>
-  </section>
-
-  <!-- HOW -->
-  <section id="how" class="section split">
-    <div class="code-pane">
-      <div class="code-bar"><span></span><span></span><span></span><em>handoff matrix</em></div>
-<pre><code><span class="c">// who owns the keystroke?</span>
-<span class="v">pageFocus</span>      <span class="p">→</span> <span class="k">AllinVim</span>   <span class="c">hjkl scroll · f hints · o vomnibar</span>
-<span class="v">textarea</span>       <span class="p">→</span> <span class="k">direct</span>   <span class="c">Esc = normal · i = insert</span>
-<span class="v">docsCanvas</span>     <span class="p">→</span> <span class="k">synthetic</span><span class="c"> boots normal · tracks insert for .</span>
-<span class="v">monaco / cm</span>    <span class="p">→</span> <span class="k">overlay</span>  <span class="c">Esc opens · Esc saves · ^C drops</span></code></pre>
-    </div>
-    <div class="split-copy">
-      <p class="eyebrow">How it works</p>
-      <h2>Three Vims. One router. Zero fights.</h2>
-      <p>AllinVim layers the Vim-For-Textarea direct executor and the Vim-For-Docs synthetic executor inside AllinVim navigation. A single capture-phase listener decides the owner per keystroke — editor keys never leak into page scroll, and page keys never type into your buffer.</p>
-      <a class="ghost-btn" href="#bindings">See the bindings</a>
-    </div>
-  </section>
-
-  <p class="strip-caption">TRUSTED PATTERN · BUILT ON PROVEN ENGINES</p>
-  <div class="logo-strip" aria-hidden="true">
-    <span>Vimium</span><span>Vim-For-Docs</span><span>Vim-For-Textarea</span><span>Surfingkeys pattern</span><span>wasavi pattern</span>
+    <p class="hero-micro hero-fade" style="--hd:560ms">Free · No signup · Press <kbd class="kbd-dark">?</kbd> on any page for help</p>
   </div>
+  <div class="spectrum" aria-hidden="true"></div>
+</section>
 
-  <!-- FEATURES -->
-  <section id="features" class="section">
-    <p class="eyebrow">Product</p>
-    <h2>Built for hands that never leave home row</h2>
-    <div class="cards">
-      <article class="card">
-        <p class="eyebrow">Navigate</p>
-        <h3>AllinVim page control</h3>
-        <p>Hinted links, Vomnibar, tabs, marks, find, and history — the full upstream binding set, retriggered per frame.</p>
-      </article>
-      <article class="card">
-        <p class="eyebrow">Edit</p>
-        <h3>Modal editing in every field</h3>
-        <p>Operators, text objects, visual modes, and <span class="hl">.</span> repeat — direct buffer surgery where the DOM allows it.</p>
-      </article>
-      <article class="card">
-        <p class="eyebrow">Docs</p>
-        <h3>Google Docs, exactly</h3>
-        <p>Canvas editing through synthetic keys and selection motion. Boots in normal mode because Docs is always editing.</p>
-      </article>
-      <article class="card">
-        <p class="eyebrow">Code</p>
-        <h3>Overlay for frameworks</h3>
-        <p>CodeMirror, Monaco, ProseMirror, and friends edit in our own exact surface, then commit once. No desync, ever.</p>
-      </article>
-      <article class="card">
-        <p class="eyebrow">Fast</p>
-        <h3>document_start, zero fetch</h3>
-        <p>Inlined motions config, rAF-coalesced caret, memoized context checks. Strict-CSP sites like GitHub just work.</p>
-      </article>
-      <article class="card">
-        <p class="eyebrow">Yours</p>
-        <h3>Remappable everything</h3>
-        <p>AllinVim custom key mappings plus the shared motions JSON. Exclusion rules per URL pattern included.</p>
-      </article>
-    </div>
-  </section>
+<main>
 
-  <!-- BINDINGS -->
-  <section id="bindings" class="section">
-    <p class="eyebrow">Bindings</p>
-    <h2>The core set</h2>
-    <div class="cards cards-3">
-      <article class="card">
-        <p class="eyebrow">Move</p>
-        <h3>Navigate</h3>
-        <dl class="keys">
-          <div><dt>h j k l</dt><dd>Scroll / move</dd></div>
-          <div><dt>f F</dt><dd>Hint links, new tab</dd></div>
-          <div><dt>o O</dt><dd>Vomnibar, new tab</dd></div>
-          <div><dt>gg G</dt><dd>Top / bottom</dd></div>
-          <div><dt>/ n N</dt><dd>Find, next, prev</dd></div>
-        </dl>
-      </article>
-      <article class="card">
-        <p class="eyebrow">Act</p>
-        <h3>Operators</h3>
-        <dl class="keys">
-          <div><dt>d c y</dt><dd>Delete, change, yank</dd></div>
-          <div><dt>iw i" a(</dt><dd>Text objects</dd></div>
-          <div><dt>x p P</dt><dd>Char, paste after/before</dd></div>
-          <div><dt>u ctrl+r</dt><dd>Undo, redo</dd></div>
-          <div><dt>. J ~</dt><dd>Repeat, join, case</dd></div>
-        </dl>
-      </article>
-      <article class="card">
-        <p class="eyebrow">Modes</p>
-        <h3>Edit and select</h3>
-        <dl class="keys">
-          <div><dt>Esc</dt><dd>Normal mode</dd></div>
-          <div><dt>i a o</dt><dd>Insert variants</dd></div>
-          <div><dt>v V</dt><dd>Visual, line visual</dd></div>
-          <div><dt>gi</dt><dd>Focus first input</dd></div>
-          <div><dt>ctrl+;</dt><dd>Force overlay editor</dd></div>
-        </dl>
-      </article>
-    </div>
-    <p class="note">Full list any time: press <kbd>?</kbd> on any page. Everything above is remappable.</p>
-  </section>
+  <!-- 01 TRY -->
+  <section id="try" class="section">
+    <p class="eyebrow rv">01 — Try it live</p>
+    <h2 class="section-title rv">Don't read docs. Press keys.</h2>
+    <p class="lede rv">Three live miniatures of the extension, running on this page. Pick a step, click in, and type.</p>
 
-  <!-- DEMO -->
-  <section class="section">
-    <p class="eyebrow">Try the feel</p>
-    <h2>Esc is the whole tutorial</h2>
-    <div class="demo">
-      <div class="demo-bar"><span id="demoMode" class="pill"><i class="dot lime"></i>Insert</span><span class="demo-hint">click, then press Esc</span></div>
-      <textarea id="demoArea" rows="8" spellcheck="false">AllinVim edits this box the way it edits the web.
+    <div class="split">
+      <div class="steps rv" role="tablist" aria-label="Interactive examples" data-stagger>
+        <button class="step is-active rv" role="tab" aria-selected="true" data-tab="navigate">
+          <span class="step-no">01</span>
+          <span class="step-body"><span class="step-name">Navigate</span><span class="step-desc">Press f — link hints on a miniature page.</span></span>
+        </button>
+        <button class="step rv" role="tab" aria-selected="false" data-tab="edit">
+          <span class="step-no">02</span>
+          <span class="step-body"><span class="step-name">Edit</span><span class="step-desc">Press Esc — a real modal buffer.</span></span>
+        </button>
+        <button class="step rv" role="tab" aria-selected="false" data-tab="command">
+          <span class="step-no">03</span>
+          <span class="step-body"><span class="step-name">Command</span><span class="step-desc">Type to filter the Vomnibar. Press ? for help.</span></span>
+        </button>
+      </div>
 
-Click here and press Esc.
-Move with h j k l and w b e.
+      <div class="window rv-scale" role="tabpanel" id="panel-navigate" aria-label="Link hints demo">
+        <div class="window-bar"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="window-tab">demo / morning-reading</span><span class="pill pill-sm">Hints</span></div>
+        <div class="window-body">
+          <div class="demo-head">
+            <p class="demo-sub">Click <strong>Show hints</strong> — or focus the page and press <kbd>f</kbd> — then press the highlighted letter.</p>
+            <div class="demo-head-actions">
+              <span class="mode" id="hintMode">Idle</span>
+              <button class="btn-ink btn-sm" id="hintStart" type="button">Show hints</button>
+            </div>
+          </div>
+          <div class="mock-page" id="mockPage" tabindex="0" aria-label="Demo mini page. Press f to show link hints.">
+            <div class="mock-links">
+              <a href="#try" data-hint="A" data-name="Project docs">Project docs <span class="ext">↗</span></a>
+              <a href="#try" data-hint="S" data-name="GitHub repo">GitHub repo <span class="ext">↗</span></a>
+              <a href="#try" data-hint="D" data-name="Hacker News thread">Hacker News thread <span class="ext">↗</span></a>
+              <a href="#try" data-hint="F" data-name="Compose in Gmail">Compose in Gmail <span class="ext">↗</span></a>
+            </div>
+            <p class="mock-status" id="hintStatus" role="status">Tip: this is a miniature web page. Hints work exactly like the extension.</p>
+          </div>
+          <div class="demo-foot"><span><kbd>f</kbd> show hints</span><span><kbd>A</kbd>–<kbd>F</kbd> follow</span><span><kbd>Shift</kbd>+<kbd>F</kbd> new tab</span><span><kbd>Esc</kbd> dismiss</span></div>
+        </div>
+      </div>
+
+      <div class="window rv-scale" role="tabpanel" id="panel-edit" aria-label="Modal editing demo" hidden>
+        <div class="window-bar"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="window-tab">buffer / untitled.txt</span><span class="pill pill-sm">Modal</span></div>
+        <div class="window-body">
+          <div class="demo-head">
+            <p class="demo-sub">Click the buffer, press <kbd>Esc</kbd> for Normal mode — <kbd>h</kbd> <kbd>j</kbd> <kbd>k</kbd> <kbd>l</kbd> <kbd>w</kbd> <kbd>b</kbd> move, <kbd>x</kbd> and <kbd>dw</kbd> delete, <kbd>i</kbd> types again.</p>
+            <span class="mode" id="editMode">Insert</span>
+          </div>
+          <textarea id="vimBuffer" rows="7" spellcheck="false">Everything Vim edits this box the way it edits the web.
+
+Press Esc to enter normal mode.
+Move with h j k l and w b e, delete with x.
 Press i to type again.</textarea>
-    </div>
-  </section>
+          <div class="demo-foot"><span class="keylog">Last keys: <strong id="keyLog">—</strong></span><span><kbd>u</kbd> undo</span><span><kbd>.</kbd> repeat</span><span>Second <kbd>Esc</kbd> blurs</span></div>
+        </div>
+      </div>
 
-  <!-- INSTALL -->
-  <section id="install" class="section">
-    <p class="eyebrow">Install</p>
-    <h2>Up in a minute</h2>
-    <div class="install">
-      <ol>
-        <li><strong>Load the folder unpacked.</strong> <span class="mono">chrome://extensions → Developer mode → Load unpacked →</span> the extension folder.</li>
-        <li><strong>Press ? on any page.</strong> The help dialog lists every navigation binding.</li>
-        <li><strong>Click any text field, press Esc.</strong> You are in normal mode. <span class="mono">i</span> types again.</li>
-      </ol>
-      <div class="install-side">
-        <p class="install-big">Esc</p>
-        <p>The only shortcut you need on day one.</p>
-        <a class="cta-btn" href="#top">Back to top</a>
+      <div class="window rv-scale" role="tabpanel" id="panel-command" aria-label="Vomnibar demo" hidden>
+        <div class="window-bar"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="window-tab">vomnibar / tabs · bookmarks · history</span><span class="pill pill-sm">Command</span></div>
+        <div class="window-body">
+          <div class="demo-head">
+            <p class="demo-sub">Type to filter — just like <kbd>o</kbd>. Press <kbd>?</kbd> anywhere on this page for the full binding help.</p>
+            <button class="btn-ink btn-sm" id="helpOpen" type="button">Open help (?)</button>
+          </div>
+          <div class="vomnibar">
+            <div class="vom-input"><span aria-hidden="true">⌕</span><input id="vomInput" type="text" placeholder="Type a URL, bookmark, or history entry…" aria-label="Demo vomnibar" autocomplete="off" /><kbd>o</kbd></div>
+            <ul class="vom-list" id="vomList"></ul>
+          </div>
+          <div class="demo-foot"><span><kbd>o</kbd> open</span><span><kbd>O</kbd> new tab</span><span><kbd>T</kbd> search tabs</span><span><kbd>?</kbd> help</span></div>
+        </div>
       </div>
     </div>
   </section>
 
-  <!-- TESTIMONIALS -->
-  <section class="section">
-    <p class="eyebrow">Loved by developers</p>
-    <h2>Keyboards stay down</h2>
-    <div class="cards cards-3">
-      <article class="card quote">
-        <p>"Hints for links, real motions in every input, and Docs finally behaves. I uninstalled three extensions."</p>
-        <p class="who">Staff Engineer · <span>Read story →</span></p>
-      </article>
-      <article class="card quote">
-        <p>"The overlay editor is the trick. Monaco stopped fighting me the day I switched."</p>
-        <p class="who">Frontend Lead · <span>Read story →</span></p>
-      </article>
-      <article class="card quote">
-        <p>"Second-Esc to blur back to navigation is the detail nobody else got right."</p>
-        <p class="who">Docs-heavy Founder · <span>Read story →</span></p>
-      </article>
+  <!-- 02 HOW -->
+  <section id="how" class="section">
+    <p class="eyebrow rv">02 — How it works</p>
+    <h2 class="section-title rv">Three Vims. One router. Zero fights.</h2>
+    <p class="lede rv">One capture-phase listener decides who owns each keystroke. Editor keys never leak into page scroll, and page keys never type into your buffer.</p>
+    <div class="split">
+      <div class="steps steps-static rv" data-stagger>
+        <div class="step is-active rv"><span class="step-no">01</span><span class="step-body"><span class="step-name">Router owns the page</span><span class="step-desc">Hints, Vomnibar, tabs, marks, find, history — retriggered per frame.</span></span></div>
+        <div class="step rv"><span class="step-no">02</span><span class="step-body"><span class="step-name">Direct owns the field</span><span class="step-desc">Operators and text objects run on the buffer itself. Esc is normal, i is insert.</span></span></div>
+        <div class="step rv"><span class="step-no">03</span><span class="step-body"><span class="step-name">Synthetic + overlay</span><span class="step-desc">Docs canvas through synthetic keys. Code editors in an exact surface, committed once.</span></span></div>
+      </div>
+      <div class="window rv-scale">
+        <div class="window-bar"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="window-tab">handoff / who owns the keystroke</span><span class="pill pill-sm">Matrix</span></div>
+        <div class="window-body">
+          <table class="matrix">
+            <thead><tr><th>Focus</th><th>Owner</th><th>Keys</th></tr></thead>
+            <tbody>
+              <tr><td>Page</td><td>Everything Vim</td><td class="mono">hjkl scroll · f hints · o vomnibar</td></tr>
+              <tr><td>Textarea</td><td>Direct</td><td class="mono">Esc normal · i insert · dw u .</td></tr>
+              <tr><td>Docs canvas</td><td>Synthetic</td><td class="mono">boots normal · tracks insert for .</td></tr>
+              <tr><td>Monaco / CM</td><td>Overlay</td><td class="mono">Esc opens · Esc saves · ^C drops</td></tr>
+            </tbody>
+          </table>
+          <p class="window-note">Editing keys are consumed with <span class="mono">stopImmediatePropagation</span> — navigation never sees them.</p>
+        </div>
+      </div>
     </div>
+  </section>
+
+  <!-- 03 PRODUCT -->
+  <section id="features" class="section">
+    <p class="eyebrow rv">03 — Product</p>
+    <h2 class="section-title rv">Built for hands that never leave home row.</h2>
+    <div class="feature-grid" data-stagger>
+      <article class="feature rv"><span class="pill">Navigate</span><h3>Everything Vim page control</h3><p>Hinted links, Vomnibar, tabs, marks, find, and history — the full upstream binding set, retriggered per frame.</p></article>
+      <article class="feature rv"><span class="pill">Edit</span><h3>Modal editing in every field</h3><p>Operators, text objects, visual modes, and dot-repeat — direct buffer surgery where the DOM allows it.</p></article>
+      <article class="feature rv"><span class="pill">Docs</span><h3>Google Docs, exactly</h3><p>Canvas editing through synthetic keys and selection motion. Boots in normal mode, because Docs is always editing.</p></article>
+      <article class="feature rv"><span class="pill">Code</span><h3>Overlay for frameworks</h3><p>CodeMirror, Monaco, and ProseMirror edit in our own exact surface, then commit once. No desync, ever.</p></article>
+    </div>
+    <p class="strip rv">Fast at document_start · zero fetch · remappable everything · per-URL exclusions</p>
+  </section>
+
+  <!-- 04 BINDINGS -->
+  <section id="bindings" class="section">
+    <p class="eyebrow rv">04 — Bindings</p>
+    <h2 class="section-title rv">The core set.</h2>
+    <div class="window window-wide rv-scale">
+      <div class="window-bar"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="window-tab">help / core bindings</span><span class="pill pill-sm">Press ?</span></div>
+      <div class="window-body bindings">
+        <div class="bind-col"><p class="eyebrow eyebrow-sm">Move</p><h4>Navigate</h4>
+          <dl class="keys">
+            <div><dt>h j k l</dt><dd>Scroll / move</dd></div>
+            <div><dt>f F</dt><dd>Hint links, new tab</dd></div>
+            <div><dt>o O</dt><dd>Vomnibar, new tab</dd></div>
+            <div><dt>gg G</dt><dd>Top / bottom</dd></div>
+            <div><dt>/ n N</dt><dd>Find, next, prev</dd></div>
+          </dl>
+        </div>
+        <div class="bind-col"><p class="eyebrow eyebrow-sm">Act</p><h4>Operators</h4>
+          <dl class="keys">
+            <div><dt>d c y</dt><dd>Delete, change, yank</dd></div>
+            <div><dt>iw i" a(</dt><dd>Text objects</dd></div>
+            <div><dt>x p P</dt><dd>Char, paste after/before</dd></div>
+            <div><dt>u ctrl+r</dt><dd>Undo, redo</dd></div>
+            <div><dt>. J ~</dt><dd>Repeat, join, case</dd></div>
+          </dl>
+        </div>
+        <div class="bind-col"><p class="eyebrow eyebrow-sm">Modes</p><h4>Edit and select</h4>
+          <dl class="keys">
+            <div><dt>Esc</dt><dd>Normal mode</dd></div>
+            <div><dt>i a o</dt><dd>Insert variants</dd></div>
+            <div><dt>v V</dt><dd>Visual, line visual</dd></div>
+            <div><dt>gi</dt><dd>Focus first input</dd></div>
+            <div><dt>ctrl+;</dt><dd>Force overlay editor</dd></div>
+          </dl>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 05 INSTALL -->
+  <section id="install" class="section section-narrow">
+    <p class="eyebrow eyebrow-center rv">05 — Install</p>
+    <h2 class="section-title title-center rv">Up in a minute.</h2>
+    <ol class="install-steps rv" data-stagger>
+      <li class="rv"><span class="step-no">01</span><p><strong>Add it from the Chrome Web Store.</strong> One click, no signup, free forever.</p></li>
+      <li class="rv"><span class="step-no">02</span><p><strong>Press ? on any page.</strong> The help dialog lists every navigation binding.</p></li>
+      <li class="rv"><span class="step-no">03</span><p><strong>Click any text field, press Esc.</strong> You are in normal mode. <kbd>i</kbd> types again.</p></li>
+    </ol>
+    <div class="closer rv">
+      <p class="install-big">Esc</p>
+      <p class="install-sub">The only shortcut you need on day one.</p>
+      <div class="hero-actions hero-actions-light">
+        <a class="btn-dark" href="https://chromewebstore.google.com/detail/general-vim/mglliapjiolajkmcfaombcifockgaekc?authuser=0&hl=en" target="_blank" rel="noopener">Get Everything Vim</a>
+        <a class="text-link" href="https://github.com/B-Eddie/allinvim" target="_blank" rel="noopener">Star on GitHub →</a>
+      </div>
+      <p class="install-micro">Chrome Web Store · Everything Vim · MIT lineage</p>
+    </div>
+  </section>
+
+  <!-- QUOTE -->
+  <section class="section section-narrow">
+    <figure class="pullquote rv">
+      <blockquote>“Hints for links, real motions in every input, and Docs finally behaves. I uninstalled three extensions.”</blockquote>
+      <figcaption>Staff Engineer</figcaption>
+    </figure>
   </section>
 
   <!-- FAQ -->
-  <section id="faq" class="section">
-    <p class="eyebrow">Questions</p>
-    <h2>FAQ</h2>
-    <div class="faq">
+  <section id="faq" class="section section-narrow">
+    <p class="eyebrow rv">06 — Questions</p>
+    <h2 class="section-title rv">FAQ.</h2>
+    <div class="faq rv">
       <details open>
         <summary>Which sites does it work on?</summary>
-        <p>Every site. Page navigation runs on all URLs; text editing activates in any textarea, text input, contenteditable, Google Docs document, or supported code editor.</p>
+        <div class="faq-a"><div><p>Every site. Page navigation runs on all URLs; text editing activates in any textarea, text input, contenteditable, Google Docs document, or supported code editor.</p></div></div>
       </details>
       <details>
         <summary>How does the handoff avoid conflicts?</summary>
-        <p>One capture-phase router runs before AllinVim navigation. Editing keys are consumed with stopImmediatePropagation so navigation never sees them; otherwise the router stays silent and AllinVim navigates. Visible AllinVim overlays always win, except the commit/discard overlay which owns the keyboard.</p>
+        <div class="faq-a"><div><p>One capture-phase router runs before page navigation. Editing keys are consumed so navigation never sees them; otherwise the router stays silent. Visible overlays always win, except the commit/discard overlay which owns the keyboard.</p></div></div>
       </details>
       <details>
         <summary>Why an overlay for code editors?</summary>
-        <p>Framework editors own their document model — in-place key surgery desyncs it. Editing in our own exact textarea and committing once (the Surfingkeys/wasavi pattern) is the only correct approach.</p>
-      </details>
-      <details>
-        <summary>Is it fast on heavy pages?</summary>
-        <p>Yes. document_start injection, inlined config (no fetch, CSP-safe), targeted hint selectors, rAF-coalesced caret, and memoized context checks. No polling.</p>
+        <div class="faq-a"><div><p>Framework editors own their document model — in-place key surgery desyncs it. Editing in an exact textarea and committing once is the only correct approach.</p></div></div>
       </details>
       <details>
         <summary>Can I remap keys or exclude sites?</summary>
-        <p>Yes. AllinVim custom key mappings, the shared motions JSON, and per-pattern exclusion rules in Options.</p>
+        <div class="faq-a"><div><p>Yes. Custom key mappings, the shared motions JSON, and per-pattern exclusion rules in Options.</p></div></div>
       </details>
-    </div>
-  </section>
-
-  <section class="final">
-    <p class="eyebrow">Free · Open source · MIT lineage</p>
-    <h2>STOP REACHING FOR THE MOUSE</h2>
-    <p>Every page is navigable. Every text surface is a Vim buffer. Install once and stay on home row.</p>
-    <div class="hero-actions">
-      <a class="cta-btn cta-lg" href="#install">Get AllinVim</a>
-      <a class="hero-link" href="https://github.com/B-Eddie/allinvim" target="_blank" rel="noopener">Star on GitHub →</a>
-    </div>
-    <div class="hero-pills">
-      <span class="pill"><i class="dot violet"></i>AI agents</span>
-      <span class="pill"><i class="dot pink"></i>Media processing</span>
-      <span class="pill"><i class="dot lime"></i>Run Python</span>
     </div>
   </section>
 
@@ -279,16 +272,32 @@ Press i to type again.</textarea>
 
 <footer>
   <div class="foot-inner">
-    <a class="brand" href="#top"><span class="brand-mark" aria-hidden="true">▶</span><span class="brand-word">AllinVim</span></a>
+    <a class="brand brand-light" href="#top"><span class="brand-mark brand-mark-light" aria-hidden="true">V</span><span class="brand-word">Everything Vim</span></a>
     <div class="foot-links">
       <a href="https://github.com/B-Eddie/allinvim" target="_blank" rel="noopener">GitHub</a>
       <a href="#bindings">Bindings</a>
       <a href="#faq">FAQ</a>
       <a href="/privacy">Privacy</a>
     </div>
-    <p class="foot-note">AllinVim — navigation by Vim, editing everywhere. Trigger.dev styled, shadowless by design.</p>
+    <p class="foot-note">Everything Vim — navigation by Vim, editing everywhere.</p>
   </div>
 </footer>
+
+<!-- Help overlay -->
+<div class="help-backdrop" id="helpBackdrop" hidden>
+  <div class="window help-dialog" role="dialog" aria-modal="true" aria-label="Everything Vim bindings help">
+    <div class="window-bar"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="window-tab">help / all bindings</span><button class="btn-ink btn-sm" id="helpClose" type="button">Close (Esc)</button></div>
+    <div class="window-body">
+      <div class="help-grid">
+        <div><p class="eyebrow eyebrow-sm">Navigate</p><p><kbd>h</kbd><kbd>j</kbd><kbd>k</kbd><kbd>l</kbd> scroll · <kbd>f</kbd> hints · <kbd>o</kbd> vomnibar · <kbd>gg</kbd>/<kbd>G</kbd> ends</p></div>
+        <div><p class="eyebrow eyebrow-sm">Edit</p><p><kbd>Esc</kbd> normal · <kbd>i</kbd> insert · <kbd>dw</kbd> delete word · <kbd>u</kbd> undo · <kbd>.</kbd> repeat</p></div>
+        <div><p class="eyebrow eyebrow-sm">Tabs</p><p><kbd>J</kbd>/<kbd>K</kbd> prev / next · <kbd>t</kbd> new · <kbd>x</kbd> close · <kbd>X</kbd> restore</p></div>
+      </div>
+      <p class="window-note">Live demo only — install the extension to use these on every site.</p>
+    </div>
+  </div>
+</div>
+<div class="toast" id="toast" role="status" hidden></div>
 
 <script src="app.js"></script>
 </body>

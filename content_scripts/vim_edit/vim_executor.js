@@ -1384,20 +1384,304 @@
       this.setLastChange({ type: "operator_motion", operator, motion: { id: motion.id, args: motion.args || {} }, count: times, register: result.register });
     }
 
+    // Park the textarea caret on the first non-blank of its line
+    // (line start when the line is empty), like Vim after dd/>>/p.
+    _parkOnFirstNonBlank() {
+      try {
+        const el = getEditor();
+        if (!el || !isTextareaOrInput(el)) return;
+        const text = el.value || "";
+        const pos = Math.max(0, Math.min(el.selectionStart, text.length));
+        const ls = text.lastIndexOf("\n", pos - 1) + 1;
+        let le = text.indexOf("\n", pos); if (le === -1) le = text.length;
+        let p = ls;
+        while (p < le && (text[p] === " " || text[p] === "\t")) p++;
+        try { el.setSelectionRange(p, p); } catch (_) {}
+      } catch (_) {}
+    }
+
+    // Whole-line range [ls, le) for `count` lines at the caret, Vim-style:
+    // the range includes the trailing newline except on the last line.
+    // Returns null when there is no editor.
+    _wholeLineRange(count) {
+      try {
+        const el = getEditor();
+        if (!el) return null;
+        if (isTextareaOrInput(el)) {
+          const text = el.value || "";
+          const pos = Math.max(0, Math.min(el.selectionStart, text.length));
+          const ls = text.lastIndexOf("\n", pos - 1) + 1;
+          let le = text.indexOf("\n", pos); if (le === -1) le = text.length;
+          for (let i = 1; i < (count || 1); i++) { const ne = text.indexOf("\n", le + 1); le = ne === -1 ? text.length : ne; }
+          const hasBreak = le < text.length;
+          if (hasBreak) le++;
+          return { ls, le, hasBreak, text: text.substring(ls, le) };
+        }
+        const tp = this.nav.textAndPos();
+        if (!tp) return null;
+        const { text, pos } = tp;
+        const ls = text.lastIndexOf("\n", pos - 1) + 1;
+        let le = text.indexOf("\n", pos); if (le === -1) le = text.length;
+        for (let i = 1; i < (count || 1); i++) { const ne = text.indexOf("\n", le + 1); le = ne === -1 ? text.length : ne; }
+        const hasBreak = le < text.length;
+        if (hasBreak) le++;
+        return { ls, le, hasBreak, text: text.substring(ls, le), tp };
+      } catch (_) {}
+      return null;
+    }
+
+    // Contenteditable: after a whole-line delete, drop up to `maxRemove`
+    // empty blocks at the caret. DOM ranges remove text but not structural
+    // breaks, so without this dd blanks lines instead of removing them.
+    // Never removes the editor's last surviving block.
+    _ceCollapseEmptyBlocks(maxRemove) {
+      try {
+        const el = getEditor();
+        if (!el || !isContentEditable(el)) return;
+        let removed = 0, guard = 0;
+        while (removed < maxRemove && guard++ < 32) {
+          const sel = window.getSelection();
+          if (!sel || !sel.rangeCount) return;
+          let node = sel.getRangeAt(0).startContainer;
+          if (!node) return;
+          if (node.nodeType === 3) node = node.parentNode;
+          while (node && node !== el && !(node.nodeType === 1 && ceIsBlock(node))) {
+            try { node = node.parentNode; } catch (_) { node = null; }
+          }
+          if (!node || node === el) return;
+          let empty = true;
+          try {
+            if ((node.textContent || "").length > 0) empty = false;
+            else {
+              const kids = node.childNodes || [];
+              for (let i = 0; i < kids.length; i++) {
+                if (kids[i].nodeType === 1 && kids[i].tagName !== "BR") { empty = false; break; }
+              }
+            }
+          } catch (_) { empty = false; }
+          if (!empty) return;
+          // Keep one block: an emptied editor still needs a caret home.
+          let others = false;
+          try {
+            const parent = node.parentNode;
+            if (parent) {
+              const sibs = parent.childNodes || [];
+              for (let i = 0; i < sibs.length; i++) {
+                if (sibs[i] === node) continue;
+                const s = sibs[i];
+                if (s.nodeType === 3 ? (s.nodeValue || "").length > 0 : true) { others = true; break; }
+              }
+              if (!others && parent !== el) others = true;
+            }
+          } catch (_) { others = false; }
+          if (!others) return;
+          try {
+            const parent = node.parentNode;
+            let idx = 0;
+            try { idx = Array.prototype.indexOf.call(parent.childNodes, node); } catch (_) {}
+            parent.removeChild(node);
+            try { fireInputEvents(el, "deleteContentBackward", null); } catch (_) {}
+            removed++;
+            try {
+              const r = document.createRange();
+              r.setStart(parent, Math.max(0, Math.min(idx, parent.childNodes.length)));
+              r.collapse(true);
+              sel.removeAllRanges();
+              sel.addRange(r);
+            } catch (_) {}
+          } catch (_) { return; }
+        }
+      } catch (_) {}
+    }
+
+    // Contenteditable: after cc over N > 1 lines, keep the caret's empty
+    // line and drop up to `n` empty block siblings after it.
+    _ceDropEmptyBlocksAfterCaret(n) {
+      try {
+        const el = getEditor();
+        if (!el || !isContentEditable(el) || !(n > 0)) return;
+        for (let i = 0; i < n; i++) {
+          const sel = window.getSelection();
+          if (!sel || !sel.rangeCount) return;
+          let node = sel.getRangeAt(0).startContainer;
+          if (!node) return;
+          if (node.nodeType === 3) node = node.parentNode;
+          while (node && node !== el && !(node.nodeType === 1 && ceIsBlock(node))) {
+            try { node = node.parentNode; } catch (_) { node = null; }
+          }
+          if (!node || node === el) return;
+          let sib = null;
+          try {
+            let s = node.nextSibling;
+            while (s) {
+              if (s.nodeType === 1 && ceIsBlock(s)) { sib = s; break; }
+              if (s.nodeType === 1 || ((s.nodeValue || "").length > 0)) break;
+              s = s.nextSibling;
+            }
+          } catch (_) { sib = null; }
+          if (!sib) return;
+          let empty = true;
+          try {
+            if ((sib.textContent || "").length > 0) empty = false;
+            else {
+              const kids = sib.childNodes || [];
+              for (let k = 0; k < kids.length; k++) {
+                if (kids[k].nodeType === 1 && kids[k].tagName !== "BR") { empty = false; break; }
+              }
+            }
+          } catch (_) { empty = false; }
+          if (!empty) return;
+          try { sib.parentNode && sib.parentNode.removeChild(sib); } catch (_) { return; }
+          try { fireInputEvents(el, "deleteContentBackward", null); } catch (_) {}
+        }
+      } catch (_) {}
+    }
+
     execOperatorSelf(result) {
+      // Vim: counts before and after the operator both apply (2dd and d2d
+      // delete two lines). The parser splits them into count/opCount.
       const { operator, count = 1 } = result;
+      const times = result.opCount || count || 1;
+      const el = getEditor();
+      if (!el) return;
+      const regName = result.register && typeof result.register === "string" ? result.register : '"';
+      const setLineReg = (s) => {
+        if (!s || !s.length) return;
+        const obj = { text: s, type: "line" };
+        this.registers[regName] = obj; this.registers['"'] = obj;
+      };
       if (operator === "delete") {
         const left = this.nav.peekLeftCharN(1), right = this.nav.peekRightCharN(1);
         if ((left == null || this.nav.isNewline(left)) && (right == null || this.nav.isNewline(right))) {
+          this._saveUndoState();
           Adapter.backspace({}); this._lastSelType = "line";
-          this.setLastChange({ type: "operator_self", operator, count, register: result.register }); return;
+          this._parkOnFirstNonBlank();
+          this.setLastChange({ type: "operator_self", operator, count: times, register: result.register }); return;
         }
       }
-      this.selectWholeLines(count); this._lastSelType = "line";
-      const el = getEditor();
-      if (el) { const s = isTextareaOrInput(el) ? el.value.substring(el.selectionStart, el.selectionEnd) : ceSelectionText(); if (s && s.length) { const r = result.register && typeof result.register === "string" ? result.register : '"'; const obj = { text: s, type: "line" }; this.registers[r] = obj; this.registers['"'] = obj; } }
-      Adapter.backspace({}); Adapter.backspace({});
-      this.setLastChange({ type: "operator_self", operator, count, register: result.register });
+      const range = this._wholeLineRange(times);
+      if (!range) return;
+      this._lastSelType = "line";
+      setLineReg(range.text);
+      const done = (extra) => {
+        this.setLastChange(Object.assign({ type: "operator_self", operator, count: times, register: result.register }, extra || {}));
+      };
+      switch (operator) {
+        case "delete": {
+          this._saveUndoState();
+          if (isTextareaOrInput(el)) {
+            // Last line carries no trailing newline: extend over the
+            // preceding one so we delete exactly one line (Vim never eats
+            // the neighbor's break, and never leaves one behind).
+            let { ls, le } = range;
+            if (!range.hasBreak && ls > 0 && el.value[ls - 1] === "\n") ls -= 1;
+            if (le > ls) spliceInput(el, ls, le, "", "deleteContentBackward");
+            this._parkOnFirstNonBlank();
+          } else if (isContentEditable(el)) {
+            if (range.le > range.ls) {
+              const tp = range.tp || this.nav.textAndPos();
+              if (tp) this.nav.selectModelRange(tp, range.ls, range.le, false);
+              Adapter.backspace({});
+              // DOM ranges remove text but not structural breaks: the
+              // emptied <p>/<div> linger as blank lines. Re-anchor the caret
+              // onto the emptied line (deletion leaves it at the range end
+              // in some engines) and collapse the leftovers so dd removes
+              // lines instead of blanking them.
+              try {
+                const fresh = this.nav.textAndPos();
+                if (fresh) {
+                  const at = Math.min(range.ls, fresh.text.length);
+                  this.nav.selectModelRange(fresh, at, at, false);
+                }
+              } catch (_) {}
+              this._ceCollapseEmptyBlocks(times);
+            }
+          }
+          done(); return;
+        }
+        case "yank": {
+          // No text change: leave the caret on the yanked line.
+          if (isTextareaOrInput(el)) {
+            try { el.setSelectionRange(range.ls, range.ls); } catch (_) {}
+          } else if (isContentEditable(el)) {
+            const tp = range.tp || this.nav.textAndPos();
+            if (tp) this.nav.selectModelRange(tp, range.ls, range.ls, false);
+          }
+          done(); return;
+        }
+        case "change": {
+          this._saveUndoState();
+          if (isTextareaOrInput(el)) {
+            // Empty the lines but keep them (middle lines keep their break).
+            spliceInput(el, range.ls, range.le, range.hasBreak ? "\n" : "", "insertReplacementText");
+            try { el.setSelectionRange(range.ls, range.ls); } catch (_) {}
+          } else if (isContentEditable(el)) {
+            if (range.le > range.ls) {
+              const tp = range.tp || this.nav.textAndPos();
+              if (tp) this.nav.selectModelRange(tp, range.ls, range.le, false);
+              Adapter.backspace({});
+              // Re-anchor the caret onto the kept empty line, then drop any
+              // extras after it (Ncc with N > 1 keeps exactly one).
+              try {
+                const fresh = this.nav.textAndPos();
+                if (fresh) {
+                  const at = Math.min(range.ls, fresh.text.length);
+                  this.nav.selectModelRange(fresh, at, at, false);
+                }
+              } catch (_) {}
+              this._ceDropEmptyBlocksAfterCaret(Math.max(0, times - 1));
+            }
+          }
+          this.modeAPI.setMode("insert");
+          done(); return;
+        }
+        case "indent":
+        case "dedent":
+        case "reindent":
+        case "toggle_case":
+        case "lowercase":
+        case "uppercase": {
+          const s = range.text;
+          if (!s || !s.length) { done(); return; }
+          let out = s;
+          if (operator === "indent") {
+            out = s.split("\n").map((ln, i, arr) => (i === arr.length - 1 && ln === "" ? ln : "\t" + ln)).join("\n");
+          } else if (operator === "dedent") {
+            out = s.split("\n").map((ln) => ln.startsWith("\t") ? ln.slice(1) : ln.replace(/^ {1,2}/, "")).join("\n");
+          } else if (operator === "reindent") {
+            // Reuse the visual-mode rule (first line's indent wins) so ==
+            // matches the rest of the engine instead of deleting text.
+            if (isTextareaOrInput(el)) {
+              try { el.setSelectionRange(range.ls, range.le); } catch (_) {}
+              out = this.indentBlock(s, this.computeCurrentLineIndent() || "");
+            } else {
+              out = s;
+            }
+          } else if (operator === "lowercase") {
+            out = s.toLowerCase();
+          } else if (operator === "uppercase") {
+            out = s.toUpperCase();
+          } else {
+            out = Array.from(s).map(c => { const l = c.toLowerCase(), u = c.toUpperCase(); return c === l && c !== u ? u : c === u && c !== l ? l : c; }).join("");
+          }
+          this._saveUndoState();
+          if (isTextareaOrInput(el)) {
+            spliceInput(el, range.ls, range.le, out, "insertReplacementText");
+            // splice leaves the caret after the replaced region; rewind to
+            // the first line so we park on it, like Vim.
+            try { el.setSelectionRange(range.ls, range.ls); } catch (_) {}
+            this._parkOnFirstNonBlank();
+          } else if (isContentEditable(el)) {
+            const tp = range.tp || this.nav.textAndPos();
+            if (tp) this.nav.selectModelRange(tp, range.ls, range.le, false);
+            this.insertReplacementText(out);
+          }
+          done(); return;
+        }
+        default: {
+          done(); return;
+        }
+      }
     }
 
     execOperatorTextObj(result) {
@@ -1687,7 +1971,29 @@
           this.insertReplacementText(ch);
           this.setLastChange({ type: "command", id: "insert_replace_char", args: { char: ch }, count: 1 }); return;
         }
-        case "substitute_line": { this.selectWholeLines(count); this.insertReplacementText(""); this.modeAPI.setMode("insert"); this.setLastChange({ type: "command", id: "substitute_line", count }); return; }
+        case "substitute_line": {
+          this.selectWholeLines(count);
+          const sel = getEditor();
+          // Empty the lines but keep them (Vim S never joins lines).
+          let keep = "";
+          try {
+            const cur = sel && isTextareaOrInput(sel)
+              ? sel.value.substring(sel.selectionStart, sel.selectionEnd)
+              : ceSelectionText();
+            keep = cur && cur.endsWith("\n") ? "\n" : "";
+          } catch (_) { keep = ""; }
+          this._saveUndoState();
+          this.insertReplacementText(keep);
+          try {
+            if (sel && isTextareaOrInput(sel)) {
+              // insertReplacementText leaves the caret after `keep`; pull it
+              // back onto the emptied line.
+              const at = Math.max(0, Math.min(sel.selectionStart - keep.length, sel.value.length));
+              sel.setSelectionRange(at, at);
+            }
+          } catch (_) {}
+          this.modeAPI.setMode("insert"); this.setLastChange({ type: "command", id: "substitute_line", count }); return;
+        }
         case "change_to_eol": { Adapter.end({ shift: true }); if (count > 1) repeat(count - 1, () => { Adapter.right({ shift: true }); Adapter.end({ shift: true }); }); this._lastSelType = "char"; this.applyOperator("change", result.register); this.setLastChange({ type: "command", id: "change_to_eol", count }); return; }
         case "delete_to_eol": { Adapter.end({ shift: true }); if (count > 1) repeat(count - 1, () => { Adapter.right({ shift: true }); Adapter.end({ shift: true }); }); this._lastSelType = "char"; this.applyOperator("delete", result.register); this.setLastChange({ type: "command", id: "delete_to_eol", count }); return; }
         case "yank_to_eol": { Adapter.end({ shift: true }); if (count > 1) repeat(count - 1, () => { Adapter.right({ shift: true }); Adapter.end({ shift: true }); }); this._lastSelType = "char"; this.applyOperator("yank", result.register); return; }
@@ -1801,8 +2107,32 @@
           let unit = textVal; if (!unit.endsWith("\n")) unit += "\n";
           if (adjustIndent) unit = this.indentBlock(unit, this.computeCurrentLineIndent());
           const r = times > 1 ? unit.repeat(times) : unit;
-          if (before) { const ls = text.lastIndexOf("\n", pos - 1) + 1; spliceInput(el, ls, ls, r, "insertFromPaste"); try { el.setSelectionRange(ls, ls + r.length); } catch (_) {} }
-          else { let le = text.indexOf("\n", pos); if (le === -1) le = text.length; const p = r.startsWith("\n") ? r : "\n" + r; spliceInput(el, le, le, p, "insertFromPaste"); try { el.setSelectionRange(le + 1, le + 1 + r.length); } catch (_) {} }
+          if (before) {
+            const ls = text.lastIndexOf("\n", pos - 1) + 1;
+            spliceInput(el, ls, ls, r, "insertFromPaste");
+            try { el.setSelectionRange(ls, ls); } catch (_) {}
+            this._parkOnFirstNonBlank();
+          }
+          else if (text.length === 0) {
+            spliceInput(el, 0, 0, r, "insertFromPaste");
+            try { el.setSelectionRange(0, 0); } catch (_) {}
+            this._parkOnFirstNonBlank();
+          }
+          else {
+            // Paste below the current line: insert after its own break.
+            // (Inserting "\n"+r at the break itself duplicated the newline
+            // and left a blank line behind.)
+            const le = text.indexOf("\n", pos);
+            let at, str;
+            if (le === -1) { str = r.startsWith("\n") ? r : "\n" + r; at = text.length; }
+            else { str = r; at = le + 1; }
+            spliceInput(el, at, at, str, "insertFromPaste");
+            try {
+              const first = at + (str.startsWith("\n") ? 1 : 0);
+              el.setSelectionRange(first, first);
+            } catch (_) {}
+            this._parkOnFirstNonBlank();
+          }
         } else {
           const p = times > 1 ? textVal.repeat(times) : textVal;
           if (before) { spliceInput(el, pos, pos, p, "insertFromPaste"); try { el.setSelectionRange(pos, pos + p.length); } catch (_) {} }
@@ -1813,7 +2143,10 @@
           let unit = textVal; if (!unit.endsWith("\n")) unit += "\n";
           const r = times > 1 ? unit.repeat(times) : unit;
           if (before) { Adapter.home({}); document.execCommand("insertText", false, r); }
-          else { Adapter.end({}); document.execCommand("insertText", false, "\n" + r); }
+          // Paste below: split the line first, then drop the text in without
+          // its trailing break (inserting "\n"+r after line-end duplicated
+          // the newline and left a blank line behind).
+          else { Adapter.end({}); document.execCommand("insertText", false, "\n" + r.replace(/\n$/, "")); }
         } else {
           const p = times > 1 ? textVal.repeat(times) : textVal;
           if (before) document.execCommand("insertText", false, p);
@@ -1897,5 +2230,5 @@
 
   window.createVimExecutor = function(modeAPI, settingsAPI) { return new MotionExecutor(modeAPI, settingsAPI); };
   // Framework-safe input writes, reused by the overlay write-back path.
-  window.__allinVimInput = { commitInputValue, spliceInput, fireInputEvents, fireBeforeInput };
+  window.__everythingVimInput = { commitInputValue, spliceInput, fireInputEvents, fireBeforeInput };
 })();
