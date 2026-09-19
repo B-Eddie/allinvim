@@ -20,26 +20,34 @@
   const toggle = $(".nav-toggle");
   const mobile = $(".nav-mobile");
   if (toggle && mobile) {
-    toggle.addEventListener("click", () => {
-      const open = mobile.hasAttribute("hidden");
+    function setMobile(open) {
       if (open) {
         mobile.removeAttribute("hidden");
         toggle.setAttribute("aria-expanded", "true");
+        toggle.setAttribute("aria-label", "Close menu");
       } else {
         mobile.setAttribute("hidden", "");
         toggle.setAttribute("aria-expanded", "false");
+        toggle.setAttribute("aria-label", "Open menu");
       }
+    }
+    toggle.addEventListener("click", () => {
+      setMobile(mobile.hasAttribute("hidden"));
     });
     $$("a", mobile).forEach((a) =>
       a.addEventListener("click", () => {
-        mobile.setAttribute("hidden", "");
-        toggle.setAttribute("aria-expanded", "false");
+        setMobile(false);
       })
     );
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape" && !mobile.hasAttribute("hidden")) {
+        setMobile(false);
+        toggle.focus({ preventScroll: true });
+      }
+    });
     window.addEventListener("resize", () => {
       if (window.matchMedia("(min-width: 901px)").matches) {
-        mobile.setAttribute("hidden", "");
-        toggle.setAttribute("aria-expanded", "false");
+        setMobile(false);
       }
     });
   }
@@ -90,22 +98,38 @@
   }, { passive: true });
   onScroll();
 
-  /* ---------- step tabs ---------- */
+  /* ---------- step tabs (arrow-key navigable) ---------- */
   const tabs = $$('[role="tablist"] .step[data-tab]');
   const panels = {
     navigate: $("#panel-navigate"),
     edit: $("#panel-edit"),
     command: $("#panel-command"),
   };
-  tabs.forEach((tab) => {
-    tab.addEventListener("click", () => {
-      tabs.forEach((t) => {
-        t.classList.toggle("is-active", t === tab);
-        t.setAttribute("aria-selected", t === tab ? "true" : "false");
-      });
-      Object.entries(panels).forEach(([key, panel]) => {
-        if (panel) panel.hidden = key !== tab.dataset.tab;
-      });
+  function selectTab(tab, focus) {
+    tabs.forEach((t) => {
+      const active = t === tab;
+      t.classList.toggle("is-active", active);
+      t.setAttribute("aria-selected", active ? "true" : "false");
+      t.tabIndex = active ? 0 : -1;
+    });
+    Object.entries(panels).forEach(([key, panel]) => {
+      if (panel) panel.hidden = key !== tab.dataset.tab;
+    });
+    if (focus) tab.focus({ preventScroll: false });
+  }
+  tabs.forEach((tab, i) => {
+    tab.tabIndex = tab.classList.contains("is-active") ? 0 : -1;
+    tab.addEventListener("click", () => selectTab(tab, false));
+    tab.addEventListener("keydown", (e) => {
+      let next = -1;
+      if (e.key === "ArrowRight" || e.key === "ArrowDown") next = (i + 1) % tabs.length;
+      else if (e.key === "ArrowLeft" || e.key === "ArrowUp") next = (i - 1 + tabs.length) % tabs.length;
+      else if (e.key === "Home") next = 0;
+      else if (e.key === "End") next = tabs.length - 1;
+      if (next >= 0) {
+        e.preventDefault();
+        selectTab(tabs[next], true);
+      }
     });
   });
 
@@ -511,8 +535,22 @@
   const backdrop = $("#helpBackdrop");
   const helpOpen = $("#helpOpen");
   const helpClose = $("#helpClose");
-  function openHelp() { if (backdrop) backdrop.hidden = false; }
-  function closeHelp() { if (backdrop) backdrop.hidden = true; }
+  let helpReturnFocus = null;
+  function openHelp() {
+    if (!backdrop || !backdrop.hidden) return;
+    helpReturnFocus = document.activeElement;
+    backdrop.hidden = false;
+    document.body.style.overflow = "hidden";
+    if (helpClose) helpClose.focus({ preventScroll: true });
+  }
+  function closeHelp() {
+    if (!backdrop || backdrop.hidden) return;
+    backdrop.hidden = true;
+    document.body.style.overflow = "";
+    if (helpReturnFocus && document.contains(helpReturnFocus)) {
+      helpReturnFocus.focus({ preventScroll: true });
+    }
+  }
   if (helpOpen) helpOpen.addEventListener("click", openHelp);
   if (helpClose) helpClose.addEventListener("click", closeHelp);
   if (backdrop) backdrop.addEventListener("click", (e) => { if (e.target === backdrop) closeHelp(); });

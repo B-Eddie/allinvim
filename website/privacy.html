@@ -14,8 +14,8 @@
   :root {
     --color-void-black: #020204;
     --color-pure-black: #000000;
-    --color-carbon: #636363;
-    --color-slate: #888888;
+    --color-carbon: #444444;
+    --color-slate: #595959;
     --color-paper-white: #ffffff;
     --color-bone: #f8f8f8;
     --color-linen: #efefef;
@@ -23,6 +23,7 @@
   }
   * { box-sizing: border-box; }
   html { scroll-behavior: smooth; }
+  :focus-visible { outline: 3px solid #000; outline-offset: 3px; border-radius: 4px; }
   body {
     margin: 0; background: var(--color-bone); color: var(--color-pure-black);
     font-family: 'Inter', ui-sans-serif, system-ui, sans-serif;
@@ -45,28 +46,28 @@
   }
   .brand { display: flex; align-items: center; gap: 9px; text-decoration: none; color: #000; font-family: 'Inter Tight', Inter, sans-serif; font-weight: 600; font-size: 18px; letter-spacing: -0.02em; }
   .brand-mark { width: 26px; height: 26px; border-radius: 7px; background: #000; color: #fff; display: inline-flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 700; }
-  .btn-nav { margin-left: auto; background: #000; color: #fff; text-decoration: none; font-size: 14px; font-weight: 500; border-radius: 20px; padding: 10px 18px; white-space: nowrap; transition: background-color 0.2s ease, transform 0.25s cubic-bezier(0.16, 1, 0.3, 1); }
+  .btn-nav { margin-left: auto; background: #000; color: #fff; text-decoration: none; font-size: 14px; font-weight: 500; border-radius: 20px; padding: 12px 18px; min-height: 44px; display: inline-flex; align-items: center; white-space: nowrap; transition: background-color 0.2s ease, transform 0.25s cubic-bezier(0.16, 1, 0.3, 1); }
   .btn-nav:hover { background: #575757; }
   .btn-nav:active { transform: scale(0.96); }
   @media (prefers-reduced-motion: reduce) { main { animation: none; } html { scroll-behavior: auto; } }
   main { max-width: 760px; margin: 0 auto; padding: 130px 24px 80px; }
-  .back { display: inline-block; margin-bottom: 20px; color: var(--color-carbon); text-decoration: none; font-size: 14px; letter-spacing: 0; }
-  .back:hover { color: #000; }
+  .back { display: inline-flex; align-items: center; min-height: 44px; margin-bottom: 20px; color: #1a1a1a; text-decoration: underline; text-underline-offset: 4px; text-decoration-color: rgba(0,0,0,0.4); font-size: 15px; font-weight: 500; letter-spacing: 0; }
+  .back:hover { color: #000; text-decoration-color: #000; }
   .eyebrow { font-family: 'JetBrains Mono', monospace; font-size: 13px; letter-spacing: 1.3px; text-transform: uppercase; color: var(--color-carbon); margin: 0; }
-  h1 { font-family: 'Playfair Display', Georgia, serif; font-weight: 400; font-size: clamp(48px, 7vw, 72px); line-height: 0.95; letter-spacing: -0.03em; margin: 14px 0 8px; }
-  .eff { color: var(--color-slate); font-size: 14px; letter-spacing: 0; margin: 0 0 32px; }
+  h1 { font-family: 'Playfair Display', Georgia, serif; font-weight: 400; font-size: clamp(48px, 7vw, 72px); line-height: 0.95; letter-spacing: -0.03em; margin: 14px 0 8px; text-wrap: balance; }
+  .eff { color: var(--color-slate); font-size: 15px; line-height: 1.6; letter-spacing: 0; margin: 0 0 32px; }
   .card { background: #fff; border: 1px solid rgba(0, 0, 0, 0.12); border-radius: 12px; padding: 20px; margin: 24px 0; }
   .card h2 { font-family: 'Inter Tight', Inter, sans-serif; font-weight: 600; font-size: 24px; letter-spacing: -0.72px; margin: 0 0 10px; }
-  p, li { color: var(--color-carbon); font-size: 16px; line-height: 1.7; letter-spacing: 0; }
+  p, li { color: var(--color-carbon); font-size: 17px; line-height: 1.7; letter-spacing: 0; }
   ul { padding-left: 22px; margin: 0; }
   li { margin-bottom: 8px; }
   li strong { color: #000; font-weight: 500; }
-  a.inline { color: rgba(0, 0, 0, 0.85); }
+  a.inline { color: #000; font-weight: 500; text-underline-offset: 3px; }
   code { font-family: 'JetBrains Mono', monospace; font-size: 0.85em; color: #000; background: var(--color-linen); border-radius: 6px; padding: 1px 6px; }
   footer { background: var(--color-void-black); color: #fff; margin-top: 40px; }
   .foot-inner { max-width: 760px; margin: 0 auto; padding: 40px 24px; }
-  .foot-inner p { color: rgba(255, 255, 255, 0.45); font-size: 13px; margin: 0; }
-  .foot-inner a { color: rgba(255, 255, 255, 0.7); }
+  .foot-inner p { color: rgba(255, 255, 255, 0.78); font-size: 14px; line-height: 1.6; margin: 0; }
+  .foot-inner a { color: #fff; text-underline-offset: 3px; }
 </style>
 </head>
 <body>

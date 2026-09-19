@@ -13,6 +13,7 @@
 <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
+<a class="skip-link" href="#main">Skip to content</a>
 
 <header class="nav-wrap">
   <div class="nav" role="navigation" aria-label="Primary">
@@ -29,10 +30,10 @@
     <div class="nav-actions">
       <a class="nav-github" href="https://github.com/B-Eddie/allinvim" target="_blank" rel="noopener">GitHub</a>
       <a class="btn-nav" href="https://chromewebstore.google.com/detail/general-vim/mglliapjiolajkmcfaombcifockgaekc?authuser=0&hl=en" target="_blank" rel="noopener">Add to Chrome</a>
-      <button class="nav-toggle" aria-label="Open menu" aria-expanded="false"><span></span><span></span><span></span></button>
+      <button class="nav-toggle" aria-label="Open menu" aria-expanded="false" aria-controls="mobileMenu"><span></span><span></span><span></span></button>
     </div>
   </div>
-  <div class="nav-mobile" hidden>
+  <div class="nav-mobile" id="mobileMenu" hidden>
     <a href="#try">Try it</a>
     <a href="#how">How it works</a>
     <a href="#bindings">Bindings</a>
@@ -56,12 +57,12 @@
   <div class="spectrum" aria-hidden="true"></div>
 </section>
 
-<main>
+<main id="main">
 
   <!-- 01 TRY -->
-  <section id="try" class="section">
+  <section id="try" class="section" aria-labelledby="try-title">
     <p class="eyebrow rv">01 — Try it live</p>
-    <h2 class="section-title rv">Don't read docs. Press keys.</h2>
+    <h2 class="section-title rv" id="try-title">Don't read docs. Press keys.</h2>
     <p class="lede rv">Three live miniatures of the extension, running on this page. Pick a step, click in, and type.</p>
 
     <div class="split">
