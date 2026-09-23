@@ -117,6 +117,112 @@
         "textobj"
       ],
       "supportsCount": true
+    },
+    {
+      "id": "format",
+      "keys": [
+        "g",
+        "q"
+      ],
+      "appliesTo": [
+        "motion",
+        "textobj"
+      ],
+      "supportsCount": true
+    }
+  ],
+  "operators": [
+    {
+      "id": "yank",
+      "keys": [
+        "y"
+      ],
+      "appliesTo": [
+        "motion",
+        "textobj"
+      ],
+      "supportsCount": true
+    },
+    {
+      "id": "indent",
+      "keys": [
+        ">"
+      ],
+      "appliesTo": [
+        "motion",
+        "textobj"
+      ],
+      "supportsCount": true
+    },
+    {
+      "id": "dedent",
+      "keys": [
+        "<"
+      ],
+      "appliesTo": [
+        "motion",
+        "textobj"
+      ],
+      "supportsCount": true
+    },
+    {
+      "id": "reindent",
+      "keys": [
+        "="
+      ],
+      "appliesTo": [
+        "motion",
+        "textobj"
+      ],
+      "supportsCount": true
+    },
+    {
+      "id": "toggle_case",
+      "keys": [
+        "g",
+        "~"
+      ],
+      "appliesTo": [
+        "motion",
+        "textobj"
+      ],
+      "supportsCount": true
+    },
+    {
+      "id": "lowercase",
+      "keys": [
+        "g",
+        "u"
+      ],
+      "appliesTo": [
+        "motion",
+        "textobj"
+      ],
+      "supportsCount": true
+    },
+    {
+      "id": "uppercase",
+      "keys": [
+        "g",
+        "U"
+      ],
+      "appliesTo": [
+        "motion",
+        "textobj"
+      ],
+      "supportsCount": true
+    },
+    {
+      "id": "reflow",
+      "keys": [
+        "g",
+        "w"
+      ],
+      "appliesTo": [
+        "motion",
+        "textobj"
+      ],
+      "supportsCount": true
     }
   ],
   "operatorSelf": [
@@ -540,6 +646,34 @@
       "keys": [
         "<C-U>"
       ]
+    },
+    {
+      "id": "middle_of_line",
+      "keys": [
+        "g",
+        "m"
+      ]
+    },
+    {
+      "id": "last_non_blank_end",
+      "keys": [
+        "g",
+        "_"
+      ]
+    },
+    {
+      "id": "scroll_half_up",
+      "keys": [
+        "z",
+        "<C-U>"
+      ]
+    },
+    {
+      "id": "scroll_half_down",
+      "keys": [
+        "z",
+        "<C-D>"
+      ]
     }
   ],
   "textObjects": [
@@ -766,6 +900,102 @@
         "s"
       ],
       "type": "sentence_around"
+    },
+    {
+      "id": "i[",
+      "keys": [
+        "i",
+        "["
+      ],
+      "type": "paren_inner",
+      "delims": [
+        "[",
+        "]"
+      ]
+    },
+    {
+      "id": "a[",
+      "keys": [
+        "a",
+        "["
+      ],
+      "type": "paren_around",
+      "delims": [
+        "[",
+        "]"
+      ]
+    },
+    {
+      "id": "i]",
+      "keys": [
+        "i",
+        "]"
+      ],
+      "type": "paren_inner",
+      "delims": [
+        "[",
+        "]"
+      ]
+    },
+    {
+      "id": "a]",
+      "keys": [
+        "a",
+        "]"
+      ],
+      "type": "paren_around",
+      "delims": [
+        "[",
+        "]"
+      ]
+    },
+    {
+      "id": "i<",
+      "keys": [
+        "i",
+        "<"
+      ],
+      "type": "paren_inner",
+      "delims": [
+        "<",
+        ">"
+      ]
+    },
+    {
+      "id": "a<",
+      "keys": [
+        "a",
+        "<"
+      ],
+      "type": "paren_around",
+      "delims": [
+        "<",
+        ">"
+      ]
+    },
+    {
+      "id": "i>",
+      "keys": [
+        "i",
+        ">"
+      ],
+      "type": "paren_inner",
+      "delims": [
+        "<",
+        ">"
+      ]
+    },
+    {
+      "id": "a>",
+      "keys": [
+        "a",
+        ">"
+      ],
+      "type": "paren_around",
+      "delims": [
+        "<",
+        ">"
+      ]
     }
   ],
   "commands": [
@@ -1571,6 +1801,217 @@
       "id": "focus_next",
       "keys": [
         "<TAB>"
+      ],
+      "modes": [
+        "normal"
+      ]
+    },
+    {
+      "id": "visual_block_mode",
+      "keys": [
+        "<C-V>"
+      ],
+      "modes": [
+        "normal"
+      ]
+    },
+    {
+      "id": "visual_block_mode",
+      "keys": [
+        "<C-V>"
+      ],
+      "modes": [
+        "visual",
+        "visualLine"
+      ]
+    },
+    {
+      "id": "start_macro_recording",
+      "keys": [
+        "q",
+        "<char>"
+      ],
+      "modes": [
+        "normal"
+      ],
+      "args": [
+        {
+          "name": "char",
+          "type": "char"
+        }
+      ]
+    },
+    {
+      "id": "stop_macro_recording",
+      "keys": [
+        "q"
+      ],
+      "modes": [
+        "normal"
+      ]
+    },
+    {
+      "id": "play_macro",
+      "keys": [
+        "@",
+        "<char>"
+      ],
+      "modes": [
+        "normal"
+      ],
+      "args": [
+        {
+          "name": "char",
+          "type": "char"
+        }
+      ],
+      "acceptsCount": true
+    },
+    {
+      "id": "fold_create",
+      "keys": [
+        "z",
+        "f"
+      ],
+      "modes": [
+        "normal",
+        "visual",
+        "visualLine"
+      ]
+    },
+    {
+      "id": "fold_open",
+      "keys": [
+        "z",
+        "o"
+      ],
+      "modes": [
+        "normal"
+      ],
+      "acceptsCount": true
+    },
+    {
+      "id": "fold_close",
+      "keys": [
+        "z",
+        "c"
+      ],
+      "modes": [
+        "normal"
+      ],
+      "acceptsCount": true
+    },
+    {
+      "id": "fold_toggle",
+      "keys": [
+        "z",
+        "a"
+      ],
+      "modes": [
+        "normal"
+      ],
+      "acceptsCount": true
+    },
+    {
+      "id": "fold_open_all",
+      "keys": [
+        "z",
+        "O"
+      ],
+      "modes": [
+        "normal"
+      ]
+    },
+    {
+      "id": "fold_close_all",
+      "keys": [
+        "z",
+        "C"
+      ],
+      "modes": [
+        "normal"
+      ]
+    },
+    {
+      "id": "fold_delete",
+      "keys": [
+        "z",
+        "d"
+      ],
+      "modes": [
+        "normal"
+      ]
+    },
+    {
+      "id": "fold_delete_recursive",
+      "keys": [
+        "z",
+        "D"
+      ],
+      "modes": [
+        "normal"
+      ]
+    },
+    {
+      "id": "goto_mark_line",
+      "keys": [
+        "'",
+        "<char>"
+      ],
+      "modes": [
+        "normal"
+      ],
+      "args": [
+        {
+          "name": "char",
+          "type": "char"
+        }
+      ]
+    },
+    {
+      "id": "goto_prev_context",
+      "keys": [
+        "'",
+        "'"
+      ],
+      "modes": [
+        "normal"
+      ]
+    },
+    {
+      "id": "substitute",
+      "keys": [
+        ":",
+        "s",
+        "<char>"
+      ],
+      "modes": [
+        "normal",
+        "visual",
+        "visualLine"
+      ],
+      "args": [
+        {
+          "name": "char",
+          "type": "char"
+        }
+      ]
+    },
+    {
+      "id": "jump_list",
+      "keys": [
+        "<C-O>",
+        "<C-O>"
+      ],
+      "modes": [
+        "normal"
+      ]
+    },
+    {
+      "id": "change_list",
+      "keys": [
+        "<C-I>",
+        "<C-I>"
       ],
       "modes": [
         "normal"

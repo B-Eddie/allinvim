@@ -291,7 +291,7 @@ input#searchUrl {
 input[type="text"]:read-only,
 input[type="number"]:read-only,
 textarea:read-only {
-  background-color: var(--color-steel-border);
+  background-color: var(--surface-canvas);
   color: var(--color-fog-text);
   border-color: var(--color-steel-border);
   pointer-events: none;

@@ -88,6 +88,24 @@ const HUD = {
     }
   },
 
+  // Show an error message (red background)
+  async showError(text, duration) {
+    await this.show(text, duration, "error");
+    this.hudUI.postMessage({ name: "setHudType", type: "error" });
+  },
+
+  // Show a warning message (orange background)
+  async showWarning(text, duration) {
+    await this.show(text, duration, "warning");
+    this.hudUI.postMessage({ name: "setHudType", type: "warning" });
+  },
+
+  // Show an info message (purple background)
+  async showInfo(text, duration) {
+    await this.show(text, duration, "info");
+    this.hudUI.postMessage({ name: "setHudType", type: "info" });
+  },
+
   async showFindMode(findMode = null) {
     this.findMode = findMode;
     await DomUtils.documentComplete();

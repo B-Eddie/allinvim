@@ -211,7 +211,10 @@ async function buildStorePackage() {
   );
   const version = chromeManifest["version"];
   const writeDistManifest = async (manifest) => {
-    await Deno.writeTextFile("dist/everything-vim/manifest.json", JSON.stringify(manifest, null, 2));
+    await Deno.writeTextFile(
+      "dist/everything-vim/manifest.json",
+      JSON.stringify(manifest, null, 2),
+    );
   };
   // cd into "dist/everything-vim" before building the zip, so that the files in the zip don't each have the
   // path prefix "dist/everything-vim".

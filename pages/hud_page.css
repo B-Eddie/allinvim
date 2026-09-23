@@ -72,3 +72,24 @@ span#hud-find-input * {
   background-color: var(--surface-inset);
   border: 1px solid var(--color-steel-border);
 }
+
+/* Error and warning message styles */
+#hud.hud-error {
+  background-color: var(--color-mute-red);
+  border: 1px solid var(--color-mute-red);
+  /* Near-black ink: the lightest theme canvas + mute-red in Nord only reaches ~3:1, so this chip
+     uses a fixed dark ink that clears 4.5:1 against every theme's red. */
+  color: #0d0f13;
+}
+
+#hud.hud-warning {
+  background-color: var(--color-warning);
+  border: 1px solid var(--color-warning);
+  color: var(--surface-canvas);
+}
+
+#hud.hud-info {
+  background-color: var(--color-syntax-violet);
+  border: 1px solid var(--color-syntax-violet);
+  color: var(--surface-canvas);
+}

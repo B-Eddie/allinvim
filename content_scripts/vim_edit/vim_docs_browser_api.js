@@ -1,21 +1,21 @@
 /**
  * Browser API Manager
- * 
- * This module provides a unified interface for browser APIs across 
+ *
+ * This module provides a unified interface for browser APIs across
  * different browsers (Chrome and Firefox).
  */
 
 // Detect browser environment
 const browserAPI = (() => {
   // Firefox uses the 'browser' namespace, Chrome uses 'chrome'
-  const api = typeof browser !== 'undefined' ? browser : chrome;
-  
+  const api = typeof browser !== "undefined" ? browser : chrome;
+
   // Check if we're in a Firefox environment (Promise-based API)
-  const isFirefox = typeof browser !== 'undefined';
+  const isFirefox = typeof browser !== "undefined";
 
   // Permissions declared in manifest.json that the extension requires.
   // Keep in sync with manifest.json "permissions".
-  const REQUIRED_PERMISSIONS = ['storage'];
+  const REQUIRED_PERMISSIONS = ["storage"];
 
   /**
    * Check whether all required permissions are granted.
@@ -25,24 +25,24 @@ const browserAPI = (() => {
    */
   const hasAllRequiredPermissions = async () => {
     try {
-      if (api.permissions && typeof api.permissions.getAll === 'function') {
+      if (api.permissions && typeof api.permissions.getAll === "function") {
         const all = isFirefox
           ? await api.permissions.getAll()
           : await new Promise((resolve, reject) => {
-              api.permissions.getAll((result) => {
-                if (chrome.runtime.lastError) {
-                  reject(chrome.runtime.lastError);
-                } else {
-                  resolve(result);
-                }
-              });
+            api.permissions.getAll((result) => {
+              if (chrome.runtime.lastError) {
+                reject(chrome.runtime.lastError);
+              } else {
+                resolve(result);
+              }
             });
+          });
         const granted = (all && all.permissions) || [];
         return REQUIRED_PERMISSIONS.every((p) => granted.includes(p));
       }
       // Fallback: infer from availability of the corresponding APIs.
       return REQUIRED_PERMISSIONS.every((perm) => {
-        if (perm === 'storage') return !!(api.storage && (api.storage.sync || api.storage.local));
+        if (perm === "storage") return !!(api.storage && (api.storage.sync || api.storage.local));
         return true;
       });
     } catch (_) {
@@ -86,28 +86,28 @@ const browserAPI = (() => {
       hasMainEditor: false,
       hasAnnotatedCanvas: false,
       hasAriaLabelRects: false,
-      hasParagraphRenderer: false
+      hasParagraphRenderer: false,
     };
     try {
-      const doc = rootDoc || (typeof document !== 'undefined' ? document : null);
-      if (!doc || typeof doc.querySelector !== 'function') {
-        return { supported: false, reason: 'no-document', details };
+      const doc = rootDoc || (typeof document !== "undefined" ? document : null);
+      if (!doc || typeof doc.querySelector !== "function") {
+        return { supported: false, reason: "no-document", details };
       }
       try {
-        details.hasMainEditor = !!doc.querySelector('.kix-appview-editor, .kix-appview');
+        details.hasMainEditor = !!doc.querySelector(".kix-appview-editor, .kix-appview");
       } catch (_) {}
-      const iframe = doc.querySelector('.docs-texteventtarget-iframe');
+      const iframe = doc.querySelector(".docs-texteventtarget-iframe");
       details.hasTextEventIframe = !!iframe;
       try {
         details.hasAnnotatedCanvas = !!doc.querySelector(
-          '.kix-canvas-tile-content svg g, .kix-canvas-tile-selection svg'
+          ".kix-canvas-tile-content svg g, .kix-canvas-tile-selection svg",
         );
         details.hasAriaLabelRects = !!doc.querySelector(
-          '.kix-canvas-tile-content svg rect[aria-label], ' +
-          '.kix-canvas-tile-content svg g[aria-label], ' +
-          'svg g[role="paragraph"]'
+          ".kix-canvas-tile-content svg rect[aria-label], " +
+            ".kix-canvas-tile-content svg g[aria-label], " +
+            'svg g[role="paragraph"]',
         );
-        details.hasParagraphRenderer = !!doc.querySelector('.kix-paragraphrenderer');
+        details.hasParagraphRenderer = !!doc.querySelector(".kix-paragraphrenderer");
       } catch (_) {}
       try {
         const idoc = iframe && iframe.contentDocument;
@@ -116,14 +116,17 @@ const browserAPI = (() => {
           details.iframeAccessible = true;
           let root = null;
           try {
-            root = idoc.querySelector('.kix-page-paginated, .kix-paginateddocumentplugin, .kix-page') ||
+            root =
+              idoc.querySelector(".kix-page-paginated, .kix-paginateddocumentplugin, .kix-page") ||
               idoc.querySelector('[role="textbox"]') ||
               idoc.querySelector('[contenteditable="true"]');
-          } catch (_) { root = null; }
+          } catch (_) {
+            root = null;
+          }
           details.hasIframeTextbox = !!root;
           try {
             details.hasIframePages = !!idoc.querySelector(
-              '.kix-page-paginated, .kix-paginateddocumentplugin, .kix-page'
+              ".kix-page-paginated, .kix-paginateddocumentplugin, .kix-page",
             );
           } catch (_) {}
           try {
@@ -132,39 +135,49 @@ const browserAPI = (() => {
             details.iframeTextLength = t;
           } catch (_) {}
           try {
-            const sel = win && typeof win.getSelection === 'function' ? win.getSelection() : null;
-            if (sel && sel.rangeCount > 0 && typeof sel.modify === 'function') {
+            const sel = win && typeof win.getSelection === "function" ? win.getSelection() : null;
+            if (sel && sel.rangeCount > 0 && typeof sel.modify === "function") {
               const range = sel.getRangeAt(0).cloneRange();
               const before = sel.toString();
-              try { sel.modify('extend', 'forward', 'character'); } catch (_) {}
+              try {
+                sel.modify("extend", "forward", "character");
+              } catch (_) {}
               const afterF = sel.toString();
-              try { sel.removeAllRanges(); sel.addRange(range); } catch (_) {}
-              try { sel.modify('extend', 'backward', 'character'); } catch (_) {}
+              try {
+                sel.removeAllRanges();
+                sel.addRange(range);
+              } catch (_) {}
+              try {
+                sel.modify("extend", "backward", "character");
+              } catch (_) {}
               const afterB = sel.toString();
-              try { sel.removeAllRanges(); sel.addRange(range); } catch (_) {}
+              try {
+                sel.removeAllRanges();
+                sel.addRange(range);
+              } catch (_) {}
               details.selectionProbeOk = (afterF !== before) || (afterB !== before);
             }
           } catch (_) {}
         }
       } catch (_) {}
       if (details.selectionProbeOk) {
-        return { supported: true, reason: 'selection-probe-ok', details };
+        return { supported: true, reason: "selection-probe-ok", details };
       }
       if (details.hasIframePages) {
-        return { supported: true, reason: 'mirror-pages-found', details };
+        return { supported: true, reason: "mirror-pages-found", details };
       }
       if (details.hasAnnotatedCanvas || details.hasAriaLabelRects || details.hasParagraphRenderer) {
-        return { supported: true, reason: 'annotated-dom-found', details };
+        return { supported: true, reason: "annotated-dom-found", details };
       }
       if (details.hasIframeTextbox && details.iframeTextLength >= 20) {
-        return { supported: true, reason: 'mirror-text-found', details };
+        return { supported: true, reason: "mirror-text-found", details };
       }
       if (details.hasTextEventIframe && details.iframeAccessible && !details.hasIframeTextbox) {
-        return { supported: false, reason: 'mirror-not-ready', details };
+        return { supported: false, reason: "mirror-not-ready", details };
       }
-      return { supported: false, reason: 'no-mirror-content', details };
+      return { supported: false, reason: "no-mirror-content", details };
     } catch (_) {
-      return { supported: false, reason: 'check-failed', details };
+      return { supported: false, reason: "check-failed", details };
     }
   };
 
@@ -197,7 +210,7 @@ const browserAPI = (() => {
       if (isFirefox) {
         return api.storage.sync.get(keys);
       } else {
-        return chromeAPIAsPromise(api.storage.sync, 'get', keys);
+        return chromeAPIAsPromise(api.storage.sync, "get", keys);
       }
     },
 
@@ -210,16 +223,16 @@ const browserAPI = (() => {
       if (isFirefox) {
         return api.storage.sync.set(data);
       } else {
-        return chromeAPIAsPromise(api.storage.sync, 'set', data);
+        return chromeAPIAsPromise(api.storage.sync, "set", data);
       }
     },
     remove: (keys) => {
       if (isFirefox) {
         return api.storage.sync.remove(keys);
       } else {
-        return chromeAPIAsPromise(api.storage.sync, 'remove', keys);
+        return chromeAPIAsPromise(api.storage.sync, "remove", keys);
       }
-    }
+    },
   };
 
   const storageLocal = {
@@ -232,7 +245,7 @@ const browserAPI = (() => {
       if (isFirefox) {
         return api.storage.local.get(keys);
       } else {
-        return chromeAPIAsPromise(api.storage.local, 'get', keys);
+        return chromeAPIAsPromise(api.storage.local, "get", keys);
       }
     },
 
@@ -245,16 +258,16 @@ const browserAPI = (() => {
       if (isFirefox) {
         return api.storage.local.set(data);
       } else {
-        return chromeAPIAsPromise(api.storage.local, 'set', data);
+        return chromeAPIAsPromise(api.storage.local, "set", data);
       }
     },
     remove: (keys) => {
       if (isFirefox) {
         return api.storage.local.remove(keys);
       } else {
-        return chromeAPIAsPromise(api.storage.local, 'remove', keys);
+        return chromeAPIAsPromise(api.storage.local, "remove", keys);
       }
-    }
+    },
   };
 
   return {
@@ -291,7 +304,7 @@ const browserAPI = (() => {
         },
         removeListener: (callback) => {
           api.runtime.onMessage.removeListener(callback);
-        }
+        },
       },
 
       /**
@@ -303,9 +316,9 @@ const browserAPI = (() => {
         if (isFirefox) {
           return api.runtime.sendMessage(message);
         } else {
-          return chromeAPIAsPromise(api.runtime, 'sendMessage', message);
+          return chromeAPIAsPromise(api.runtime, "sendMessage", message);
         }
-      }
+      },
     },
 
     // Tabs API
@@ -319,7 +332,7 @@ const browserAPI = (() => {
         if (isFirefox) {
           return api.tabs.query(queryInfo);
         } else {
-          return chromeAPIAsPromise(api.tabs, 'query', queryInfo);
+          return chromeAPIAsPromise(api.tabs, "query", queryInfo);
         }
       },
 
@@ -333,19 +346,19 @@ const browserAPI = (() => {
         if (isFirefox) {
           return api.tabs.sendMessage(tabId, message);
         } else {
-          return chromeAPIAsPromise(api.tabs, 'sendMessage', tabId, message);
+          return chromeAPIAsPromise(api.tabs, "sendMessage", tabId, message);
         }
       },
       create: (createProperties) => {
         if (isFirefox) {
           return api.tabs.create(createProperties);
         } else {
-          return chromeAPIAsPromise(api.tabs, 'create', createProperties);
+          return chromeAPIAsPromise(api.tabs, "create", createProperties);
         }
-      }
-    }
+      },
+    },
   };
 })();
 
 // Expose the API globally so content scripts can use it
-window.browserAPI = browserAPI; 
+window.browserAPI = browserAPI;

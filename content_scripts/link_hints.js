@@ -1511,6 +1511,51 @@ const LocalHints = {
           if (hasIntersection) return true;
         }
       }
+
+      // Additional check for elements with CSS transforms - try the transformed center
+      try {
+        const cs = getComputedStyle(hint.element);
+        if (cs.transform && cs.transform !== "none") {
+          // For transformed elements, try the center of the bounding rect
+          const centerX = rect.left + rect.width / 2;
+          const centerY = rect.top + rect.height / 2;
+          const elementFromTransformedCenter = LocalHints.getElementFromPoint(centerX, centerY);
+          if (
+            elementFromTransformedCenter &&
+            (hint.element.contains(elementFromTransformedCenter) ||
+              elementFromTransformedCenter.contains(hint.element))
+          ) {
+            return true;
+          }
+        }
+      } catch (_) {}
+
+      // Check for fixed/sticky positioned elements that might be obscured
+      try {
+        const cs = getComputedStyle(hint.element);
+        if (cs.position === "fixed" || cs.position === "sticky") {
+          // For fixed/sticky elements, they might be obscured by other fixed elements
+          // Try multiple points around the element
+          const checkPoints = [
+            [rect.left + rect.width * 0.25, rect.top + rect.height * 0.25],
+            [rect.left + rect.width * 0.75, rect.top + rect.height * 0.25],
+            [rect.left + rect.width * 0.25, rect.top + rect.height * 0.75],
+            [rect.left + rect.width * 0.75, rect.top + rect.height * 0.75],
+          ];
+          for (const [x, y] of checkPoints) {
+            const elementFromPoint = LocalHints.getElementFromPoint(x, y);
+            if (
+              elementFromPoint &&
+              (hint.element.contains(elementFromPoint) ||
+                elementFromPoint.contains(hint.element))
+            ) {
+              return true;
+            }
+          }
+        }
+      } catch (_) {}
+
+      return false;
     });
 
     nonOverlappingHints.reverse();

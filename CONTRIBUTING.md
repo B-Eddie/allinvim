@@ -6,44 +6,45 @@ File the issue [here](https://github.com/philc/vimium/issues).
 
 ## Contributing code
 
-You'd like to fix a bug or implement a feature? Great! Before getting started, understand Everything Vim's
-design principles and the goals of the maintainers.
+You'd like to fix a bug or implement a feature? Great! Before getting started, understand Everything
+Vim's design principles and the goals of the maintainers.
 
 ### Everything Vim design principles
 
-When people first start using Everything Vim, it provides an incredibly powerful workflow improvement and it
-makes them feel awesome. Surprisingly, Everything Vim is applicable to a huge, broad population of people,
-not just users of Vim.
+When people first start using Everything Vim, it provides an incredibly powerful workflow
+improvement and it makes them feel awesome. Surprisingly, Everything Vim is applicable to a huge,
+broad population of people, not just users of Vim.
 
-In addition to power, a secondary goal of Everything Vim is approachability: minimizing the barriers which
-prevent a new user from feeling awesome. Many of Everything Vim's users haven't used Vim before -- about 1
-in 5 Chrome Store reviews say this -- and most people have strong web browsing habits forged from
-years of browsing. Given that, it's a great experience when Everything Vim feels like a natural addition to
-Chrome which augments, but doesn't break, the user's current browsing habits.
+In addition to power, a secondary goal of Everything Vim is approachability: minimizing the barriers
+which prevent a new user from feeling awesome. Many of Everything Vim's users haven't used Vim
+before -- about 1 in 5 Chrome Store reviews say this -- and most people have strong web browsing
+habits forged from years of browsing. Given that, it's a great experience when Everything Vim feels
+like a natural addition to Chrome which augments, but doesn't break, the user's current browsing
+habits.
 
 **Principles:**
 
-1. **Easy to understand**. Even if you're not very familiar with Vim. The Everything Vim video shows you all
-   you need to know to start using Everything Vim and feel awesome.
+1. **Easy to understand**. Even if you're not very familiar with Vim. The Everything Vim video shows
+   you all you need to know to start using Everything Vim and feel awesome.
 2. **Reliable**. The core feature set works on most sites on the web.
-3. **Immediately useful**. Everything Vim doesn't require any configuration or doc-reading before it's
-   useful. Just watch the video or hit `?`. You can transition into using Everything Vim piecemeal; you
-   don't need to jump in whole-hog from the start.
+3. **Immediately useful**. Everything Vim doesn't require any configuration or doc-reading before
+   it's useful. Just watch the video or hit `?`. You can transition into using Everything Vim
+   piecemeal; you don't need to jump in whole-hog from the start.
 4. **Feels native**. Everything Vim doesn't drastically change the way Chrome looks or behaves.
 5. **Simple**. The core feature set isn't overwhelming. This principle is particularly vulnerable as
    we add to Everything Vim, so it requires our active effort to maintain this simplicity.
-6. **Code simplicity**. Developers find the Everything Vim codebase relatively simple and easy to jump into.
-   This allows more people to fix bugs and implement features.
+6. **Code simplicity**. Developers find the Everything Vim codebase relatively simple and easy to
+   jump into. This allows more people to fix bugs and implement features.
 
 ### Which pull requests get merged?
 
 **Goals of the maintainers**
 
-The maintainers of Everything Vim have limited bandwidth, which influences which PRs we can review and
-merge.
+The maintainers of Everything Vim have limited bandwidth, which influences which PRs we can review
+and merge.
 
-Our goals are generally to keep Everything Vim small, maintainable, and really nail the broad appeal use
-cases. This is in contrast to adding and maintaining an increasing number of complex or niche
+Our goals are generally to keep Everything Vim small, maintainable, and really nail the broad appeal
+use cases. This is in contrast to adding and maintaining an increasing number of complex or niche
 features. We recommend those live in forked repos rather than the mainline Everything Vim repo.
 
 PRs we'll likely merge:
@@ -66,8 +67,8 @@ Tips for preparing a PR:
 
 Here's the rationale behind this policy:
 
-- Everything Vim is a volunteer effort. To make it possible to keep the project up-to-date as the web and
-  browsers evolve, the codebase has to remain small and maintainable.
+- Everything Vim is a volunteer effort. To make it possible to keep the project up-to-date as the
+  web and browsers evolve, the codebase has to remain small and maintainable.
 - If the maintainers don't use a feature, and most other users don't, then the feature will likely
   get neglected.
 - Every feature, particularly neglected ones, increase the complexity of the codebase and makes it

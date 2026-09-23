@@ -13,7 +13,9 @@
     toastEl.textContent = msg;
     toastEl.hidden = false;
     clearTimeout(toastTimer);
-    toastTimer = setTimeout(() => { toastEl.hidden = true; }, 2600);
+    toastTimer = setTimeout(() => {
+      toastEl.hidden = true;
+    }, 2600);
   }
 
   /* ---------- mobile nav ---------- */
@@ -70,7 +72,7 @@
           }
         }
       },
-      { threshold: 0.1, rootMargin: "0px 0px -6% 0px" }
+      { threshold: 0.1, rootMargin: "0px 0px -6% 0px" },
     );
     revealables.forEach((el) => io.observe(el));
   } else {
@@ -123,8 +125,9 @@
     tab.addEventListener("keydown", (e) => {
       let next = -1;
       if (e.key === "ArrowRight" || e.key === "ArrowDown") next = (i + 1) % tabs.length;
-      else if (e.key === "ArrowLeft" || e.key === "ArrowUp") next = (i - 1 + tabs.length) % tabs.length;
-      else if (e.key === "Home") next = 0;
+      else if (e.key === "ArrowLeft" || e.key === "ArrowUp") {
+        next = (i - 1 + tabs.length) % tabs.length;
+      } else if (e.key === "Home") next = 0;
       else if (e.key === "End") next = tabs.length - 1;
       if (next >= 0) {
         e.preventDefault();
@@ -158,7 +161,9 @@
       a.prepend(b);
     });
     setHintMode("Hints — press a letter", true);
-    if (hintStatus) hintStatus.textContent = "Hints are live. Press A, S, D, or F — or Esc to dismiss.";
+    if (hintStatus) {
+      hintStatus.textContent = "Hints are live. Press A, S, D, or F — or Esc to dismiss.";
+    }
   }
   function hideHints(msg) {
     if (!hintsOn) return;
@@ -167,22 +172,35 @@
     $$(".hint-badge", mockPage).forEach((b) => b.remove());
     setHintMode("Idle", false);
     if (hintStatus && msg) hintStatus.textContent = msg;
-    else if (hintStatus) hintStatus.textContent = "Tip: this is a miniature web page. Hints work exactly like the extension.";
+    else if (hintStatus) {
+      hintStatus.textContent =
+        "Tip: this is a miniature web page. Hints work exactly like the extension.";
+    }
   }
   function followHint(key, newTab) {
     const link = mockLinks.find((a) => (a.dataset.hint || "").toLowerCase() === key.toLowerCase());
     if (!link) return;
     hideHints();
-    toast(newTab ? `Would open “${link.dataset.name}” in a new tab` : `Opened “${link.dataset.name}” (demo)`);
-    if (hintStatus) hintStatus.textContent = `Followed “${link.dataset.name}” ${newTab ? "in a new tab" : "in this tab"} — just like f / F.`;
-  }
-  if (hintStart) hintStart.addEventListener("click", () => {
-    if (hintsOn) hideHints();
-    else {
-      showHints();
-      mockPage?.focus({ preventScroll: true });
+    toast(
+      newTab
+        ? `Would open “${link.dataset.name}” in a new tab`
+        : `Opened “${link.dataset.name}” (demo)`,
+    );
+    if (hintStatus) {
+      hintStatus.textContent = `Followed “${link.dataset.name}” ${
+        newTab ? "in a new tab" : "in this tab"
+      } — just like f / F.`;
     }
-  });
+  }
+  if (hintStart) {
+    hintStart.addEventListener("click", () => {
+      if (hintsOn) hideHints();
+      else {
+        showHints();
+        mockPage?.focus({ preventScroll: true });
+      }
+    });
+  }
   if (mockPage) {
     mockPage.addEventListener("keydown", (e) => {
       if (e.key === "f" || e.key === "F") {
@@ -192,13 +210,19 @@
         } else if (!hintsOn && e.shiftKey) {
           e.preventDefault();
           showHints();
-          if (hintStatus) hintStatus.textContent = "Shift+F mode: next letter opens in a new tab (demo).";
+          if (hintStatus) {
+            hintStatus.textContent = "Shift+F mode: next letter opens in a new tab (demo).";
+          }
           mockPage.dataset.newtab = "1";
         }
         return;
       }
       if (e.key === "Escape") {
-        if (hintsOn) { e.preventDefault(); delete mockPage.dataset.newtab; hideHints(); }
+        if (hintsOn) {
+          e.preventDefault();
+          delete mockPage.dataset.newtab;
+          hideHints();
+        }
         return;
       }
       if (hintsOn && /^[a-zA-Z]$/.test(e.key) && !e.ctrlKey && !e.metaKey) {
@@ -243,7 +267,10 @@
     const snapshot = () => undoStack.push({ value: area.value, pos: area.selectionStart });
     const undo = () => {
       const s = undoStack.pop();
-      if (!s) { toast("Nothing to undo (demo)"); return; }
+      if (!s) {
+        toast("Nothing to undo (demo)");
+        return;
+      }
       area.value = s.value;
       area.setSelectionRange(s.pos, s.pos);
     };
@@ -269,11 +296,13 @@
       area._goalCol = goal;
       area.setSelectionRange(next, next);
     };
-    const resetGoal = () => { area._goalCol = undefined; };
+    const resetGoal = () => {
+      area._goalCol = undefined;
+    };
     const forwardWord = (pos) => {
       const v = area.value;
       let i = pos;
-      if (isWordChar(v[i])) while (isWordChar(v[i])) i++;
+      if (isWordChar(v[i])) { while (isWordChar(v[i])) i++; }
       while (v[i] && !isWordChar(v[i]) && v[i] !== "\n") i++;
       if (v[i] === "\n") i++;
       return Math.min(i, v.length);
@@ -366,36 +395,55 @@
       pending = "";
 
       switch (k) {
-        case "h": case "ArrowLeft":
-          e.preventDefault(); resetGoal();
+        case "h":
+        case "ArrowLeft":
+          e.preventDefault();
+          resetGoal();
           area.setSelectionRange(Math.max(0, pos - 1), Math.max(0, pos - 1));
           break;
-        case "l": case " ": case "ArrowRight":
-          e.preventDefault(); resetGoal();
+        case "l":
+        case " ":
+        case "ArrowRight":
+          e.preventDefault();
+          resetGoal();
           area.setSelectionRange(Math.min(v.length, pos + 1), Math.min(v.length, pos + 1));
           break;
-        case "j": case "ArrowDown":
-          e.preventDefault(); moveV(1); break;
-        case "k": case "ArrowUp":
-          e.preventDefault(); moveV(-1); break;
+        case "j":
+        case "ArrowDown":
+          e.preventDefault();
+          moveV(1);
+          break;
+        case "k":
+        case "ArrowUp":
+          e.preventDefault();
+          moveV(-1);
+          break;
         case "w":
-          e.preventDefault(); resetGoal();
+          e.preventDefault();
+          resetGoal();
           area.setSelectionRange(forwardWord(pos), forwardWord(pos));
           break;
         case "b":
-          e.preventDefault(); resetGoal();
+          e.preventDefault();
+          resetGoal();
           area.setSelectionRange(backwardWord(pos), backwardWord(pos));
           break;
         case "e":
-          e.preventDefault(); resetGoal();
+          e.preventDefault();
+          resetGoal();
           area.setSelectionRange(endWord(pos), endWord(pos));
           break;
         case "0":
-          e.preventDefault(); resetGoal();
-          area.setSelectionRange(lineColToPos(v, posToLineCol(v, pos).line, 0), lineColToPos(v, posToLineCol(v, pos).line, 0));
+          e.preventDefault();
+          resetGoal();
+          area.setSelectionRange(
+            lineColToPos(v, posToLineCol(v, pos).line, 0),
+            lineColToPos(v, posToLineCol(v, pos).line, 0),
+          );
           break;
         case "$":
-          e.preventDefault(); resetGoal();
+          e.preventDefault();
+          resetGoal();
           {
             const { line } = posToLineCol(v, pos);
             const end = lineColToPos(v, line, v.split("\n")[line].length);
@@ -403,29 +451,39 @@
           }
           break;
         case "x":
-          e.preventDefault(); resetGoal();
+          e.preventDefault();
+          resetGoal();
           if (pos < v.length && v[pos] !== "\n") deleteRange(pos, pos + 1, "x");
           break;
         case "X":
-          e.preventDefault(); resetGoal();
+          e.preventDefault();
+          resetGoal();
           if (pos > 0) deleteRange(pos - 1, pos, "x");
           break;
         case "d":
-          e.preventDefault(); pending = "d";
+          e.preventDefault();
+          pending = "d";
           toast("d… press w (word) or d (line)");
           break;
         case "g":
-          e.preventDefault(); pending = "g";
+          e.preventDefault();
+          pending = "g";
           break;
         case "G":
-          e.preventDefault(); resetGoal();
+          e.preventDefault();
+          resetGoal();
           area.setSelectionRange(v.length, v.length);
           break;
         case "u":
-          e.preventDefault(); undo(); break;
+          e.preventDefault();
+          undo();
+          break;
         case ".":
           e.preventDefault();
-          if (!lastChange) { toast("Nothing to repeat yet (demo)"); break; }
+          if (!lastChange) {
+            toast("Nothing to repeat yet (demo)");
+            break;
+          }
           if (lastChange.kind === "x") {
             if (pos < v.length) deleteRange(pos, pos + (lastChange.len || 1), "x");
           } else if (lastChange.kind === "dw") {
@@ -439,11 +497,16 @@
           }
           break;
         case "i":
-          e.preventDefault(); normal = false; renderMode(false); break;
+          e.preventDefault();
+          normal = false;
+          renderMode(false);
+          break;
         case "a":
           e.preventDefault();
           area.setSelectionRange(Math.min(v.length, pos + 1), Math.min(v.length, pos + 1));
-          normal = false; renderMode(false); break;
+          normal = false;
+          renderMode(false);
+          break;
         case "o":
           e.preventDefault();
           snapshot();
@@ -453,7 +516,9 @@
             area.value = area.value.slice(0, at) + "\n" + area.value.slice(at);
             area.setSelectionRange(at + 1, at + 1);
           }
-          normal = false; renderMode(false); break;
+          normal = false;
+          renderMode(false);
+          break;
         case "O":
           e.preventDefault();
           snapshot();
@@ -463,7 +528,9 @@
             area.value = area.value.slice(0, at) + "\n" + area.value.slice(at);
             area.setSelectionRange(at, at);
           }
-          normal = false; renderMode(false); break;
+          normal = false;
+          renderMode(false);
+          break;
         case "J":
           e.preventDefault();
           snapshot();
@@ -503,11 +570,16 @@
     );
     selIdx = Math.min(selIdx, Math.max(0, rows.length - 1));
     if (!rows.length) {
-      vomList.innerHTML = `<li class="vom-empty">No match — press Enter to open “${filter}” as a URL (demo).</li>`;
+      vomList.innerHTML =
+        `<li class="vom-empty">No match — press Enter to open “${filter}” as a URL (demo).</li>`;
       return rows;
     }
     vomList.innerHTML = rows
-      .map((e, i) => `<li class="${i === selIdx ? "is-sel" : ""}" data-i="${i}"><span class="vom-kind ${e.kind}">${e.kind}</span><span class="vom-title">${e.title}</span><span class="vom-url">${e.url}</span></li>`)
+      .map((e, i) =>
+        `<li class="${
+          i === selIdx ? "is-sel" : ""
+        }" data-i="${i}"><span class="vom-kind ${e.kind}">${e.kind}</span><span class="vom-title">${e.title}</span><span class="vom-url">${e.url}</span></li>`
+      )
       .join("");
     $$("li", vomList).forEach((li) => {
       li.addEventListener("click", () => {
@@ -519,11 +591,20 @@
   }
   if (vomInput && vomList) {
     let rows = renderVom("");
-    vomInput.addEventListener("input", () => { selIdx = 0; rows = renderVom(vomInput.value); });
+    vomInput.addEventListener("input", () => {
+      selIdx = 0;
+      rows = renderVom(vomInput.value);
+    });
     vomInput.addEventListener("keydown", (e) => {
-      if (e.key === "ArrowDown") { e.preventDefault(); selIdx = Math.min((rows?.length || 1) - 1, selIdx + 1); renderVom(vomInput.value); }
-      else if (e.key === "ArrowUp") { e.preventDefault(); selIdx = Math.max(0, selIdx - 1); renderVom(vomInput.value); }
-      else if (e.key === "Enter") {
+      if (e.key === "ArrowDown") {
+        e.preventDefault();
+        selIdx = Math.min((rows?.length || 1) - 1, selIdx + 1);
+        renderVom(vomInput.value);
+      } else if (e.key === "ArrowUp") {
+        e.preventDefault();
+        selIdx = Math.max(0, selIdx - 1);
+        renderVom(vomInput.value);
+      } else if (e.key === "Enter") {
         e.preventDefault();
         const hit = rows && rows[selIdx];
         toast(hit ? `Opened “${hit.title}” (demo)` : `Opened “${vomInput.value}” (demo)`);
@@ -553,10 +634,15 @@
   }
   if (helpOpen) helpOpen.addEventListener("click", openHelp);
   if (helpClose) helpClose.addEventListener("click", closeHelp);
-  if (backdrop) backdrop.addEventListener("click", (e) => { if (e.target === backdrop) closeHelp(); });
+  if (backdrop) {
+    backdrop.addEventListener("click", (e) => {
+      if (e.target === backdrop) closeHelp();
+    });
+  }
   document.addEventListener("keydown", (e) => {
     const tag = (document.activeElement && document.activeElement.tagName) || "";
-    const typing = tag === "INPUT" || tag === "TEXTAREA" || (document.activeElement && document.activeElement.isContentEditable);
+    const typing = tag === "INPUT" || tag === "TEXTAREA" ||
+      (document.activeElement && document.activeElement.isContentEditable);
     if (e.key === "?" && !e.ctrlKey && !e.metaKey) {
       // Let the vim buffer and vomnibar keep their own "?" keystrokes.
       if (document.activeElement === area || document.activeElement === vomInput) return;

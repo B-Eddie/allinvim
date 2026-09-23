@@ -103,7 +103,18 @@ export const handlers = {
     el.classList.add("vimium-ui-component-visible");
     el.classList.remove("vimium-ui-component-hidden");
     el.classList.remove("hud-find");
+    el.classList.remove("hud-error");
+    el.classList.remove("hud-warning");
+    el.classList.remove("hud-info");
     setMessageName(el, data.messageName);
+  },
+
+  setHudType({ type }) {
+    const el = document.querySelector("#hud");
+    el.classList.remove("hud-error", "hud-warning", "hud-info", "hud-find");
+    if (type) {
+      el.classList.add("hud-" + type);
+    }
   },
 
   hidden() {

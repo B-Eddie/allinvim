@@ -102,6 +102,21 @@ class FindMode extends Mode {
     this.initialRange = getCurrentRange();
     FindMode.query = { rawQuery: "" };
 
+    // Auto-restore last search query from history (if enabled)
+    if (
+      options.autoRestore !== false && FindModeHistory && FindModeHistory.rawQueryList &&
+      FindModeHistory.rawQueryList.length > 0
+    ) {
+      const lastQuery = FindModeHistory.rawQueryList[0];
+      if (lastQuery) {
+        FindMode.query.rawQuery = lastQuery;
+        // Defer execution to allow HUD to initialize first
+        setTimeout(() => {
+          this.findInPlace(lastQuery, { backwards: false });
+        }, 0);
+      }
+    }
+
     if (options.returnToViewport) {
       this.scrollX = globalThis.scrollX;
       this.scrollY = globalThis.scrollY;

@@ -79,9 +79,24 @@
   // Ctrl chords the Docs parser is willing to consume. Anything outside this
   // set falls through to Docs/browser shortcuts, exactly like VFD.
   let docsBoundCtrlTokens = new Set([
-    "<C-E>", "<C-Y>", "<C-B>", "<C-F>", "<C-D>", "<C-U>",
-    "<C-R>", "<C-I>", "<C-O>", "<C-A>", "<C-X>", "<C-C>",
-    "<C-H>", "<C-W>", "<C-J>", "<C-T>", "<C-N>", "<C-P>",
+    "<C-E>",
+    "<C-Y>",
+    "<C-B>",
+    "<C-F>",
+    "<C-D>",
+    "<C-U>",
+    "<C-R>",
+    "<C-I>",
+    "<C-O>",
+    "<C-A>",
+    "<C-X>",
+    "<C-C>",
+    "<C-H>",
+    "<C-W>",
+    "<C-J>",
+    "<C-T>",
+    "<C-N>",
+    "<C-P>",
     "<C-[>",
   ]);
 
@@ -110,7 +125,9 @@
         docsMessage = { text: String(text), isError: !!isError };
       }
       if (docsMessageTimer) {
-        try { clearTimeout(docsMessageTimer); } catch (_) {}
+        try {
+          clearTimeout(docsMessageTimer);
+        } catch (_) {}
         docsMessageTimer = 0;
       }
       if (docsMessage) {
@@ -118,7 +135,9 @@
         docsMessageTimer = setTimeout(() => {
           docsMessageTimer = 0;
           docsMessage = null;
-          try { renderIndicator(); } catch (_) {}
+          try {
+            renderIndicator();
+          } catch (_) {}
         }, ttl);
       }
       renderIndicator();
@@ -140,13 +159,18 @@
       const win = iframe && iframe.contentWindow;
       const doc = win && win.document;
       if (win && typeof win.focus === "function") {
-        try { win.focus(); } catch (_) {}
+        try {
+          win.focus();
+        } catch (_) {}
       }
       if (!doc) return;
-      const root =
-        doc.querySelector('[contenteditable="true"]') || doc.body || doc.documentElement;
-      try { root && root.focus && root.focus({ preventScroll: true }); } catch (_) {
-        try { root && root.focus && root.focus(); } catch (_) {}
+      const root = doc.querySelector('[contenteditable="true"]') || doc.body || doc.documentElement;
+      try {
+        root && root.focus && root.focus({ preventScroll: true });
+      } catch (_) {
+        try {
+          root && root.focus && root.focus();
+        } catch (_) {}
       }
     } catch (_) {}
   }
@@ -162,7 +186,9 @@
           const hasOp = !!parser.haveOperator;
           if (hasOp) {
             let cnt = 1;
-            try { cnt = parser._countVal ? parser._countVal() : 1; } catch (_) {}
+            try {
+              cnt = parser._countVal ? parser._countVal() : 1;
+            } catch (_) {}
             opBuf = {
               keys: parser.buffer.slice(),
               operator: parser.operatorMeta ? parser.operatorMeta.id : null,
@@ -172,7 +198,9 @@
           }
         }
       } catch (_) {}
-      try { if (parser) parser.reset(); } catch (_) {}
+      try {
+        if (parser) parser.reset();
+      } catch (_) {}
       docsCmdline = {
         type,
         text: seed,
@@ -183,7 +211,9 @@
       docsPendingOperatorCmdline = opBuf;
       docsMessage = null;
       if (docsMessageTimer) {
-        try { clearTimeout(docsMessageTimer); } catch (_) {}
+        try {
+          clearTimeout(docsMessageTimer);
+        } catch (_) {}
         docsMessageTimer = 0;
       }
       lastPending = "";
@@ -193,8 +223,12 @@
 
   function docsCloseCmdline() {
     docsCmdline = null;
-    try { renderIndicator(); } catch (_) {}
-    try { docsFocusEditor(); } catch (_) {}
+    try {
+      renderIndicator();
+    } catch (_) {}
+    try {
+      docsFocusEditor();
+    } catch (_) {}
   }
 
   function docsCmdIns(ch) {
@@ -295,7 +329,9 @@
         if (ex && ex.exGotoLine) ex.exGotoLine(n);
         else docsShowMessage(String(n), false);
       } catch (_) {}
-      try { scheduleDocsCaretSolidWhileMoving(); } catch (_) {}
+      try {
+        scheduleDocsCaretSolidWhileMoving();
+      } catch (_) {}
       return;
     }
 
@@ -309,10 +345,20 @@
       let idx = 0;
       for (; i < s.length; i++) {
         const ch = s[i];
-        if (esc) { parts[idx] += ch; esc = false; continue; }
-        if (ch === "\\") { esc = true; continue; }
+        if (esc) {
+          parts[idx] += ch;
+          esc = false;
+          continue;
+        }
+        if (ch === "\\") {
+          esc = true;
+          continue;
+        }
         if (ch === delim) {
-          if (idx === 0) { idx = 1; continue; }
+          if (idx === 0) {
+            idx = 1;
+            continue;
+          }
           return { pat: parts[0], rep: parts[1], flags: s.slice(i + 1).trim(), delim };
         }
         parts[idx] += ch;
@@ -345,7 +391,9 @@
               confirm: flags.indexOf("c") !== -1,
               flags,
             });
-            try { scheduleDocsCaretSolidWhileMoving(); } catch (_) {}
+            try {
+              scheduleDocsCaretSolidWhileMoving();
+            } catch (_) {}
           } else {
             docsShowMessage("E492: Not an editor command: " + line, true);
           }
@@ -359,7 +407,9 @@
     if (gm) {
       try {
         if (ex && ex.exGlobalDelete) ex.exGlobalDelete(gm[2]);
-        try { scheduleDocsCaretSolidWhileMoving(); } catch (_) {}
+        try {
+          scheduleDocsCaretSolidWhileMoving();
+        } catch (_) {}
       } catch (_) {}
       return;
     }
@@ -372,8 +422,10 @@
       baseCmd === abbr || baseCmd === full ||
       (full.indexOf(baseCmd) === 0 && baseCmd.length >= abbr.length);
 
-    if (isBase("w", "write") || isBase("wq", "wq") || baseCmd === "x" ||
-        isBase("exi", "exit") || isBase("wa", "wall")) {
+    if (
+      isBase("w", "write") || isBase("wq", "wq") || baseCmd === "x" ||
+      isBase("exi", "exit") || isBase("wa", "wall")
+    ) {
       docsShowMessage('"' + (document.title || "document") + '" written', false);
       return;
     }
@@ -386,7 +438,9 @@
       return;
     }
     if (isBase("noh", "nohlsearch") || isBase("nohl", "nohlsearch")) {
-      try { if (ex && ex.clearSearchHighlight) ex.clearSearchHighlight(); } catch (_) {}
+      try {
+        if (ex && ex.clearSearchHighlight) ex.clearSearchHighlight();
+      } catch (_) {}
       docsShowMessage("", false);
       return;
     }
@@ -398,17 +452,25 @@
       } catch (_) {}
       return;
     }
-    if (isBase("reg", "registers") || baseCmd === "reg" || baseCmd === "di" ||
-        isBase("dis", "display")) {
-      try { if (ex && ex.exShowRegisters) ex.exShowRegisters(); } catch (_) {}
+    if (
+      isBase("reg", "registers") || baseCmd === "reg" || baseCmd === "di" ||
+      isBase("dis", "display")
+    ) {
+      try {
+        if (ex && ex.exShowRegisters) ex.exShowRegisters();
+      } catch (_) {}
       return;
     }
     if (isBase("marks", "marks")) {
-      try { if (ex && ex.exShowMarks) ex.exShowMarks(); } catch (_) {}
+      try {
+        if (ex && ex.exShowMarks) ex.exShowMarks();
+      } catch (_) {}
       return;
     }
     if (isBase("ju", "jumps") || baseCmd === "jumps") {
-      try { if (ex && ex.exShowJumps) ex.exShowJumps(); } catch (_) {}
+      try {
+        if (ex && ex.exShowJumps) ex.exShowJumps();
+      } catch (_) {}
       return;
     }
     if (isBase("se", "set")) {
@@ -418,10 +480,17 @@
         return;
       }
       const canon = {
-        nu: "number", rnu: "relativenumber", hls: "hlsearch", ic: "ignorecase",
-        wrap: "wrap", et: "expandtab", number: "number",
-        relativenumber: "relativenumber", hlsearch: "hlsearch",
-        ignorecase: "ignorecase", expandtab: "expandtab",
+        nu: "number",
+        rnu: "relativenumber",
+        hls: "hlsearch",
+        ic: "ignorecase",
+        wrap: "wrap",
+        et: "expandtab",
+        number: "number",
+        relativenumber: "relativenumber",
+        hlsearch: "hlsearch",
+        ignorecase: "ignorecase",
+        expandtab: "expandtab",
       };
       for (const raw of a.replace(/\s+/g, " ").trim().split(" ")) {
         let tok = raw.trim();
@@ -430,7 +499,10 @@
         const tokAmp = tok.endsWith("&");
         if (tokBang || tokAmp) tok = tok.slice(0, -1);
         let neg = false;
-        if (tok.startsWith("no")) { neg = true; tok = tok.slice(2); }
+        if (tok.startsWith("no")) {
+          neg = true;
+          tok = tok.slice(2);
+        }
         const key = canon[tok] || tok;
         try {
           if (ex && ex.exSetOption) ex.exSetOption(key, neg ? false : true, tokBang, tokAmp);
@@ -439,8 +511,12 @@
       return;
     }
     if (isBase("sort", "sort")) {
-      try { if (ex && ex.exSort) ex.exSort(args); } catch (_) {}
-      try { scheduleDocsCaretSolidWhileMoving(); } catch (_) {}
+      try {
+        if (ex && ex.exSort) ex.exSort(args);
+      } catch (_) {}
+      try {
+        scheduleDocsCaretSolidWhileMoving();
+      } catch (_) {}
       return;
     }
     if (/^[0-9]+,[0-9]+/.test(t) || /^%/.test(t) || /^\$/.test(t) || /^\.s/.test(t)) {
@@ -464,8 +540,12 @@
         const last = ex && ex._lastSearch && ex._lastSearch.pattern;
         if (last) {
           const dir = type === "/" ? "forward" : "backward";
-          try { ex._searchFindAndMove(last, dir, 1, false); } catch (_) {}
-          try { scheduleDocsCaretSolidWhileMoving(); } catch (_) {}
+          try {
+            ex._searchFindAndMove(last, dir, 1, false);
+          } catch (_) {}
+          try {
+            scheduleDocsCaretSolidWhileMoving();
+          } catch (_) {}
         } else {
           docsShowMessage("E35: No previous regular expression", true);
         }
@@ -489,14 +569,21 @@
         if (ex && typeof ex.searchOperatorPending === "function" && pending && pending.operator) {
           // Operator-pending search: "d/pat<CR>" deletes to the match.
           ex.searchOperatorPending(
-            pending.operator, patForSearch, dir, pending.count, pending.register, forceIgnore
+            pending.operator,
+            patForSearch,
+            dir,
+            pending.count,
+            pending.register,
+            forceIgnore,
           );
         } else if (ex && ex._searchFindAndMove) {
           if (forceIgnore != null) ex._searchIgnoreCaseOverride = forceIgnore;
           ex._searchFindAndMove(patForSearch, dir, 1, false);
           ex._searchIgnoreCaseOverride = null;
         }
-        try { scheduleDocsCaretSolidWhileMoving(); } catch (_) {}
+        try {
+          scheduleDocsCaretSolidWhileMoving();
+        } catch (_) {}
       } catch (_) {}
       return;
     }
@@ -515,16 +602,26 @@
   function docsHandleCmdlineKeydown(e, token) {
     if (!docsCmdline) return;
     // Own the key no matter what — Docs must not see cmdline typing.
-    try { suppress(e); } catch (_) {
-      try { e.preventDefault(); e.stopPropagation(); e.stopImmediatePropagation(); } catch (_) {}
+    try {
+      suppress(e);
+    } catch (_) {
+      try {
+        e.preventDefault();
+        e.stopPropagation();
+        e.stopImmediatePropagation();
+      } catch (_) {}
     }
     let changed = false;
     if (token === "<ESC>" || token === "<C-C>" || token === "<C-[>") {
       // Vim aborts the command line on Esc / Ctrl-C.
       docsPendingOperatorCmdline = null;
       docsCloseCmdline();
-      try { if (parser) parser.reset(); } catch (_) {}
-      try { renderIndicator(""); } catch (_) {}
+      try {
+        if (parser) parser.reset();
+      } catch (_) {}
+      try {
+        renderIndicator("");
+      } catch (_) {}
       return;
     }
     if (token === "<CR>" || e.key === "Enter") {
@@ -536,8 +633,12 @@
       if (docsCmdline.pos === 0 && docsCmdline.text.length === 0) {
         docsPendingOperatorCmdline = null;
         docsCloseCmdline();
-        try { if (parser) parser.reset(); } catch (_) {}
-        try { renderIndicator(""); } catch (_) {}
+        try {
+          if (parser) parser.reset();
+        } catch (_) {}
+        try {
+          renderIndicator("");
+        } catch (_) {}
         return;
       }
       docsCmdBackspace();
@@ -579,7 +680,9 @@
       return;
     }
     if (changed) {
-      try { renderIndicator(); } catch (_) {}
+      try {
+        renderIndicator();
+      } catch (_) {}
     }
   }
 
@@ -589,11 +692,17 @@
       let changed = false;
       const pos = obj.everythingVimIndicatorPosition;
       if (pos === "corner" || pos === "field" || pos === "hidden") {
-        if (prefs.position !== pos) { prefs.position = pos; changed = true; }
+        if (prefs.position !== pos) {
+          prefs.position = pos;
+          changed = true;
+        }
       }
       const style = obj.everythingVimDocsIndicator;
       if (style === "bar" || style === "chip") {
-        if (prefs.docsStyle !== style) { prefs.docsStyle = style; changed = true; }
+        if (prefs.docsStyle !== style) {
+          prefs.docsStyle = style;
+          changed = true;
+        }
       }
       return changed;
     } catch (_) {
@@ -611,7 +720,7 @@
           try {
             chrome.storage.sync.get(
               ["everythingVimIndicatorPosition", "everythingVimDocsIndicator"],
-              (d) => resolve(d || {})
+              (d) => resolve(d || {}),
             );
           } catch (_) {
             resolve({});
@@ -633,8 +742,7 @@
           if (area !== "sync" || !changes) return;
           const obj = {};
           if (changes.everythingVimIndicatorPosition) {
-            obj.everythingVimIndicatorPosition =
-              changes.everythingVimIndicatorPosition.newValue;
+            obj.everythingVimIndicatorPosition = changes.everythingVimIndicatorPosition.newValue;
           }
           if (changes.everythingVimDocsIndicator) {
             obj.everythingVimDocsIndicator = changes.everythingVimDocsIndicator.newValue;
@@ -656,8 +764,12 @@
   }
 
   function passthroughDocs() {
-    try { if (parser) parser.reset(); } catch (_) {}
-    try { renderIndicator(""); } catch (_) {}
+    try {
+      if (parser) parser.reset();
+    } catch (_) {}
+    try {
+      renderIndicator("");
+    } catch (_) {}
   }
 
   function injectDocsPageScript() {
@@ -821,8 +933,9 @@
           if (
             th === "docs.google.com" &&
             window.top.location.pathname.startsWith("/document")
-          )
+          ) {
             docsUrlValue = true;
+          }
         }
       } catch (_) {
         // cross-origin iframe: fall through to DOM markers
@@ -837,10 +950,11 @@
     try {
       if (
         document.querySelector(
-          ".docs-texteventtarget-iframe, .kix-page-paginated, .docs-text-ui"
+          ".docs-texteventtarget-iframe, .kix-page-paginated, .docs-text-ui",
         )
-      )
+      ) {
         docsDomValue = true;
+      }
     } catch (_) {}
     return docsDomValue;
   }
@@ -849,7 +963,12 @@
   // (number, date, range, color, …) throw InvalidStateError on
   // selectionStart/setSelectionRange. vi.js documents the same allowlist.
   const EDITABLE_INPUT_TYPES = new Set([
-    "text", "search", "url", "tel", "password", "",
+    "text",
+    "search",
+    "url",
+    "tel",
+    "password",
+    "",
   ]);
 
   function isTextEditor(el) {
@@ -871,12 +990,17 @@
           let hiddenStyle = false;
           try {
             const cs = getComputedStyle(el);
-            hiddenStyle = (cs && (cs.display === 'none' || cs.visibility === 'hidden'));
-          } catch (_) { hiddenStyle = false; }
+            hiddenStyle = cs && (cs.display === "none" || cs.visibility === "hidden");
+          } catch (_) {
+            hiddenStyle = false;
+          }
           // If rects are 0 but the element holds document focus, it's the
           // user's real field (not a background mirror) — don't reject.
           let hasFocus = false;
-          try { hasFocus = (document.activeElement === el) || (el.contains && el.contains(document.activeElement)); } catch (_) {}
+          try {
+            hasFocus = (document.activeElement === el) ||
+              (el.contains && el.contains(document.activeElement));
+          } catch (_) {}
           if (hiddenStyle || !hasFocus) return false;
         }
       } catch (_) {
@@ -912,8 +1036,20 @@
       while (node && depth < 8) {
         if (node.nodeType === 1) {
           const cls = node.classList;
-          const has = (c) => { try { return cls && cls.contains(c); } catch (_) { return false; } };
-          const attr = (a) => { try { return node.hasAttribute(a); } catch (_) { return false; } };
+          const has = (c) => {
+            try {
+              return cls && cls.contains(c);
+            } catch (_) {
+              return false;
+            }
+          };
+          const attr = (a) => {
+            try {
+              return node.hasAttribute(a);
+            } catch (_) {
+              return false;
+            }
+          };
           if (has("CodeMirror")) return "codemirror5";
           if (has("cm-editor") || has("cm-content")) return "codemirror6";
           if (has("monaco-editor") || has("monaco-mouse-cursor-text")) return "monaco";
@@ -1076,10 +1212,11 @@
           ".vimiumHintMarker, .vimiumFindMode, " +
             "iframe.vimium-hud-frame.vimium-ui-component-visible, " +
             "iframe.vomnibar-frame.vimium-ui-component-visible, " +
-            "iframe.vimium-help-dialog-frame.vimium-ui-component-visible"
+            "iframe.vimium-help-dialog-frame.vimium-ui-component-visible",
         )
-      )
+      ) {
         return true;
+      }
     } catch (_) {}
     return false;
   }
@@ -1212,18 +1349,37 @@
   // switches, exits, overlays).
   const NON_MOVING_COMMAND_IDS = new Set([
     "set_mark",
-    "insert_before", "insert_start_line", "append_after", "append_end_line",
-    "open_below", "open_above", "replace_mode",
-    "insert_temp_normal", "insert_delete_char_back", "insert_delete_word",
-    "insert_line_break", "insert_indent", "insert_dedent",
-    "insert_autocomplete_next", "insert_autocomplete_prev", "insert_register",
+    "insert_before",
+    "insert_start_line",
+    "append_after",
+    "append_end_line",
+    "open_below",
+    "open_above",
+    "replace_mode",
+    "insert_temp_normal",
+    "insert_delete_char_back",
+    "insert_delete_word",
+    "insert_line_break",
+    "insert_indent",
+    "insert_dedent",
+    "insert_autocomplete_next",
+    "insert_autocomplete_prev",
+    "insert_register",
     "insert_replace_char",
-    "visual_mode", "visual_line_mode",
-    "exit_mode", "exit_mode_normal", "exit_mode_normal_ctrl_c",
-    "exit_mode_ctrl_bracket", "exit_visual", "exit_visual_ctrl_c",
-    "exit_insert", "exit_insert_ctrl_c",
-    "open_overlay", "focus_next",
-    "search_forward", "search_backward",
+    "visual_mode",
+    "visual_line_mode",
+    "exit_mode",
+    "exit_mode_normal",
+    "exit_mode_normal_ctrl_c",
+    "exit_mode_ctrl_bracket",
+    "exit_visual",
+    "exit_visual_ctrl_c",
+    "exit_insert",
+    "exit_insert_ctrl_c",
+    "open_overlay",
+    "focus_next",
+    "search_forward",
+    "search_backward",
   ]);
 
   function resultMovesCaret(result) {
@@ -1258,14 +1414,18 @@
   function scheduleDocsCaretSolidWhileMoving() {
     try {
       if (!docsTopFrame()) return;
-      try { ensureDocsCursorStyle(); } catch (_) {}
+      try {
+        ensureDocsCursorStyle();
+      } catch (_) {}
       const root = document.documentElement;
       if (!root) return;
       try {
         root.setAttribute("data-everythingvim-moving", "1");
       } catch (_) {}
       if (docsMovementTimeout) {
-        try { clearTimeout(docsMovementTimeout); } catch (_) {}
+        try {
+          clearTimeout(docsMovementTimeout);
+        } catch (_) {}
       }
       docsMovementTimeout = setTimeout(() => {
         docsMovementTimeout = 0;
@@ -1285,8 +1445,12 @@
     } catch (_) {
       return;
     }
-    try { scheduleCaretSolidWhileMoving(); } catch (_) {}
-    try { scheduleDocsCaretSolidWhileMoving(); } catch (_) {}
+    try {
+      scheduleCaretSolidWhileMoving();
+    } catch (_) {}
+    try {
+      scheduleDocsCaretSolidWhileMoving();
+    } catch (_) {}
   }
 
   // Vim-style hard blink: solid, then gone (step-end, ~1s period).
@@ -1334,11 +1498,27 @@
   }
 
   const MIRROR_PROPS = [
-    "fontFamily", "fontSize", "fontWeight", "fontStyle", "fontStretch",
-    "fontVariant", "letterSpacing", "textTransform", "wordSpacing",
-    "textIndent", "lineHeight", "paddingTop", "paddingRight",
-    "paddingBottom", "paddingLeft", "borderTopWidth", "borderRightWidth",
-    "borderBottomWidth", "borderLeftWidth", "boxSizing", "tabSize",
+    "fontFamily",
+    "fontSize",
+    "fontWeight",
+    "fontStyle",
+    "fontStretch",
+    "fontVariant",
+    "letterSpacing",
+    "textTransform",
+    "wordSpacing",
+    "textIndent",
+    "lineHeight",
+    "paddingTop",
+    "paddingRight",
+    "paddingBottom",
+    "paddingLeft",
+    "borderTopWidth",
+    "borderRightWidth",
+    "borderBottomWidth",
+    "borderLeftWidth",
+    "boxSizing",
+    "tabSize",
     "direction",
   ];
 
@@ -1347,8 +1527,7 @@
     try {
       mirrorEl = document.createElement("div");
       mirrorEl.setAttribute("data-everythingvim-mirror", "1");
-      mirrorEl.style.cssText =
-        "position:fixed;visibility:hidden;pointer-events:none;" +
+      mirrorEl.style.cssText = "position:fixed;visibility:hidden;pointer-events:none;" +
         "top:0;left:0;overflow:hidden;white-space:pre-wrap;" +
         "word-wrap:break-word;overflow-wrap:break-word;z-index:-1;";
       document.documentElement.appendChild(mirrorEl);
@@ -1370,8 +1549,7 @@
       let font = cached || null;
       if (!font) {
         const cs = getComputedStyle(el);
-        font =
-          `${cs.fontStyle} ${cs.fontVariant} ${cs.fontWeight} ` +
+        font = `${cs.fontStyle} ${cs.fontVariant} ${cs.fontWeight} ` +
           `${cs.fontSize} ${cs.fontFamily}`;
         // WeakMap is unbounded-safe; cap not needed (one entry per editor).
         measureFontCache.set(el, font);
@@ -1391,58 +1569,92 @@
       ensureMirror();
       if (!mirrorEl) return null;
       const cs = getComputedStyle(el);
+
+      // Copy all relevant computed styles for accurate mirror rendering
       for (const p of MIRROR_PROPS) {
         try {
           mirrorEl.style[p] = cs[p];
         } catch (_) {}
       }
+
+      // Handle box-sizing correctly - mirror should match content box
+      const boxSizing = cs.boxSizing;
+      const paddingLeft = parseFloat(cs.paddingLeft) || 0;
+      const paddingRight = parseFloat(cs.paddingRight) || 0;
+      const paddingTop = parseFloat(cs.paddingTop) || 0;
+      const borderLeft = parseFloat(cs.borderLeftWidth) || 0;
+      const borderRight = parseFloat(cs.borderRightWidth) || 0;
+      const borderTop = parseFloat(cs.borderTopWidth) || 0;
+
       try {
         mirrorEl.style.whiteSpace = "pre-wrap";
         mirrorEl.style.wordWrap = "break-word";
+        mirrorEl.style.wordBreak = "break-word";
+        mirrorEl.style.overflowWrap = "break-word";
+        mirrorEl.style.boxSizing = "content-box";
+        mirrorEl.style.overflow = "hidden";
+
         const er = el.getBoundingClientRect();
-        mirrorEl.style.width = Math.max(1, er.width) + "px";
-        mirrorEl.style.left = er.left + "px";
-        mirrorEl.style.top = er.top + "px";
+        // Calculate content box width (excluding padding and border)
+        const contentWidth = Math.max(
+          1,
+          er.width - paddingLeft - paddingRight - borderLeft - borderRight,
+        );
+        mirrorEl.style.width = contentWidth + "px";
+        mirrorEl.style.left = (er.left + paddingLeft + borderLeft) + "px";
+        mirrorEl.style.top = (er.top + paddingTop + borderTop) + "px";
+        // Set padding to 0 since we're using content-box and positioning manually
+        mirrorEl.style.padding = "0";
       } catch (_) {
         return null;
       }
+
       const text = el.value || "";
       const caret = Math.max(0, Math.min(pos, text.length));
-      while (mirrorEl.firstChild) {
-        try {
-          mirrorEl.removeChild(mirrorEl.firstChild);
-        } catch (_) {
-          break;
-        }
-      }
+
+      // Clear mirror children efficiently
+      mirrorEl.textContent = "";
+
       const pre = document.createElement("span");
       pre.textContent = text.slice(0, caret);
       const mark = document.createElement("span");
       const under = text.slice(caret, caret + 1);
-      mark.textContent = under || " ";
+      mark.textContent = under || "\u00A0"; // Use NBSP for empty character to get width
       mirrorEl.appendChild(pre);
       mirrorEl.appendChild(mark);
+
       try {
         mirrorEl.scrollTop = el.scrollTop;
         mirrorEl.scrollLeft = el.scrollLeft;
       } catch (_) {}
+
       let mr = null;
       try {
         mr = mark.getBoundingClientRect();
       } catch (_) {
         return null;
       }
+
       if (!mr || (mr.width === 0 && mr.height === 0 && !under)) return null;
+
       let h = mr.height;
-      if (!h) {
+      if (!h || h < 2) {
         try {
           const fs = parseFloat(cs.fontSize);
-          h = Number.isFinite(fs) && fs > 0 ? fs * 1.2 : 16;
+          const lh = parseFloat(cs.lineHeight);
+          h = Number.isFinite(lh) && lh > 0 ? lh : (Number.isFinite(fs) && fs > 0 ? fs * 1.2 : 16);
         } catch (_) {
           h = 16;
         }
       }
-      return { left: mr.left, top: mr.top, height: h, width: Math.max(2, mr.width || measureCharWidth(el, under)) };
+
+      const charWidth = mr.width > 0 ? mr.width : measureCharWidth(el, under || " ");
+      return {
+        left: mr.left,
+        top: mr.top,
+        height: h,
+        width: Math.max(2, charWidth),
+      };
     } catch (_) {
       return null;
     }
@@ -1462,17 +1674,29 @@
       }
       const rc = rects && rects[0];
       if (!rc || (rc.width === 0 && rc.height === 0)) return null;
+
       let h = rc.height;
       let anchor = r.startContainer;
       try {
+        // Find the nearest element ancestor for styling
         if (anchor && anchor.nodeType !== 1) anchor = anchor.parentNode;
         if (anchor && anchor.nodeType === 1) {
           const cs = getComputedStyle(anchor);
-          if (!h) {
+          if (!h || h < 2) {
             const fs = parseFloat(cs.fontSize);
-            h = Number.isFinite(fs) && fs > 0 ? fs * 1.2 : 16;
+            const lh = parseFloat(cs.lineHeight);
+            h = Number.isFinite(lh) && lh > 0
+              ? lh
+              : (Number.isFinite(fs) && fs > 0 ? fs * 1.2 : 16);
           }
-          const w = measureCharWidth(anchor, " ");
+          // Measure character width at the actual caret position
+          let w = measureCharWidth(anchor, " ");
+          // If we have a text node, try to measure the actual character
+          if (r.startContainer.nodeType === 3) {
+            const text = r.startContainer.textContent || "";
+            const ch = text[r.startOffset] || text[r.startOffset - 1] || " ";
+            w = measureCharWidth(anchor, ch);
+          }
           return { left: rc.left, top: rc.top, height: h, width: Math.max(2, w || 8) };
         }
       } catch (_) {}
@@ -1591,11 +1815,13 @@
         return;
       }
       // Off-screen caret: hide rather than paint a stray block.
+      // Use dynamic threshold based on caret size to avoid hiding during normal editing
       try {
+        const threshold = Math.max(geom.width, geom.height, 20);
         if (
-          geom.left < -50 || geom.top < -50 ||
-          geom.left > window.innerWidth + 50 ||
-          geom.top > window.innerHeight + 50
+          geom.left < -threshold || geom.top < -threshold ||
+          geom.left > window.innerWidth + threshold ||
+          geom.top > window.innerHeight + threshold
         ) {
           hideBlockCaret();
           return;
@@ -1605,8 +1831,17 @@
       blockCaretEl.style.left = geom.left + "px";
       blockCaretEl.style.top = geom.top + "px";
       blockCaretEl.style.width = geom.width + "px";
-      blockCaretEl.style.height = geom.height + "px";      blockCaretEl.style.background =
-        mode === "normal" ? "var(--color-signal-lime)" : "var(--color-syntax-violet)";
+      blockCaretEl.style.height = geom.height + "px";
+      blockCaretEl.style.background = mode === "normal"
+        ? "var(--color-signal-lime)"
+        : "var(--color-syntax-violet)";
+
+      // Ensure the blink animation is properly set when not moving
+      if (!isMovementInProgress()) {
+        try {
+          blockCaretEl.style.animation = BLINK_ANIM;
+        } catch (_) {}
+      }
 
       // When a movement is in progress, the caret stays solid so the user
       // can see exactly where it is. The blink resumes after movement settles
@@ -1618,7 +1853,6 @@
       }
 
       hideNativeCaret(el);
-
     } catch (_) {}
 
     updateBlockCaretVisible();
@@ -1634,7 +1868,6 @@
           updateBlockCaret();
         } catch (_) {}
       };
-
 
       if (typeof requestAnimationFrame === "function") {
         requestAnimationFrame(paint);
@@ -1681,17 +1914,16 @@
   function ensureDocsCursorStyle() {
     try {
       if (!docsTopFrame()) return;
-      const blockSel =
-        'html[data-everythingvim-mode="normal"] .kix-cursor-caret,' +
+      const blockSel = 'html[data-everythingvim-mode="normal"] .kix-cursor-caret,' +
         'html[data-everythingvim-mode="visual"] .kix-cursor-caret,' +
         'html[data-everythingvim-mode="visualLine"] .kix-cursor-caret';
       const cssText =
-        '@keyframes everythingvim-docs-block-blink{0%,49%{opacity:1}50%,100%{opacity:0}}' +
+        "@keyframes everythingvim-docs-block-blink{0%,49%{opacity:1}50%,100%{opacity:0}}" +
         'html[data-everythingvim-mode="normal"] .kix-cursor,' +
         'html[data-everythingvim-mode="visual"] .kix-cursor,' +
         'html[data-everythingvim-mode="visualLine"] .kix-cursor,' +
         blockSel +
-        '{visibility:visible !important;}' +
+        "{visibility:visible !important;}" +
         // Blink the block ourselves. NOTE: deliberately NO `opacity:1
         // !important` here — an important author declaration outranks
         // animations in the cascade, so pinning opacity was exactly what left
@@ -1699,14 +1931,14 @@
         // matches none of these rules, so Docs' own thin blinking caret
         // returns untouched.
         blockSel +
-        '{animation:everythingvim-docs-block-blink 1.06s step-end infinite !important;}' +
+        "{animation:everythingvim-docs-block-blink 1.06s step-end infinite !important;}" +
         // Solid while moving: idle blinks, caret-moving actions hold solid.
         // Higher-specificity + later in the stylesheet, so it wins over the
         // blink above while `data-everythingvim-moving="1"` is set. Reduced-
         // motion users already get a solid caret; this keeps them solid.
         'html[data-everythingvim-moving="1"] .kix-cursor-caret{' +
-        'animation:none !important;opacity:1 !important;visibility:visible !important;}' +
-        '@media (prefers-reduced-motion:reduce){' + blockSel + '{animation:none !important;}}';
+        "animation:none !important;opacity:1 !important;visibility:visible !important;}" +
+        "@media (prefers-reduced-motion:reduce){" + blockSel + "{animation:none !important;}}";
       // Self-heal: an older build injected a solid (non-blinking) variant of
       // this stylesheet. Refresh it in place so live Docs tabs go back to
       // blinking without needing a reload.
@@ -1966,8 +2198,7 @@
       // parks in the bottom-right corner of every page, so a chunky badge
       // covered neighbouring UI. Keep this in sync with the "chip" layout in
       // paintIndicator().
-      indicatorEl.style.cssText =
-        "position:fixed;z-index:2147483646;right:10px;bottom:10px;" +
+      indicatorEl.style.cssText = "position:fixed;z-index:2147483646;right:10px;bottom:10px;" +
         "font-family:'Geist Mono','JetBrains Mono',ui-monospace,SFMono-Regular,Menlo,monospace;" +
         "font-size:10px;line-height:1;letter-spacing:1px;text-transform:uppercase;" +
         "padding:3px 6px;border-radius:3px;" +
@@ -2018,7 +2249,7 @@
       const st = document.createElement("style");
       st.id = "everythingvim-docs-bar-style";
       st.textContent =
-        "#everythingvim-indicator-caret{display:inline-block;min-width:7px;background:var(--color-bone-text);color:var(--surface-canvas);}" ;
+        "#everythingvim-indicator-caret{display:inline-block;min-width:7px;background:var(--color-bone-text);color:var(--surface-canvas);}";
       (document.head || document.documentElement).appendChild(st);
     } catch (_) {}
   }
@@ -2172,7 +2403,10 @@
       const cur = document.createElement("span");
       cur.id = "everythingvim-indicator-caret";
       if (at) cur.textContent = at;
-      else { cur.textContent = " "; cur.style.opacity = "0.95"; }
+      else {
+        cur.textContent = " ";
+        cur.style.opacity = "0.95";
+      }
       wrap.appendChild(cur);
       if (after) {
         const aSpan = document.createElement("span");
@@ -2220,10 +2454,7 @@
   function positionIndicatorAtField() {
     let ed = null;
     try {
-      ed =
-        currentEditor && editorAttached(currentEditor)
-          ? currentEditor
-          : findEditor();
+      ed = currentEditor && editorAttached(currentEditor) ? currentEditor : findEditor();
     } catch (_) {
       ed = null;
     }
@@ -2332,8 +2563,9 @@
   function setMode(newMode) {
     mode = newMode;
     try {
-      if (parser && typeof parser.setMode === "function")
+      if (parser && typeof parser.setMode === "function") {
         parser.setMode(newMode);
+      }
     } catch (_) {}
     renderIndicator("");
     // When entering normal/visual mode from insert, start the caret blinking
@@ -2567,12 +2799,19 @@
   }
 
   function feedConfiguredToken(token) {
+    // Record macro keys if recording
+    try {
+      if (executor && executor.macroRecording && executor.macroKeys) {
+        executor.macroKeys.push(token);
+      }
+    } catch (_) {}
+
     const result = parser.feed(token);
     if (!result) return true;
     dkeys(
       `feed -> kind=${result.kind}`,
       `id=${(result.command || result.motion || {}).id || "-"}`,
-      `caret=${caretSnapshot()}`
+      `caret=${caretSnapshot()}`,
     );
     if (result.kind === "invalid") {
       renderIndicator("");
@@ -2720,13 +2959,20 @@
 
       const token = eventToToken(e);
       if (!token) return;
-      dkeys(`mode=${mode}`, `token=${token}`, `editor=${describeEditor(currentEditor || findEditor())}`, `caret=${caretSnapshot()}`);
+      dkeys(
+        `mode=${mode}`,
+        `token=${token}`,
+        `editor=${describeEditor(currentEditor || findEditor())}`,
+        `caret=${caretSnapshot()}`,
+      );
 
       if (mode === "insert") {
         // Complex editors can't be driven in place (framework-owned DOM).
         // Esc escalates to the overlay editor instead of a broken normal
         // mode — the Surfingkeys/wasavi pattern.
-        if (isEscapeEvent(e) && !vimiumOverlayActive() && !(parser.buffer && parser.buffer.length > 0)) {
+        if (
+          isEscapeEvent(e) && !vimiumOverlayActive() && !(parser.buffer && parser.buffer.length > 0)
+        ) {
           try {
             const ed = findEditor(eventTrueTarget(e));
             const kind = ed && detectComplexEditor(ed);
@@ -2740,12 +2986,10 @@
             }
           } catch (_) {}
         }
-        const commandMeta =
-          parser.commandMetaForToken && parser.commandMetaForToken(token);
+        const commandMeta = parser.commandMetaForToken && parser.commandMetaForToken(token);
         const commandStart = parser.isCommandBinding(token);
         const commandPending = parser.buffer && parser.buffer.length > 0;
-        const isReplaceChar =
-          commandMeta && commandMeta.id === "insert_replace_char";
+        const isReplaceChar = commandMeta && commandMeta.id === "insert_replace_char";
         if (
           commandPending ||
           (commandStart &&
@@ -2797,7 +3041,9 @@
       // or the `0` in `10`.
       let hasPending = false;
       try {
-        hasPending = typeof parser.hasPending === "function" ? parser.hasPending() : !!(parser.buffer && parser.buffer.length);
+        hasPending = typeof parser.hasPending === "function"
+          ? parser.hasPending()
+          : !!(parser.buffer && parser.buffer.length);
       } catch (_) {
         hasPending = false;
       }
@@ -2805,7 +3051,10 @@
       if (!hasPending && !parser.isBinding(token)) {
         // Swallow printable keys so normal mode never inserts text,
         // but let function keys / navigation pass through.
-        if (token.length === 1 || token === "<CR>" || token === "<BS>" || token === "<TAB>" || token === "<Del>") {
+        if (
+          token.length === 1 || token === "<CR>" || token === "<BS>" || token === "<TAB>" ||
+          token === "<Del>"
+        ) {
           suppress(e);
         }
         return;
@@ -2821,8 +3070,9 @@
         feedConfiguredToken(token);
       } catch (err) {
         try {
-          if (window.__VIM_DEBUG__)
+          if (window.__VIM_DEBUG__) {
             console.error("[Everything Vim] parser error", err);
+          }
         } catch (_) {}
       }
       scheduleFocusRestore(skipRestore);
@@ -2890,7 +3140,9 @@
         composedPath: () => [],
         // handleDocsKey() consumes a key by calling suppress(e). Route that to
         // a flag so the child frame learns whether to swallow the event.
-        preventDefault() { consumed = true; },
+        preventDefault() {
+          consumed = true;
+        },
         stopPropagation() {},
         stopImmediatePropagation() {},
       };
@@ -2930,8 +3182,12 @@
     }
     // Unbound Ctrl chords fall through to Docs/browser (VFD behavior).
     if (e.ctrlKey && !e.altKey && !e.metaKey && !docsBoundCtrlTokens.has(token)) {
-      try { if (parser) parser.reset(); } catch (_) {}
-      try { renderIndicator(""); } catch (_) {}
+      try {
+        if (parser) parser.reset();
+      } catch (_) {}
+      try {
+        renderIndicator("");
+      } catch (_) {}
       return;
     }
     // ":", "/", "?" open the command line from normal/visual (never insert).
@@ -2954,8 +3210,9 @@
       ) {
         suppress(e);
         try {
-          if (docsExecutor && docsExecutor.finishInsert)
+          if (docsExecutor && docsExecutor.finishInsert) {
             docsExecutor.finishInsert(insertOps);
+          }
         } catch (_) {}
         resetInsertOps();
         setMode("normal");
@@ -2971,7 +3228,16 @@
       // Insert-mode Ctrl editing, copied from Vim-For-Docs src/content.js:
       // <C-H>/<C-W>/<C-J>/<C-T>/<C-D>/<C-N>/<C-P>/<C-R> feed the parser and
       // executor (with '.'-repeat op tracking), instead of reaching Docs.
-      const INSERT_CTRL_TOKENS = ["<C-H>","<C-W>","<C-J>","<C-T>","<C-D>","<C-N>","<C-P>","<C-R>"];
+      const INSERT_CTRL_TOKENS = [
+        "<C-H>",
+        "<C-W>",
+        "<C-J>",
+        "<C-T>",
+        "<C-D>",
+        "<C-N>",
+        "<C-P>",
+        "<C-R>",
+      ];
       if ((parser && parser.awaitingCharFor) || INSERT_CTRL_TOKENS.indexOf(token) !== -1) {
         suppress(e);
         markSuppressed(e);
@@ -2999,12 +3265,10 @@
           else if (cid === "insert_delete_word") {
             if (!insertOps) resetInsertOps();
             insertOps.push({ type: "delete_word" });
-          }
-          else if (cid === "insert_dedent") {
+          } else if (cid === "insert_dedent") {
             if (!insertOps) resetInsertOps();
             insertOps.push({ type: "dedent" });
-          }
-          else if (cid === "insert_register") {
+          } else if (cid === "insert_register") {
             try {
               const nm = (res.command.args && res.command.args.char) || '"';
               const ex = docsExecutor || executor;
@@ -3051,42 +3315,59 @@
     // continuations (counts, `di"`, `f(`, `"a`, ...) must reach feed().
     if (token === "<ESC>" || token === "<C-[>") {
       suppress(e);
-      try { if (parser) parser.reset(); } catch (_) {}
-      try { renderIndicator(""); } catch (_) {}
+      try {
+        if (parser) parser.reset();
+      } catch (_) {}
+      try {
+        renderIndicator("");
+      } catch (_) {}
       if (tempNormal) {
         tempNormal = false;
-        try { if (docsExecutor && docsExecutor.finishInsert) docsExecutor.finishInsert(insertOps); } catch (_) {}
+        try {
+          if (docsExecutor && docsExecutor.finishInsert) docsExecutor.finishInsert(insertOps);
+        } catch (_) {}
         resetInsertOps();
         setMode("normal");
         replaceMode = false;
-        try { docsFocusEditor(); } catch (_) {}
+        try {
+          docsFocusEditor();
+        } catch (_) {}
         return;
       }
       tempNormal = false;
       replaceMode = false;
       runExec({ kind: "command", command: { id: "exit_mode" }, count: 1 });
-      try { docsFocusEditor(); } catch (_) {}
+      try {
+        docsFocusEditor();
+      } catch (_) {}
       return;
     }
     suppress(e);
     try {
       let docsPending = false;
       try {
-        docsPending = typeof parser.hasPending === "function" ? parser.hasPending() : !!(parser.buffer && parser.buffer.length);
+        docsPending = typeof parser.hasPending === "function"
+          ? parser.hasPending()
+          : !!(parser.buffer && parser.buffer.length);
       } catch (_) {
         docsPending = false;
       }
       // Invalid sequences: Vim-style "E492: Not an editor command" on the
       // bottom line + parser reset, not a silent no-op.
-      const looksInvalid = !docsPending && !parser.isBinding(token) && parser.buffer && parser.buffer.length;
+      const looksInvalid = !docsPending && !parser.isBinding(token) && parser.buffer &&
+        parser.buffer.length;
       if (!docsPending && !parser.isBinding(token)) {
         if (looksInvalid) {
           const keys = (parser.buffer || []).join("");
-          try { if (parser) parser.reset(); } catch (_) {}
+          try {
+            if (parser) parser.reset();
+          } catch (_) {}
           docsShowMessage("E492: Not an editor command: " + keys, true);
           return;
         }
-        try { renderIndicator(""); } catch (_) {}
+        try {
+          renderIndicator("");
+        } catch (_) {}
         return;
       }
       const resOk = feedConfiguredToken(token);
@@ -3188,9 +3469,28 @@
   // to exactly one "\n" (Chrome's innerText maps <p> to "\n\n", which is
   // what showed phantom blank lines in the overlay).
   const EDITABLE_BLOCK_TAGS = new Set([
-    "P", "DIV", "LI", "H1", "H2", "H3", "H4", "H5", "H6",
-    "BLOCKQUOTE", "PRE", "UL", "OL", "SECTION", "ARTICLE",
-    "HEADER", "FOOTER", "TABLE", "TR", "FIGURE", "FIGCAPTION", "HR",
+    "P",
+    "DIV",
+    "LI",
+    "H1",
+    "H2",
+    "H3",
+    "H4",
+    "H5",
+    "H6",
+    "BLOCKQUOTE",
+    "PRE",
+    "UL",
+    "OL",
+    "SECTION",
+    "ARTICLE",
+    "HEADER",
+    "FOOTER",
+    "TABLE",
+    "TR",
+    "FIGURE",
+    "FIGCAPTION",
+    "HR",
   ]);
 
   function extractContentEditableText(root) {
@@ -3275,8 +3575,20 @@
         try {
           if (!n || n.nodeType !== 1) return false;
           const cls = n.classList;
-          const has = (c) => { try { return !!(cls && cls.contains(c)); } catch (_) { return false; } };
-          const attr = (a) => { try { return n.hasAttribute(a); } catch (_) { return false; } };
+          const has = (c) => {
+            try {
+              return !!(cls && cls.contains(c));
+            } catch (_) {
+              return false;
+            }
+          };
+          const attr = (a) => {
+            try {
+              return n.hasAttribute(a);
+            } catch (_) {
+              return false;
+            }
+          };
           if (!kind) {
             return has("CodeMirror") || has("cm-editor") || has("cm-content") ||
               has("monaco-editor") || has("ProseMirror") || has("ql-editor") ||
@@ -3319,7 +3631,9 @@
           try {
             if (cur.nodeType === 1) {
               let editable = false;
-              try { editable = !!cur.isContentEditable; } catch (_) {}
+              try {
+                editable = !!cur.isContentEditable;
+              } catch (_) {}
               if (!editable) {
                 try {
                   const v = cur.getAttribute && cur.getAttribute("contenteditable");
@@ -3392,8 +3706,7 @@
       }
 
       const style = document.createElement("style");
-      style.textContent =
-        ":host{position:fixed;inset:0;z-index:2147483646;display:flex;" +
+      style.textContent = ":host{position:fixed;inset:0;z-index:2147483646;display:flex;" +
         "align-items:center;justify-content:center;" +
         "background:rgba(0,0,0,.6);font-family:Inter,-apple-system," +
         "BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;}" +
@@ -3435,14 +3748,18 @@
       discardBtn.className = "aiv-btn";
       discardBtn.textContent = "Discard";
       discardBtn.addEventListener("click", (ev) => {
-        try { ev.stopPropagation(); } catch (_) {}
+        try {
+          ev.stopPropagation();
+        } catch (_) {}
         closeOverlay(false);
       });
       const saveBtn = document.createElement("button");
       saveBtn.className = "aiv-btn save";
       saveBtn.textContent = "Save";
       saveBtn.addEventListener("click", (ev) => {
-        try { ev.stopPropagation(); } catch (_) {}
+        try {
+          ev.stopPropagation();
+        } catch (_) {}
         closeOverlay(true);
       });
       chrome.appendChild(discardBtn);
@@ -3468,8 +3785,12 @@
       currentEditor = overlayArea;
       // The overlay owns focus now: mark it before painting, since
       // updateBlockCaret/renderIndicator both gate on editorHasFocus.
-      try { editorHasFocus = true; } catch (_) {}
-      try { parser.reset(); } catch (_) {}
+      try {
+        editorHasFocus = true;
+      } catch (_) {}
+      try {
+        parser.reset();
+      } catch (_) {}
       tempNormal = false;
       replaceMode = false;
       setMode("normal");
@@ -3480,7 +3801,9 @@
       renderIndicator("");
       // setMode painted before the textarea was focused/laid out (so the
       // caret hid); repaint on the next frame now that it can be measured.
-      try { scheduleBlockCaret(); } catch (_) {}
+      try {
+        scheduleBlockCaret();
+      } catch (_) {}
       return true;
     } catch (_) {
       try {
@@ -3506,8 +3829,12 @@
             (target.nextElementSibling && target.nextElementSibling.CodeMirror);
           if (cm && typeof cm.setValue === "function") {
             cm.setValue(text);
-            try { if (typeof cm.save === "function") cm.save(); } catch (_) {}
-            try { if (typeof cm.focus === "function") cm.focus(); } catch (_) {}
+            try {
+              if (typeof cm.save === "function") cm.save();
+            } catch (_) {}
+            try {
+              if (typeof cm.focus === "function") cm.focus();
+            } catch (_) {}
             return;
           }
         } catch (_) {}
@@ -3518,13 +3845,23 @@
         if (inp && inp.commitInputValue) {
           inp.commitInputValue(target, text, caret, "insertFromPaste", text);
         } else {
-          try { target.value = text; } catch (_) {}
-          try { target.setSelectionRange(caret, caret); } catch (_) {}
+          try {
+            target.value = text;
+          } catch (_) {}
+          try {
+            target.setSelectionRange(caret, caret);
+          } catch (_) {}
           try {
             target.dispatchEvent(new Event("input", { bubbles: true }));
           } catch (_) {}
         }
-        try { target.focus({ preventScroll: true }); } catch (_) { try { target.focus(); } catch (_) {} }
+        try {
+          target.focus({ preventScroll: true });
+        } catch (_) {
+          try {
+            target.focus();
+          } catch (_) {}
+        }
         return;
       }
       // Complex contenteditable: single full-replace through the browser
@@ -3541,7 +3878,13 @@
           target.dispatchEvent(new Event("change", { bubbles: true }));
         } catch (_) {}
       };
-      try { target.focus({ preventScroll: true }); } catch (_) { try { target.focus(); } catch (_) {} }
+      try {
+        target.focus({ preventScroll: true });
+      } catch (_) {
+        try {
+          target.focus();
+        } catch (_) {}
+      }
       let done = false;
       try {
         const sel = window.getSelection();
@@ -3550,9 +3893,15 @@
           r.selectNodeContents(target);
           sel.removeAllRanges();
           sel.addRange(r);
-          try { done = document.execCommand("insertText", false, text); } catch (_) { done = false; }
+          try {
+            done = document.execCommand("insertText", false, text);
+          } catch (_) {
+            done = false;
+          }
         }
-      } catch (_) { done = false; }
+      } catch (_) {
+        done = false;
+      }
       if (done) {
         fireCommitEvents();
       } else {
@@ -3585,7 +3934,9 @@
     overlayArea = null;
     overlayTarget = null;
     overlayTargetKind = null;
-    try { parser.reset(); } catch (_) {}
+    try {
+      parser.reset();
+    } catch (_) {}
     tempNormal = false;
     replaceMode = false;
     if (commit && target) commitOverlayText(target, kind, text);
@@ -3612,7 +3963,9 @@
         e.preventDefault();
         e.stopPropagation();
         e.stopImmediatePropagation();
-        try { overlayArea.focus(); } catch (_) {}
+        try {
+          overlayArea.focus();
+        } catch (_) {}
         return true;
       }
       e.stopPropagation();
@@ -3665,9 +4018,15 @@
               // The overlay owns the keyboard: keep focus state true and
               // repaint the block caret/indicator (e.g. after the panel
               // refocuses the textarea). No mode change here.
-              try { editorHasFocus = true; } catch (_) {}
-              try { renderIndicator(""); } catch (_) {}
-              try { scheduleBlockCaret(); } catch (_) {}
+              try {
+                editorHasFocus = true;
+              } catch (_) {}
+              try {
+                renderIndicator("");
+              } catch (_) {}
+              try {
+                scheduleBlockCaret();
+              } catch (_) {}
             } else {
               try {
                 const root = inner && inner.getRootNode ? inner.getRootNode() : null;
@@ -3676,7 +4035,9 @@
                 if (root && overlayHost && root === overlayHost.shadowRoot) return;
               } catch (_) {}
               // Focus escaped to the page behind the modal: pull it back.
-              try { overlayArea.focus(); } catch (_) {}
+              try {
+                overlayArea.focus();
+              } catch (_) {}
             }
             return;
           }
@@ -3711,7 +4072,7 @@
           setMode(saved !== undefined ? saved : "insert");
         } catch (_) {}
       },
-      true
+      true,
     );
 
     document.addEventListener(
@@ -3742,7 +4103,7 @@
           scheduleBlockCaret();
         } catch (_) {}
       },
-      true
+      true,
     );
 
     // Caret tracking: reposition the block on native caret moves (mouse
@@ -3763,7 +4124,7 @@
           scheduleBlockCaret();
         } catch (_) {}
       },
-      true
+      true,
     );
     window.addEventListener("resize", () => {
       renderIndicator();
@@ -3812,7 +4173,7 @@
       }
       if (!cfg) {
         const url = chrome.runtime.getURL(
-          "content_scripts/vim_edit/vim_motions.json"
+          "content_scripts/vim_edit/vim_motions.json",
         );
         const res = await fetch(url, { cache: "no-cache" });
         cfg = await res.json();
@@ -3828,11 +4189,22 @@
         }
       } catch (_) {}
       try {
-        window.__VIM_SHOWMSG__ = function (t, isErr) { docsShowMessage(t, !!isErr); };
+        window.__VIM_SHOWMSG__ = function (t, isErr) {
+          docsShowMessage(t, !!isErr);
+        };
         window.__VIM_UI__ = {
-          setMessage: function (t, isErr) { docsShowMessage(t, !!isErr); },
-          setShowCmd: function (s) { try { lastPending = s || ""; renderIndicator(); } catch (_) {} },
-          clearMessage: function () { docsShowMessage("", false); },
+          setMessage: function (t, isErr) {
+            docsShowMessage(t, !!isErr);
+          },
+          setShowCmd: function (s) {
+            try {
+              lastPending = s || "";
+              renderIndicator();
+            } catch (_) {}
+          },
+          clearMessage: function () {
+            docsShowMessage("", false);
+          },
         };
       } catch (_) {}
 
@@ -3847,15 +4219,20 @@
         setTempNormal: (v) => {
           tempNormal = !!v;
         },
+        // Feed a key token to the parser (used for macro playback)
+        feedKey: (token) => {
+          try {
+            feedConfiguredToken(token);
+          } catch (_) {}
+        },
         // Manual escape hatch (Ctrl+; → open_overlay command): open the
         // overlay for the focused field even when auto-detection missed
         // its framework. Falls back to in-place normal if it can't open.
         openOverlay: () => {
           try {
-            const ed =
-              currentEditor && editorAttached(currentEditor)
-                ? currentEditor
-                : findEditor();
+            const ed = currentEditor && editorAttached(currentEditor)
+              ? currentEditor
+              : findEditor();
             if (!ed) return;
             currentEditor = ed;
             const kind = detectComplexEditor(ed) || "manual";
@@ -3865,12 +4242,20 @@
         focusNext: () => {
           try {
             const focusable = document.querySelectorAll(
-              'a[href], button:not([disabled]), input:not([disabled]):not([type="hidden"]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])'
+              'a[href], button:not([disabled]), input:not([disabled]):not([type="hidden"]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])',
             );
             const arr = Array.from(focusable);
             const idx = arr.indexOf(document.activeElement);
             const next = arr[(idx + 1) % arr.length];
             if (next) next.focus();
+          } catch (_) {}
+        },
+        // Show a message via HUD
+        showMessage: (text, duration) => {
+          try {
+            if (typeof HUD !== "undefined" && HUD.show) {
+              HUD.show(text, duration);
+            }
           } catch (_) {}
         },
       };

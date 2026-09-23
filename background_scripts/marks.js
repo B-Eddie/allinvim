@@ -31,6 +31,9 @@ export async function create(req, sender) {
     // The front-end frame hasn't provided the scroll position (because it's not the top frame
     // within its tab). We need to ask the top frame what its scroll position is.
     chrome.tabs.sendMessage(sender.tab.id, { handler: "getScrollPosition" }, (response) => {
+      // The tab can be closed before the top frame responds. Reading runtime.lastError here is
+      // required to prevent Chrome from logging an unchecked "No tab with id" error.
+      if (chrome.runtime.lastError || response == null) return;
       saveMark(Object.assign(markInfo, { scrollX: response.scrollX, scrollY: response.scrollY }));
     });
   }
@@ -77,9 +80,17 @@ export async function goto(req) {
 
 // Focus an existing tab and scroll to the given position within it.
 async function gotoPositionInTab({ tabId, scrollX, scrollY }) {
-  const tab = await chrome.tabs.update(tabId, { active: true });
+  let tab;
+  try {
+    tab = await chrome.tabs.update(tabId, { active: true });
+  } catch {
+    // The tab may be closed between finding it and focusing it.
+    return;
+  }
   chrome.windows.update(tab.windowId, { focused: true });
-  chrome.tabs.sendMessage(tabId, { handler: "setScrollPosition", scrollX, scrollY });
+  Promise.resolve(
+    chrome.tabs.sendMessage(tabId, { handler: "setScrollPosition", scrollX, scrollY }),
+  ).catch(() => {});
 }
 
 // The tab we're trying to find no longer exists. We either find another tab with a matching URL and
